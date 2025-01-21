@@ -1,0 +1,31 @@
+import Select from 'react-select';
+
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+       const options = [
+        { value: 'option1', label: 'Hindi' },
+        { value: 'option2', label: 'English' },
+        { value: 'option3', label: 'France' },
+        { value: 'option4', label: 'Gramani' }
+    ];
+
+
+      const handleSelectedChange = (selected) => {
+        setSelectedOptions(selected);
+    };
+
+      {/* <div className="gi-login-wrap flex gi-register-half w-[100%] flex-col">
+                                                            <label
+                                                                class="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
+                                                                Languages</label>
+                                                            <div class="iconflex">
+                                                                <img src="assets/img/icons/skills-icon.svg" alt="" />
+                                                                <Select
+                                                                    isMulti
+                                                                    options={options}
+                                                                    value={selectedOptions}
+                                                                    onChange={handleSelectedChange}
+                                                                    className="mb-4"
+                                                                />
+                                                            </div>
+                                                        </div> */}
