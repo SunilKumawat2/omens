@@ -41,7 +41,7 @@ const Astrologer_Details = () => {
 
         try {
             const response = await Agora_Generate_Token(
-                { type: "audio", receiver_id: "46" }, // Your receiver_id can change based on your requirements
+                { type: "audio", receiver_id: "26" }, // 26 Your receiver_id can change based on your requirements
                 { Authorization: `Bearer ${token}` }
             );
             console.log("response_response", response?.data?.data);
@@ -65,7 +65,7 @@ const Astrologer_Details = () => {
 
             // Initialize Agora RTC client
             const rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-            await rtcClient.join(AGORA_APP_ID, channel, sender_token, sender_id);
+            await rtcClient.join(`${AGORA_APP_ID}`, channel, sender_token, sender_id);
             const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
             await rtcClient.publish(audioTrack);
 

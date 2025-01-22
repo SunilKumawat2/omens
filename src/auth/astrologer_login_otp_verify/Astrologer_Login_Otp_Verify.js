@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
 import Astrologer_Header from '../../components/pages/astrologer/astrologer_header/Astrologer_Header';
+import { requestPermission } from '../../firebase/Firebase';
 
 const Astrologer_Login_Otp_Verify = () => {
     const navigate = useNavigate();
@@ -24,19 +25,26 @@ const Astrologer_Login_Otp_Verify = () => {
         setIsLoading(true)
         // Check if the OTP is valid (4 digits long)
         if (otp.length !== 4) {
-            setOtpError(true); 
+            setOtpError(true);
             setIsLoading(false)
             toast("Please enter a valid 4-digit OTP."); // Show a toast error message
             return;
         }
-
+        // Get the FCM token
+        const fcm_token = await requestPermission();
+        console.log("fcm_token", fcm_token)
+        if (!fcm_token) {
+            setIsLoading(false);
+            toast("Failed to get FCM token. Please try again.");
+            return;
+        }
         const otp_verify_data = {
             otp,
             type: "login",
             country_code,
             mobile,
             device_type: "web",
-            fcm_token: "dfadsfsdfdsfd",
+            fcm_token: fcm_token,
 
         };
         console.log("otp_verify_data", otp_verify_data)
@@ -60,12 +68,12 @@ const Astrologer_Login_Otp_Verify = () => {
     };
 
     // Function to format the mobile number
-  const formatMobileNumber = (mobile) => {
-    if (!mobile || mobile.length < 10) return mobile; // Handle invalid input
-    const firstTwoDigits = mobile.slice(0, 2); // Extract the first two digits
-    const lastTwoDigits = mobile.slice(-2); // Extract the last two digits
-    return `${firstTwoDigits}******${lastTwoDigits}`; // Format the mobile number
-  };
+    const formatMobileNumber = (mobile) => {
+        if (!mobile || mobile.length < 10) return mobile; // Handle invalid input
+        const firstTwoDigits = mobile.slice(0, 2); // Extract the first two digits
+        const lastTwoDigits = mobile.slice(-2); // Extract the last two digits
+        return `${firstTwoDigits}******${lastTwoDigits}`; // Format the mobile number
+    };
     return (
         <div>
             {/* <--------- header section's ---------------> */}
@@ -87,7 +95,7 @@ const Astrologer_Login_Otp_Verify = () => {
                                         Verification code
                                     </h2>
                                     <p className="mt-[15px] text-[14px] text-[#777] leading-[23px]">
-                                        We have sent the verification code on your mobile number 
+                                        We have sent the verification code on your mobile number
                                         <span className="font-bold text-black">+{formatMobileNumber(mobile)}</span>
                                     </p>
                                 </div>

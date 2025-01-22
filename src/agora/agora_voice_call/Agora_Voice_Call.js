@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";  // useNavigate instead of useHistory
-import AgoraRTC  from "agora-rtc-sdk-ng";
+import { useLocation, useNavigate } from "react-router-dom";
+import AgoraRTC from "agora-rtc-sdk-ng";
 import { AGORA_APP_ID } from "../../config/Config";
 
 const Agora_Voice_Call = () => {
@@ -8,55 +8,64 @@ const Agora_Voice_Call = () => {
   const [client, setClient] = useState(null);
   const [localAudioTrack, setLocalAudioTrack] = useState(null);
   const [remoteUsers, setRemoteUsers] = useState([]);
+
   const location = useLocation();
-  const navigate = useNavigate();  // Use navigate instead of useHistory
+  const navigate = useNavigate();
 
-  // Extract query params from the URL
   const queryParams = new URLSearchParams(location.search);
-  const channel = queryParams?.get("channel");
-  const sender_token = queryParams?.get("sender_token");
-  const sender_id = queryParams?.get("sender_id");
+  const channel = queryParams.get("channel");
+  const sender_token = queryParams.get("sender_token");
+  const sender_id = queryParams.get("sender_id");
+  console.log("channel_sender_token_sender_id", { sender_id, sender_token, channel });
 
-  // Initialize Agora RTC client
   useEffect(() => {
-    const rtcClient = AgoraRTC?.createClient({ mode: "rtc", codec: "vp8" });
-    setClient(rtcClient);
-  }, []);
+    if (!client) {
+      const rtcClient = AgoraRTC.createClient({
+        mode: "rtc",  // Audio/Video call
+        codec: "vp8", // Codec
+        region: "auto"  // Region: auto for best region selection
+      });
+      setClient(rtcClient);
+    }
+  }, [client]);
 
-  // Join the Agora channel using the URL parameters
   useEffect(() => {
     if (!client || !channel || !sender_token || !sender_id) return;
-
+    
     const startCall = async () => {
       setIsLoading(true);
       try {
+        // Join the channel
         await client.join(AGORA_APP_ID, channel, sender_token, sender_id);
+        console.log("Joined channel successfully");
+
+        // Create and publish the local audio track
         const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
         setLocalAudioTrack(audioTrack);
         await client.publish(audioTrack);
+        console.log("Published local audio track");
 
-        // Set up event listeners
-        client.on("user-published", async (user, mediaType) => {
-          if (mediaType === "audio") {
-            await client.subscribe(user, mediaType);
-            const remoteAudioTrack = user.audioTrack;
-            setRemoteUsers((prevUsers) => [...prevUsers, user]);
-
-            const audioElement = document.createElement("audio");
-            audioElement.id = `user-${user.uid}`;
-            audioElement.autoplay = true;
-            document.getElementById("remote-audio-container").appendChild(audioElement);
-            remoteAudioTrack.play(audioElement);
-          }
+        // Handle remote stream added (stream-published) 
+        client.on("stream-added", async (evt) => {
+          const stream = evt.stream;
+          console.log("Stream added: " + stream.getId());
+          // Subscribe to the stream
+          await client.subscribe(stream);
         });
 
+        // Handle remote stream subscribed
+        client.on("stream-subscribed", (evt) => {
+          const remoteStream = evt.stream;
+          console.log("Subscribed to stream: " + remoteStream.getId());
+          // Play remote stream
+          remoteStream.play('remote-audio-container');
+          setRemoteUsers((prevUsers) => [...prevUsers, remoteStream]);
+        });
+
+        // Handle user audio unpublishing
         client.on("user-unpublished", (user, mediaType) => {
           if (mediaType === "audio") {
             setRemoteUsers((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
-            const audioElement = document.getElementById(`user-${user.uid}`);
-            if (audioElement) {
-              audioElement.remove();
-            }
           }
         });
       } catch (error) {
@@ -70,8 +79,14 @@ const Agora_Voice_Call = () => {
   }, [client, channel, sender_token, sender_id]);
 
   const handleEndCall = () => {
-    // Navigate back to the call page using `navigate` instead of `history.push`
-    navigate("/");
+    if (client) {
+      client.leave().then(() => {
+        console.log("Left the channel");
+        navigate("/astrologer_list");
+      });
+    } else {
+      navigate("/astrologer_list");
+    }
   };
 
   return (
