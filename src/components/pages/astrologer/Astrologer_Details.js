@@ -60,7 +60,9 @@ const Astrologer_Details = () => {
         setIsLoading(true);
         try {
             const { channel, sender_token, sender_id } = await Handle_Generate_agora_token();
-
+               localStorage.setItem("channel",channel)
+               localStorage.setItem("sender_token",sender_token)
+               localStorage.setItem("sender_id",sender_id)
             // Navigate to the /call page with query params using navigate (replace history.push)
             navigate(`/Voice_Call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}&appid=${process.env.REACT_APP_AGORA_APP_ID}&astro_details_list=${astro_details_list?.astrolist?.name}`);
 
@@ -115,7 +117,7 @@ const Astrologer_Details = () => {
                 );
                 console.log("products_products_111111", response);
                 set_Astro_Details_List(response?.data?.data)
-                localStorage.setItem("astrologer_profile_image",astro_details_list?.profile_image)
+                localStorage.setItem("astrologer_profile_image",response?.data?.data?.astrolist?.profile_image)
             } else {
                 const response = await Get_Web_Astrologer_Details("1", id,);
                 console.log("products_products_222222", response);

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AgoraRTC from "agora-rtc-sdk-ng";
-import { AGORA_APP_ID } from "../../config/Config";
+import { AGORA_APP_ID, IMG_BASE_URL } from "../../config/Config";
 
 const Agora_Voice_Call = () => {
+  const astrologer_profile_image = localStorage.getItem("astrologer_profile_image")
   const [isLoading, setIsLoading] = useState(false);
   const [client, setClient] = useState(null);
   const [localAudioTrack, setLocalAudioTrack] = useState(null);
@@ -14,9 +15,12 @@ const Agora_Voice_Call = () => {
   const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(location.search);
-  const channel = queryParams.get("channel");
-  const sender_token = queryParams.get("sender_token");
-  const sender_id = queryParams.get("sender_id");
+  // const channel = queryParams.get("channel");
+  // const sender_token = queryParams.get("sender_token");
+  // const sender_id = queryParams.get("sender_id");
+  const channel = localStorage.getItem("channel");
+  const sender_id = localStorage.getItem("sender_id");
+  const sender_token = localStorage.getItem("sender_token");
   const astrologer_name = queryParams.get("astro_details_list");
   console.log("channel_sender_token_sender_id", { sender_id, sender_token, channel });
 
@@ -33,7 +37,7 @@ const Agora_Voice_Call = () => {
     }
   }, [client]);
 
-  const appid = process.env.REACT_APP_AGORA_APP_ID;
+  const appid = "a0d5f8d66e014624ad5d695deb8fb69c";
   useEffect(() => {
     if (!client || !channel || !sender_token || !sender_id) return;
   console.error("Missing required parameters:", { appid, channel, sender_token, sender_id });
@@ -136,7 +140,7 @@ const Agora_Voice_Call = () => {
           <div key={user.uid} >
             {/* User Image */}
             <img 
-              src="your-placeholder-image-url" 
+              src={`${IMG_BASE_URL}${astrologer_profile_image}`} 
               alt="User Logo" 
               className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-300 object-cover" 
             />
