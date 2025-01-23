@@ -22,6 +22,7 @@ const Astrologer_Details = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [astro_details_list, set_Astro_Details_List] = useState([]);
     console.log("astro_details_list", astro_details_list)
+   
     const [is_chat_assistant, set_Is_Chat_Assistant] = useState(false)
     const [is_loading, set_Is_Loading] = useState(false);
     const Get_user_is_active = localStorage.getItem("user_is_active")
@@ -61,11 +62,11 @@ const Astrologer_Details = () => {
             const { channel, sender_token, sender_id } = await Handle_Generate_agora_token();
 
             // Navigate to the /call page with query params using navigate (replace history.push)
-            navigate(`/Voice_Call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}`);
+            navigate(`/Voice_Call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}&appid=${process.env.REACT_APP_AGORA_APP_ID}&astro_details_list=${astro_details_list?.astrolist?.name}`);
 
             // Initialize Agora RTC client
             const rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-            await rtcClient.join(`${AGORA_APP_ID}`, channel, sender_token, sender_id);
+            await rtcClient.join(AGORA_APP_ID, channel, sender_token, sender_id);
             const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
             await rtcClient.publish(audioTrack);
 
@@ -114,6 +115,7 @@ const Astrologer_Details = () => {
                 );
                 console.log("products_products_111111", response);
                 set_Astro_Details_List(response?.data?.data)
+                localStorage.setItem("astrologer_profile_image",astro_details_list?.profile_image)
             } else {
                 const response = await Get_Web_Astrologer_Details("1", id,);
                 console.log("products_products_222222", response);

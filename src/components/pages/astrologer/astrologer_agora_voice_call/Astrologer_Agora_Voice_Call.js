@@ -148,7 +148,7 @@ const Astrologer_Agora_Voice_Call = () => {
       setIsLoading(true);
       try {
         // Join the channel
-        await client.join(AGORA_APP_ID, channel, receiver_token, receiver_id);
+        await client.join(`${AGORA_APP_ID}`, channel, receiver_token, receiver_id);
         console.log("Joined channel successfully");
 
         // Create and publish the local audio track
