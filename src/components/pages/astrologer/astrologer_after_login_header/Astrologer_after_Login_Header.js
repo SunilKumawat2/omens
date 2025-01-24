@@ -15,6 +15,8 @@ const Astrologer_after_Login_Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const { profile, isloading, error } = useSelector((state) => state.astrologer);
+  console.log("astrologer_profile", profile)
+  console.log("astrologer_profile", error)
 
   // Toggle dropdown visibility
   const toggleDropdown = () => {
@@ -25,6 +27,11 @@ const Astrologer_after_Login_Header = () => {
   useEffect(() => {
     dispatch(fetchAstroProfile());
   }, [dispatch]);
+
+  // <--------- if we find the astrloger error like unAutnetication ---------->
+  if(error){
+    navigate("/astrologer_login")
+  }
 
   // Close dropdown when clicking outside
   const dropdownRef = useRef();

@@ -15,3 +15,13 @@ export const Agora_Generate_Token = async ({ receiver_id, type }, headers) => {
         return error
     }
 }
+
+// <----------- call store ------------>
+export const Call_Store = async (data, headers) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/call-store`, data, { headers: headers })
+        return response
+    } catch (error) {
+        return error
+    }
+}

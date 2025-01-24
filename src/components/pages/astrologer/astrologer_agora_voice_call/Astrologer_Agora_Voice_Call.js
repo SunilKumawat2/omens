@@ -1,89 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
-// import { IMG_BASE_URL } from '../../../../config/Config';
-// import Common_Images_Transport from '../../../common/common_imges_transport/Common_Images_Transport';
-
-// const Astrologer_Agora_Voice_Call = () => {
-//   const location = useLocation();
-//   const [connected_user, setConnected_User] = useState({}); // State to store the connected user data
-//   const [callDuration, setCallDuration] = useState(0); // State to store the call duration
-  
-//   // Example to increase the call duration every second
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setCallDuration((prev) => prev + 1); // Increment call duration every second
-//     }, 1000);
-
-//     return () => clearInterval(interval); // Clean up the interval when the component is unmounted
-//   }, []);
-
-//   useEffect(() => {
-//     // Extract the 'message' query parameter from the URL
-//     const queryParams = new URLSearchParams(location.search);
-//     const extractedMessage = queryParams.get('message');
-
-//     if (extractedMessage) {
-//       console.log('Received message from notification:', extractedMessage);
-
-//       try {
-//         // Parse the JSON string into an object and update the state
-//         const parsedMessage = JSON.parse(extractedMessage);
-//         setConnected_User(parsedMessage);
-//       } catch (error) {
-//         console.error('Failed to parse message:', error);
-//       }
-//     }
-//   }, [location]);
-
-//   return (
-//     <div className="flex items-center justify-center h-screen bg-gray-400"> {/* Centering content */}
-//       <div className="text-center p-6 bg-white rounded-lg shadow-lg w-[500px]"> {/* Styling the container */}
-//         {connected_user?.sender_name ? (
-//           <>
-//             <h1 className="text-2xl font-semibold mb-4">{connected_user?.sender_name}</h1> {/* Name styling */}
-            
-//             {/* User Profile Picture */}
-//             {connected_user?.sender_profile != null ? (
-//               <img
-//                 src={`${IMG_BASE_URL}${connected_user?.sender_profile}`}
-//                 alt="User profile"
-//                 className="w-32 h-32 rounded-full mx-auto mb-4"
-//               />
-//             ) : (
-//               <img
-//                 src={`${Common_Images_Transport?.user_logo}`}
-//                 alt="User profile"
-//                 className="w-32 h-32 rounded-full mx-auto mb-4"
-//               />
-//             )}
-
-//             {/* Call Duration */}
-//             {/* <div className="mb-4">
-//               <p className="text-lg font-medium">Call Duration: {Math.floor(callDuration / 60)}:{(callDuration % 60).toString().padStart(2, '0')}</p>
-//             </div> */}
-
-//             {/* Action Buttons */}
-//             <div className="flex justify-around mb-4">
-//               {/* Mute Button */}
-//               <button className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 focus:outline-none">
-//                 <i className="fas fa-microphone-slash"></i> Mute
-//               </button>
-
-//               {/* Disconnect Button */}
-//               <button className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 focus:outline-none">
-//                 <i className="fas fa-phone-slash"></i> Disconnect
-//               </button>
-//             </div>
-//           </>
-//         ) : (
-//           <p>Loading user details...</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Astrologer_Agora_Voice_Call;
 
 
 import React, { useEffect, useState } from "react";
@@ -102,30 +16,18 @@ const Astrologer_Agora_Voice_Call = () => {
   const [remoteUsers, setRemoteUsers] = useState([]);
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Extract query parameters
-  const queryParams = new URLSearchParams(location.search);
-  const channel = connected_user?.channel;
-  const receiver_token = connected_user?.receiver_token;
-  const receiver_id = connected_user?.receiver_id;
-//   const channel = queryParams.get("channel");
-//   const sender_token = queryParams.get("sender_token");
-//   const sender_id = queryParams.get("sender_id");
+  const [callEnded, setCallEnded] = useState(false); // To track if the call is ended
 
   useEffect(() => {
-    // Extract the 'message' query parameter from the URL
     const queryParams = new URLSearchParams(location.search);
-    const extractedMessage = queryParams.get('message');
+    const extractedMessage = queryParams.get("message");
 
     if (extractedMessage) {
-      console.log('Received message from notification:', extractedMessage);
-
       try {
-        // Parse the JSON string into an object and update the state
         const parsedMessage = JSON.parse(extractedMessage);
         setConnected_User(parsedMessage);
       } catch (error) {
-        console.error('Failed to parse message:', error);
+        console.error("Failed to parse message:", error);
       }
     }
   }, [location]);
@@ -133,72 +35,95 @@ const Astrologer_Agora_Voice_Call = () => {
   useEffect(() => {
     if (!client) {
       const rtcClient = AgoraRTC.createClient({
-        mode: "rtc",  // Audio/Video call
-        codec: "vp8", // Codec
-        region: "auto"  // Region: auto for best region selection
+        mode: "rtc",
+        codec: "vp8",
+        region: "auto",
       });
       setClient(rtcClient);
     }
   }, [client]);
 
   useEffect(() => {
-    if (!client || !channel || !receiver_token || !receiver_id) return;
-    
+    if (!client || !connected_user?.channel || !connected_user?.receiver_token || !connected_user?.receiver_id) return;
+
     const startCall = async () => {
       setIsLoading(true);
       try {
-        // Join the channel
-        await client.join(`${AGORA_APP_ID}`, channel, receiver_token, receiver_id);
-        console.log("Joined channel successfully");
+        // Join the Agora channel
+        await client.join(
+          `${AGORA_APP_ID}`,
+          connected_user.channel,
+          connected_user.receiver_token,
+          connected_user.receiver_id
+        );
 
-        // Create and publish the local audio track
+        // Create and publish local audio track
         const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
         setLocalAudioTrack(audioTrack);
         await client.publish(audioTrack);
-        console.log("Published local audio track");
 
-        // Handle remote stream added (stream-published) 
-        client.on("stream-added", async (evt) => {
-          const stream = evt.stream;
-          console.log("Stream added: " + stream.getId());
-          // Subscribe to the stream
-          await client.subscribe(stream);
+        // Listen for remote user audio and handle user joining
+        client.on("user-published", async (user, mediaType) => {
+          if (mediaType === "audio") {
+            await client.subscribe(user, mediaType);
+            const remoteAudioTrack = user.audioTrack;
+            if (remoteAudioTrack) remoteAudioTrack.play();
+            setRemoteUsers((prevUsers) => [...prevUsers, user]);
+          }
         });
 
-        // Handle remote stream subscribed
-        client.on("stream-subscribed", (evt) => {
-          const remoteStream = evt.stream;
-          console.log("Subscribed to stream: " + remoteStream.getId());
-          // Play remote stream
-          remoteStream.play('remote-audio-container');
-          setRemoteUsers((prevUsers) => [...prevUsers, remoteStream]);
-        });
-
-        // Handle user audio unpublishing
+        // Listen for remote user unpublishing their audio
         client.on("user-unpublished", (user, mediaType) => {
           if (mediaType === "audio") {
             setRemoteUsers((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
           }
         });
+
+        // Listen for remote users leaving the call
+        client.on("user-left", (user) => {
+          setRemoteUsers((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
+          if (remoteUsers.length === 0) {
+            // If there are no more remote users, we can consider the call ended
+            handleEndCall();
+          }
+        });
       } catch (error) {
-        console.error("Error joining channel or publishing audio:", error);
+        console.error("Error during call setup:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
     startCall();
-  }, [client, channel, receiver_token, receiver_id]);
+  }, [client, connected_user]);
 
-  const handleEndCall = () => {
-    if (client) {
-      client.leave().then(() => {
-        console.log("Left the channel");
-        navigate("/astrologer_list");
-      });
-    } else {
-      navigate("/astrologer_list");
+  useEffect(() => {
+    // Increment the call duration every second
+    if (!callEnded) {
+      const timer = setInterval(() => {
+        setCallDuration((prevDuration) => prevDuration + 1);
+      }, 1000);
+  
+      // Cleanup the timer when component unmounts or call ends
+      return () => clearInterval(timer);
     }
+  }, [callEnded]);
+
+  const handleEndCall = async () => {
+    if (client) {
+      try {
+        // Leave the call and clean up local track
+        await client.leave();
+        if (localAudioTrack) localAudioTrack.close();
+        setLocalAudioTrack(null);
+        setCallEnded(true); // Mark the call as ended
+      } catch (error) {
+        console.error("Error ending call:", error);
+      }
+    }
+    // Navigate to astrologer home after ending the call
+    navigate("/astrologer_home");
+    window.location.reload()
   };
 
   const handleMuteToggle = () => {
@@ -209,14 +134,13 @@ const Astrologer_Agora_Voice_Call = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-400"> 
+    <div className="flex items-center justify-center h-screen bg-gray-400">
       <div className="text-center p-6 bg-white rounded-lg shadow-lg w-[500px]">
         {connected_user?.sender_id ? (
           <>
             <h1 className="text-2xl font-semibold mb-4">{connected_user?.sender_name}</h1>
-            
-            {/* User Profile Picture */}
-            {connected_user?.sender_profile != null ? (
+
+            {connected_user?.sender_profile ? (
               <img
                 src={`${IMG_BASE_URL}${connected_user?.sender_profile}`}
                 alt="User profile"
@@ -230,46 +154,36 @@ const Astrologer_Agora_Voice_Call = () => {
               />
             )}
 
-            {/* Call Duration */}
             <div className="mb-4">
               <p className="text-lg font-medium">
-                Call Duration: {Math.floor(callDuration / 60)}:{(callDuration % 60).toString().padStart(2, '0')}
+                Call Duration: {Math.floor(callDuration / 60)}:{(callDuration % 60).toString().padStart(2, "0")}
               </p>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex justify-around mb-4">
-              {/* Mute Button */}
-              <button onClick={handleMuteToggle} className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 focus:outline-none">
-                <i className={`fas fa-microphone-slash ${isMuted ? 'text-gray-500' : 'text-white'}`}></i> 
+              <button
+                onClick={handleMuteToggle}
+                className={`p-2 rounded-full ${isMuted ? "bg-gray-400" : "bg-blue-500 text-white hover:bg-blue-600"}`}
+              >
+                <i className={`fas fa-microphone${isMuted ? "-slash" : ""}`}></i>
                 <span className="ml-2">{isMuted ? "Unmute" : "Mute"}</span>
               </button>
 
-              {/* Disconnect Button */}
-              <button onClick={handleEndCall} className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 focus:outline-none">
+              <button
+                onClick={handleEndCall}
+                className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+              >
                 <i className="fas fa-phone-slash"></i> Disconnect
               </button>
             </div>
           </>
-         ) : (
+        ) : (
           <p>Loading user details...</p>
-        )} 
-
-        {/* Remote Audio Container */}
-        <div id="remote-audio-container">
-          {remoteUsers.map((user) => (
-            <div key={user.uid} className="user-card">
-              <img src="your-placeholder-image-url" alt="User Logo" className="user-logo" />
-              <div className="controls">
-                <button onClick={() => console.log("Mute")}>Mute</button>
-                <button onClick={() => console.log("Disconnect")}>Disconnect</button>
-              </div>
-            </div>
-          ))}
-        </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default Astrologer_Agora_Voice_Call;
+
