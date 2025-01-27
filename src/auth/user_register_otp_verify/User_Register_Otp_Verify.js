@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
 import { User_Otp_Verify } from "../../api/auth_api/Auth_Api";
 import { useLocation, useNavigate } from "react-router-dom";
+import { requestPermission } from "../../firebase/Firebase";
 
 const User_Register_Otp_Verify = () => {
   const navigate = useNavigate();
@@ -23,6 +24,13 @@ const User_Register_Otp_Verify = () => {
     e.preventDefault();
     setIsLoading(true)
     // Check if the OTP is valid (4 digits long)
+    const fcm_token = await requestPermission();
+    console.log("fcm_token", fcm_token)
+    if (!fcm_token) {
+      setIsLoading(false);
+      toast("Failed to get FCM token. Please try again.");
+      return;
+    }
     if (otp.length !== 4) {
       setOtpError(true);
       setIsLoading(false)
@@ -37,7 +45,7 @@ const User_Register_Otp_Verify = () => {
       mobile,
       device_type: "web",
       temp_id,
-      fcm_token: "dfadsfsdfdsfd",
+      fcm_token,
 
     };
     console.log("otp_verify_data", otp_verify_data)

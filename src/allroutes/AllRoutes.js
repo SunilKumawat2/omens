@@ -87,6 +87,7 @@ import Voice_Call from '../agora/agora_voice_call/Agora_Voice_Call'
 import Page_Not_Found from '../page_not_found/Page_Not_Found'
 import Astrologer_Agora_Voice_Call from '../components/pages/astrologer/astrologer_agora_voice_call/Astrologer_Agora_Voice_Call'
 import Agora_Video_Call from '../agora/agora_video_call/Agora_Video_Call'
+import Agora_Chat from '../agora/agora_chat/Agora_Chat'
 
 const AllRoutes = () => {
   return (
@@ -136,6 +137,8 @@ const AllRoutes = () => {
         <Route path='/add_product_review' element={<Protected_Routes_without_Login Component={Add_Product_Review} />} />
         <Route path='/follow_list' element={<Protected_Routes_without_Login Component={User_Dashboard_Follow_List} />} />
         <Route path='/add_pooja_review' element={<Protected_Routes_without_Login Component={Add_Pooja_Review} />} />
+        <Route path='/astrologer_list' element={<Astrologer_List />} />
+        <Route path='/astrologer_details/:id' element={<Protected_Routes_without_Login Component={Astrologer_Details} />} />
 
         {/* <--------- cart section's ----------> */}
         <Route path='/cart' element={<Protected_Routes_without_Login Component={Cart} />} />
@@ -151,8 +154,6 @@ const AllRoutes = () => {
         <Route path='/astrologer_register_otp_verify' element={<Astro_Protected_LoggedIn Component={Astrologer_Register_Otp_Verify} />} />
         <Route path='/astrologer_login_otp_Verify' element={<Astro_Protected_LoggedIn Component={Astrologer_Login_Otp_Verify} />} />
         <Route path='/astrologer_login' element={<Astrologer_Login />} />
-        <Route path='/astrologer_list' element={<Astrologer_List />} />
-        <Route path='/astrologer_details/:id' element={<Astrologer_Details />} />
         <Route path='/astrologer_profile' element={<Astro_Protected_LoggedIn Component={Astrologer_Profile} />} />
         <Route path='/astrologer_home' element={<Astro_Protected_Without_login Component={Astrologer_Home_Page} />} />
         <Route path='/astrologer_post_pooja' element={<Astro_Protected_Without_login Component={Astrologer_Post_Pooja} />} />
@@ -203,6 +204,7 @@ const AllRoutes = () => {
         <Route path='/Geo_Location' element={<Geo_Location />} />
         <Route path='/Voice_Call' element={<Voice_Call />} />
         <Route path='/agora_video_call' element={<Agora_Video_Call />} />
+        <Route path='/agora_chat' element={<Agora_Chat />} />
         <Route path='/*' element={<Page_Not_Found />} />
        
       </Routes>

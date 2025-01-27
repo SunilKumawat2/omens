@@ -97,7 +97,7 @@ const Astrologer_List = () => {
         set_Is_Loading(true);
         try {
             // Pass the parameters to the API function
-            const response = await Get_Astrologer_List("1", { skills: selectedSkillsString, languages: selectedLanguagesString,min_amount:minPrice,max_amount:maxPrice });
+            const response = await Get_Astrologer_List("1", { skills: selectedSkillsString, languages: selectedLanguagesString, min_amount: minPrice, max_amount: maxPrice });
             if (response?.data?.status == "200") {
                 set_Astro_List(response?.data?.data?.astrolist);
                 set_Astro_List_Filter(response?.data?.data);
@@ -159,21 +159,22 @@ const Astrologer_List = () => {
                                                                     <div className="gi-product-inner transition-all duration-[0.3s] ease-in-out overflow-hidden rounded-[5px] shadow-xl">
                                                                         <div className="gi-pro-image-outer transition-all duration-[0.3s] delay-[0s] ease z-[11] relative">
                                                                             <div className="astro_bg">
+                                                                                <h6
+                                                                                    className="gi-pro-stitle text-center font-normal text-[#000] text-[14px] font-semibold leading-[1.2] mt-4 capitalize">
+                                                                                    Rs.{astro_list_result?.minute_rate}/min</h6>
                                                                                 <div className="flex justify-between items-center">
-                                                                                    <a href="javascript:void(0)" className="mx-[5px] text-center grid  grid-flow-row auto-rows-max gap-2 items-center justify-center text-[15px]">
+                                                                                    {/* <a href="javascript:void(0)" className="mx-[5px] text-center grid  grid-flow-row auto-rows-max gap-2 items-center justify-center text-[15px]">
                                                                                         Call
                                                                                         <img src={Common_Images_Transport?.call_icon} className="m-auto"
                                                                                             alt="" />
-                                                                                    </a>
-                                                                                    <h6
-                                                                                        className="gi-pro-stitle text-center font-normal text-[#000] text-[14px] font-semibold leading-[1.2] mt-4 capitalize">
-                                                                                        Rs.{astro_list_result?.minute_rate}/min</h6>
-                                                                                    <a href="javascript:void(0)"
+                                                                                    </a> */}
+
+                                                                                    {/* <a href="javascript:void(0)"
                                                                                         className="mx-[5px] text-center grid  grid-flow-row auto-rows-max gap-2 items-center justify-center text-[15px]">
                                                                                         Chat
                                                                                         <img src={Common_Images_Transport?.chat_icon} className="m-auto"
                                                                                             alt="" />
-                                                                                    </a>
+                                                                                    </a> */}
                                                                                 </div>
                                                                             </div>
                                                                             <div className="gi-pro-image overflow-hidden">

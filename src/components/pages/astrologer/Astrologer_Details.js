@@ -13,7 +13,7 @@ import Astrologer_Gallery_Profile from './astrologer_list/Astrologer_Gallery_Pro
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { Agora_Generate_Token } from '../../../api/agora/Agora'
+import { Agora_Generate_Token, Chat_Token } from '../../../api/agora/Agora'
 import AgoraRTC from "agora-rtc-sdk-ng";
 
 const Astrologer_Details = () => {
@@ -21,6 +21,7 @@ const Astrologer_Details = () => {
     const navigate = useNavigate();
     const [is_voice_call_loading, setIs_Voice_Call_Loading] = useState(false);
     const [is_video_call_loading, setIs_Video_Call_Loading] = useState(false);
+    const [is_Chat_loading, setIs_Chat_Loading] = useState(false);
     const [astro_details_list, set_Astro_Details_List] = useState([]);
     const [is_chat_assistant, set_Is_Chat_Assistant] = useState(false)
     const [is_loading, set_Is_Loading] = useState(false);
@@ -61,7 +62,7 @@ const Astrologer_Details = () => {
 
         try {
             const response = await Agora_Generate_Token(
-                { type: "video", receiver_id: "26" }, // 26 Your receiver_id can change based on your requirements
+                { type: "video", receiver_id: id }, // 26 Your receiver_id can change based on your requirements
                 { Authorization: `Bearer ${token}` }
             );
             console.log("response_response", response?.data?.data);
@@ -74,15 +75,74 @@ const Astrologer_Details = () => {
         }
     };
 
+    // <-------- Handle Generate voice call agora token ------------>
+    const Handle_Generate_chat_agora_token = async () => {
+        setIs_Chat_Loading(true);
+        const data = {
+            chat_uiid:"sunil_Kumawat_26"
+        }
+        const token = User_Authentication();
+        if (!token) {
+            setIs_Chat_Loading(false);
+            throw new Error("User token not found");
+        }
+        try {
+            const response = await Chat_Token(data, { Authorization: `Bearer ${token}` });
+            console.log("response_response", response?.data?.data);
+            setIs_Chat_Loading(false);
+            return response?.data?.data;
+        } catch (error) {
+            setIs_Chat_Loading(false);
+            console.error("Error generating token:", error);
+            throw error;
+        }
+    };
+
     //<------ Handle call button for the voice call ------------->
     const handle_voice_call_click = async () => {
         setIs_Voice_Call_Loading(true);
         try {
-            const { channel, sender_token, sender_id } = await Handle_Generate_voice_call_agora_token();
+            const { channel, sender_token, sender_id, call_duration } = await Handle_Generate_voice_call_agora_token();
             localStorage.setItem("channel", channel)
             localStorage.setItem("sender_token", sender_token)
             localStorage.setItem("sender_id", sender_id)
-            navigate(`/Voice_Call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}&appid=${process.env.REACT_APP_AGORA_APP_ID}&astro_details_list=${astro_details_list?.astrolist?.name}&receiver_id=${id}`);
+            {
+                call_duration >= 1 ? (
+                    navigate(`/Voice_Call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}&appid=${process.env.REACT_APP_AGORA_APP_ID}&astro_details_list=${astro_details_list?.astrolist?.name}&receiver_id=${id}`)
+                ) : (
+                    alert("insufficient balance in your wallet !")
+                )
+            }
+
+            // Initialize Agora RTC client
+            const rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+            await rtcClient.join(AGORA_APP_ID, channel, sender_token, sender_id);
+            const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            await rtcClient.publish(audioTrack);
+
+            console.log("Joined the Agora channel and published local audio track.");
+        } catch (error) {
+            console.error("Error joining channel or publishing audio:", error);
+        } finally {
+            setIs_Voice_Call_Loading(false);
+        }
+    };
+
+    //<------ Handle call button for the voice call ------------->
+    const handle_chat_click = async () => {
+        setIs_Voice_Call_Loading(true);
+        try {
+            const { channel, sender_token, sender_id, call_duration } = await Handle_Generate_chat_agora_token();
+            localStorage.setItem("channel", channel)
+            localStorage.setItem("sender_token", sender_token)
+            localStorage.setItem("sender_id", sender_id)
+            {
+                call_duration >= 1 ? (
+                    navigate(`/Voice_Call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}&appid=${process.env.REACT_APP_AGORA_APP_ID}&astro_details_list=${astro_details_list?.astrolist?.name}&receiver_id=${id}`)
+                ) : (
+                    alert("insufficient balance in your wallet !")
+                )
+            }
 
             // Initialize Agora RTC client
             const rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
@@ -279,18 +339,18 @@ const Astrologer_Details = () => {
                                                                 </div>
                                                                 <div className="flex gap-4 mt-6 justify-between w-full">
                                                                     <div className="inline-block">
-                                                                        <a href="#" data-modal-id="modal1"
+                                                                        <button onClick={handle_chat_click} data-modal-id="modal1"
                                                                             className="modal-link m-2 text-[#9F2225] hover:text-white border border-[#9F2225] hover:bg-[#9F2225] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#9F2225] dark:text-[#9F2225] dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900">
                                                                             <i className="fi-rr-comment transition-all duration-[0.3s] ease-in-out mr-2"></i>
-                                                                            Free Chat</a>
+                                                                            Free Chat</button>
                                                                         <button onClick={handle_voice_call_click} data-modal-id="modal1" className={`${is_voice_call_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-[#9F2225] bg-[#9F2225] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#9F2225] dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900`}>
                                                                             <i className="fi-rr-phone-call transition-all duration-[0.3s] ease-in-out mr-2"></i>
                                                                             {is_voice_call_loading ? "Joining..." : "Start Call"}</button>
 
-                                                                        <button onClick={handle_video_call_click} data-modal-id="modal1" className={`${is_video_call_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-green-700 bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#9F2225] dark:hover:text-white dark:hover:bg-green-700 dark:focus:ring-green-900`}>
+                                                                        {/* <button onClick={handle_video_call_click} data-modal-id="modal1" className={`${is_video_call_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-green-700 bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#9F2225] dark:hover:text-white dark:hover:bg-green-700 dark:focus:ring-green-900`}>
                                                                             <i className="fi-rr-video-camera text-white ease-in-out mr-2"></i>
                                                                             {is_video_call_loading ? "Joining..." : "Video Call"}
-                                                                        </button>
+                                                                        </button> */}
 
                                                                         {/* <Agora_Provider>
                                                                             <h1>Agora Voice Call</h1>

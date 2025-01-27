@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Common_Images_Transport from '../common_imges_transport/Common_Images_Transport';
 import Cart_Sidebar from '../cart_sidebar/Cart_Sidebar';
 import { CartProvider } from '../../../context/Cart_Context';
@@ -10,12 +10,14 @@ import { Global_Settings } from '../../../api/global/Global';
 import { IMG_BASE_URL } from '../../../config/Config';
 
 const Header = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [is_language_Open, setIs_Language_Open] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState("English");
     const { cartlist, isloading, error } = useSelector((state) => state?.cartlist);
     const [cart_list, set_Cart_List] = useState(cartlist || []);
+    console.log("cart_list_cart_list",cart_list)
     const [get_settings, setGet_Settings] = useState({});
 
     useEffect(() => {
@@ -29,6 +31,12 @@ const Header = () => {
         }
         Handle_Get_settings()
     }, [])
+
+    // useEffect(()=>{
+    //     if(cart_list == undefined){
+    //         navigate("/user_login")
+    //     }
+    // })
 
     // <------------- Get the User Active ---------->
     const is_user_active = localStorage.getItem("user_is_active")

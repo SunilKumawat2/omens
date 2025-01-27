@@ -20,7 +20,7 @@ const Astrologer_Login_Otp_Verify = () => {
     const location = useLocation();
     const { mobile, country_code } = location.state || {};
 
-    const Handle_User_Login_Otp_Verify = async (e) => {
+    const Handle_Astrologer_Login_Otp_Verify = async (e) => {
         e.preventDefault();
         setIsLoading(true)
         // Check if the OTP is valid (4 digits long)
@@ -44,7 +44,7 @@ const Astrologer_Login_Otp_Verify = () => {
             country_code,
             mobile,
             device_type: "web",
-            fcm_token: fcm_token,
+            fcm_token,
 
         };
         console.log("otp_verify_data", otp_verify_data)
@@ -102,7 +102,7 @@ const Astrologer_Login_Otp_Verify = () => {
                                 <div className="gi-login-wrapper my-[0] mx-auto">
                                     <div className="gi-login-container">
                                         <div className="gi-login-form">
-                                            <form action="#" method="post" className="flex flex-col" onSubmit={Handle_User_Login_Otp_Verify}>
+                                            <form action="#" method="post" className="flex flex-col" onSubmit={Handle_Astrologer_Login_Otp_Verify}>
 
                                                 <div className="gi-login-wrap flex-col">
                                                     {/* OTP Input Fields */}

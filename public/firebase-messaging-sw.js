@@ -76,7 +76,7 @@ firebase.initializeApp({
   appId: "1:516487949170:web:8a185648dfb57e36a0cbeb"
 });
 
-// Initialize Firebase Cloud Messaging
+
 const messaging = firebase.messaging();
 console.log("messaging initialized:", messaging);
 
@@ -84,15 +84,15 @@ console.log("messaging initialized:", messaging);
 messaging.onBackgroundMessage(function(payload) {
   console.log('[firebase-messaging-sw.js] Received background message ', payload?.data?.body);
 
-  // Dynamically set the base URL (works for live server and localhost)
+ 
   const baseUrl = self.location.origin; 
 
   const notificationTitle = payload?.notification?.title || "Notification Title";
   const notificationOptions = {
     body: payload?.notification?.body || "Notification Body",
-    icon: '/firebase-logo.png', // Customize icon as needed
+    icon: '/firebase-logo.png', 
     data: { 
-      url: `${baseUrl}/astrologer_agora_voice_call`, // Navigate to this page
+      url: `${baseUrl}/astrologer_agora_voice_call`,
       message: payload?.data?.body || ""
     }
   };
