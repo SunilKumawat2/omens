@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { User_Authentication } from '../../../user_authentication/User_Authentication'
 import { Add_follow_Astro, Get_Astrologer_Details, Get_Web_Astrologer_Details } from '../../../api/astrologer/Astrologer'
 import Loader from '../../../loader/Loader'
-import { AGORA_APP_ID, IMG_BASE_URL } from '../../../config/Config'
+import { AGORA_APP_CHAT_APP_KEY, AGORA_APP_ID, IMG_BASE_URL } from '../../../config/Config'
 import Common_Images_Transport from '../../common/common_imges_transport/Common_Images_Transport'
 import Astrologer_Gallery_Profile from './astrologer_list/Astrologer_Gallery_Profile'
 import { toast } from "react-toastify";
@@ -15,6 +15,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { Agora_Generate_Token, Chat_Token } from '../../../api/agora/Agora'
 import AgoraRTC from "agora-rtc-sdk-ng";
+// import WebIM from "agora-chat";
+import AC from 'agora-chat';
 
 const Astrologer_Details = () => {
     const { id } = useParams();
@@ -78,16 +80,18 @@ const Astrologer_Details = () => {
     // <-------- Handle Generate voice call agora token ------------>
     const Handle_Generate_chat_agora_token = async () => {
         setIs_Chat_Loading(true);
-        const data = {
-            chat_uiid:"sunil_Kumawat_26"
-        }
+        // const data = {
+        //     chat_uiid: "sunil_Kumawat_26"
+        // }
+        const formData = new FormData();
+        formData.append("chat_uiid","sunil_Kumawat_26")
         const token = User_Authentication();
         if (!token) {
             setIs_Chat_Loading(false);
             throw new Error("User token not found");
         }
         try {
-            const response = await Chat_Token(data, { Authorization: `Bearer ${token}` });
+            const response = await Chat_Token(formData, { Authorization: `Bearer ${token}` });
             console.log("response_response", response?.data?.data);
             setIs_Chat_Loading(false);
             return response?.data?.data;
@@ -129,34 +133,46 @@ const Astrologer_Details = () => {
     };
 
     //<------ Handle call button for the voice call ------------->
+    //   const handle_chat_click = async () => {
+    //     setIs_Chat_Loading(true);
+    //     try {
+    //       const { chat_token, chat_uiid } = await Handle_Generate_chat_agora_token();
+    //       localStorage.setItem("chat_token", chat_token);
+    //       localStorage.setItem("chat_uiid", chat_uiid);
+    //       navigate(`/agora_chat`);
+    //       const agoraChatClient = new WebIM.connection({
+    //         appKey: AGORA_APP_CHAT_APP_KEY, 
+    //       });
+    //       await agoraChatClient.open({ user: chat_uiid, pwd: chat_token });
+    //       console.log("Logged in successfully to Agora Chat");
+    //       window.agoraChatClient = agoraChatClient;
+    //     } catch (error) {
+    //       console.error("Error during Agora chat setup:", error);
+    //     } finally {
+    //       setIs_Chat_Loading(false);
+    //     }
+    //   };
+
     const handle_chat_click = async () => {
-        setIs_Voice_Call_Loading(true);
+        setIs_Chat_Loading(true);
         try {
-            const { channel, sender_token, sender_id, call_duration } = await Handle_Generate_chat_agora_token();
-            localStorage.setItem("channel", channel)
-            localStorage.setItem("sender_token", sender_token)
-            localStorage.setItem("sender_id", sender_id)
-            {
-                call_duration >= 1 ? (
-                    navigate(`/Voice_Call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}&appid=${process.env.REACT_APP_AGORA_APP_ID}&astro_details_list=${astro_details_list?.astrolist?.name}&receiver_id=${id}`)
-                ) : (
-                    alert("insufficient balance in your wallet !")
-                )
-            }
+            const { chat_token, chat_uiid } = await Handle_Generate_chat_agora_token();
 
-            // Initialize Agora RTC client
-            const rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-            await rtcClient.join(AGORA_APP_ID, channel, sender_token, sender_id);
-            const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-            await rtcClient.publish(audioTrack);
+            // ✅ Store token in localStorage
+            localStorage.setItem("chat_token", chat_token);
+            localStorage.setItem("chat_uiid", chat_uiid);
+            console.log("chat_token", chat_token)
+            console.log("chat_uiid", chat_uiid)
+            // ✅ Navigate to chat page
+            navigate(`/agora_chat`);
 
-            console.log("Joined the Agora channel and published local audio track.");
         } catch (error) {
-            console.error("Error joining channel or publishing audio:", error);
+            console.error("Error during chat setup:", error);
         } finally {
-            setIs_Voice_Call_Loading(false);
+            setIs_Chat_Loading(false);
         }
     };
+
 
     //<------ Handle call button for the voice call ------------->
     const handle_video_call_click = async () => {
@@ -340,9 +356,9 @@ const Astrologer_Details = () => {
                                                                 <div className="flex gap-4 mt-6 justify-between w-full">
                                                                     <div className="inline-block">
                                                                         <button onClick={handle_chat_click} data-modal-id="modal1"
-                                                                            className="modal-link m-2 text-[#9F2225] hover:text-white border border-[#9F2225] hover:bg-[#9F2225] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#9F2225] dark:text-[#9F2225] dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900">
+                                                                            className={`${is_Chat_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-[#9F2225] bg-[green] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[green] dark:hover:text-white dark:hover:bg-[green] dark:focus:ring-red-900`}>
                                                                             <i className="fi-rr-comment transition-all duration-[0.3s] ease-in-out mr-2"></i>
-                                                                            Free Chat</button>
+                                                                            {is_Chat_loading ? "Joining..." : "Free Chat"}</button>
                                                                         <button onClick={handle_voice_call_click} data-modal-id="modal1" className={`${is_voice_call_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-[#9F2225] bg-[#9F2225] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#9F2225] dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900`}>
                                                                             <i className="fi-rr-phone-call transition-all duration-[0.3s] ease-in-out mr-2"></i>
                                                                             {is_voice_call_loading ? "Joining..." : "Start Call"}</button>

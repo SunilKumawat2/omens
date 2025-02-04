@@ -118,21 +118,21 @@ const Home_Astro_Chat_Call = (home_data) => {
                                                     <div
                                                         className="gi-pro-image-outer transition-all duration-[0.3s] delay-[0s] ease z-[11] relative">
                                                         <div className="astro_bg">
-                                                            <h6
-                                                                className="gi-pro-stitle text-center font-normal text-[#000] text-[14px] font-semibold leading-[1.2] mt-4 capitalize">
-                                                                Rs.{astro_list_result?.minute_rate}/min</h6>
+                                                          
                                                             <div className="flex justify-between items-center">
-                                                                {/* <Link to={`/astrologer_details/${astro_list_result?.id}`}
+                                                                <Link to={`/astrologer_details/${astro_list_result?.id}`}
                                                                     className="mx-[5px] text-center grid  grid-flow-row auto-rows-max gap-2 items-center justify-center text-[15px]">
                                                                     Call
                                                                     <img src={Common_Images_Transport?.call_icon} className="m-auto" alt="" />
-                                                                </Link> */}
-
-                                                                {/* <Link to={`/astrologer_details/${astro_list_result?.id}`}
+                                                                </Link>
+                                                                <h6
+                                                                className="gi-pro-stitle text-center font-normal text-[#000] text-[14px] font-semibold leading-[1.2] mt-4 capitalize">
+                                                                Rs.{astro_list_result?.minute_rate}/min</h6>
+                                                                <Link to={`/astrologer_details/${astro_list_result?.id}`}
                                                                     className="mx-[5px] text-center grid  grid-flow-row auto-rows-max gap-2 items-center justify-center text-[15px]">
                                                                     Chat
                                                                     <img src={Common_Images_Transport?.chat_icon} className="m-auto" alt="" />
-                                                                </Link> */}
+                                                                </Link>
                                                             </div>
                                                         </div>
                                                         <div className="gi-pro-image overflow-hidden">
