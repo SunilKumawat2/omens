@@ -1,100 +1,228 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AC from 'agora-chat';
-import { AGORA_APP_CHAT_APP_KEY } from '../../config/Config';
+import { AGORA_APP_CHAT_APP_KEY, IMG_BASE_URL } from '../../config/Config';
+import Common_Images_Transport from '../../components/common/common_imges_transport/Common_Images_Transport';
 
 const AgoraChat = () => {
-  const [messageInput, setMessageInput] = useState('');
+  const astrologer_profile_image = localStorage.getItem("astrologer_profile_image");
+  const astrologer_name = localStorage.getItem("astrologer_name");
   const [messages, setMessages] = useState([]);
+  const [messages_list, setMessages_List] = useState([]);
+  const [messageInput, setMessageInput] = useState('');
   const [conn, setConn] = useState(null);
-  const [chatClient, setChatClient] = useState(null);
+  const messagesEndRef = useRef(null); // Auto-scroll reference
 
-  // ✅ Retrieve token & user ID from localStorage
-  const accessToken = String(localStorage.getItem("chat_token") || "").trim();
-  const user = String(localStorage.getItem("chat_uiid") || "").trim();
-  
+  // Dummy user credentials (Replace with real ones)
+  const accessToken = "007eJxTYLjxxNovPr1a4lCsTPa77r51E4RCG9svPdY9Kf678YiIhLgCQ6JBimmaRYqZWaqBoYmZkUliimmKmaVpSmqSRVqSmWXy3s+L0hsCGRmSDeaxMjKwMjACIYivwmCalpRilJxioJtqlGyma2iYmqZrYW6SpJuYYpZoZJZoZmZhlAQAoScoZw==";
+  const user = "sunil_omens_5";
+  const chatPartner = "sunil_receiver_26";
+
   useEffect(() => {
     if (accessToken && user) {
-      console.log("Using chatToken:", typeof accessToken);
-      console.log("Using user:", user);
-
-      const client = new AC.connection({
-        appKey: AGORA_APP_CHAT_APP_KEY, // ✅ Replace with your Agora App Key
-      });
-
-      const options = {
-        user: "sunil_kumawat_5",
-        accessToken: "007eJxTYNg34yi7kKrvrsrtF1LWubyuCCyJnxfI5sEktoNR1Myd01OBIdEgxTTNIsXMLNXA0MTMyCQxxTTFzNI0JTXJIi3JzDJZY/3C9IZARoYze9qYGRlYGRiBEMRXYTCzTExNsTA00E01SkrWNTRMTdNNNDM21jU3NkwxNjM0NbI0MgcAT2gkaw==",  // ✅ Use "accessToken", not "pwd"
-      };
+      const client = new AC.connection({ appKey: AGORA_APP_CHAT_APP_KEY });
+      const options = { user: user, accessToken: accessToken };
 
       client.open(options)
         .then(() => {
-          console.log("Successfully logged into Agora Chat");
           setConn(client);
-          setChatClient(client);
+          console.log("Connected to Agora Chat");
         })
-        .catch((error) => {
-          console.error("Failed to log into Agora Chat:", error);
-        });
-    } else {
-      console.error("Missing chatToken or user");
+        .catch((error) => console.error("Connection failed:", error));
     }
   }, [accessToken, user]);
 
-  const sendMessage = async () => {
-    if (!conn || !messageInput.trim()) return;
+  useEffect(() => {
+    if (conn) {
+      conn.addEventHandler("messageReceived", {
+        onTextMessage: (msg) => {
+          setMessages(prevMessages => [...prevMessages, { sender: msg.from, text: msg.msg, time: msg.time }]);
+        },
+      });
+    }
+  }, [conn]);
+
+  // Fetch Chat History
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      if (!conn || !user || !chatPartner) return;
+
+      try {
+        const options = {
+          queue: chatPartner,
+          // count: 100, 
+          chatType: "singleChat",
+        };
+
+        const result = await conn.fetchHistoryMessages(options);
+        setMessages_List(result)
+        console.log("📩 Chat History:", result[0]?.data);
+
+        if (result && result) {
+          const formattedMessages = result.map(msg => ({
+            sender: msg.from,
+            text: msg.data,
+            time: msg.time,
+          }));
+
+          setMessages(formattedMessages);
+        }
+      } catch (error) {
+        console.error("Error fetching chat history:", error);
+      }
+    };
+
+    if (conn) {
+      fetchChatHistory();
+    }
+  }, [conn, user, chatPartner]);
+
+  // Fetch Chat Partners
+  // useEffect(() => {
+  //   const fetchChatPartners = async () => {
+  //     if (!conn || !user) return;
   
+  //     try {
+  //       // Log the conn object to inspect its methods
+  //       console.log("Conn object:", conn);
+  
+  //       // Check if the method exists on the conn object
+  //       if (typeof conn.getConversations !== 'function') {
+  //         console.error("Error: getConversations is not available on conn.");
+  //         return;
+  //       }
+  
+  //       // If the method exists, proceed with fetching conversations
+  //       const conversations = await conn.getConversations();
+  //       console.log("All Conversations:", conversations);
+  
+  //       const participants = new Set();
+  
+  //       conversations.forEach((conversation) => {
+  //         const members = conversation.getMembers();  
+  //         members.forEach((member) => {
+  //           if (member !== user) {  
+  //             participants.add(member);  
+  //           }
+  //         });
+  //       });
+  
+  //       setMessages_List(Array.from(participants));  // Update state with the list of participants
+  
+  //     } catch (error) {
+  //       console.error("Error fetching chat partners:", error);
+  //     }
+  //   };
+  
+  //   if (conn) {
+  //     fetchChatPartners();
+  //   }
+  // }, [conn, user]);
+
+
+
+
+  // Send Message
+  const sendMessage = async (e) => {
+    e.preventDefault()
+    if (!conn || !messageInput.trim() || !chatPartner) return;
+
     try {
-      // Create the message
       const msg = AC.message.create({
         chatType: 'singleChat',
         type: 'txt',
-        to: '26',  // Replace with actual receiver ID
+        to: chatPartner,
         msg: messageInput,
       });
-  
-      // Send the message
+
       await conn.send(msg);
-  
-      // Message sent successfully, update state
-      setMessages(prevMessages => [...prevMessages, { sender: user, text: messageInput }]);
-      setMessageInput('');  // Clear input after sending the message
-  
-      console.log("Message sent successfully!");
-  
-      // Optionally, show a success notification or feedback to the user
-      alert("Message sent!");
-  
+      setMessages(prevMessages => [...prevMessages, { sender: user, text: messageInput, time: Date.now() }]);
+      setMessageInput('');
     } catch (error) {
       console.error("Error sending message:", error);
-  
-      // Handle error case - inform the user
-      alert("Failed to send the message. Please try again.");
     }
   };
-  
+
+  // Auto-scroll to latest message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
-    <div>
-      <h3>Agora Chat</h3>
+    <div className="h-screen flex items-center justify-center bg-gray-50 px-2">
+      <div className="flex flex-col w-[95%] sm:w-[80%] max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-4 border border-gray-200 h-[85vh]">
 
-      {/* Chat Messages */}
-      <div>
-        {messages.map((msg, index) => (
-          <div key={index}>
-            <strong>{msg.sender === user ? "You" : msg.sender}:</strong> {msg.text}
+        {/* Header with Profile */}
+        <div className="flex items-center gap-4 p-4 bg-white shadow-md rounded-lg">
+          {astrologer_profile_image ? (
+            <img
+              src={`${IMG_BASE_URL}${astrologer_profile_image}`}
+              alt="Receiver Avatar"
+              className="h-14 w-14 rounded-full border-2 border-gray-300 object-cover shadow-sm"
+            />
+          ) : (
+            <img
+              src={`${Common_Images_Transport?.user_logo}`}
+              alt="Receiver Avatar"
+              className="h-14 w-14 rounded-full border-2 border-gray-300 object-cover shadow-sm"
+            />
+          )}
+
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800">{astrologer_name}</h3>
+            <p className="text-sm text-gray-500">Online</p>
           </div>
-        ))}
+        </div>
+
+        {/* Chat Messages */}
+        <div className="flex-1 overflow-y-auto p-4 bg-gray-100 rounded-md flex flex-col gap-3 h-[70vh]">
+          {messages?.map((msg, index) => (
+            <div key={index} className={`max-w-[75%] p-3 rounded-lg text-sm flex flex-col shadow-md ${msg.sender === user ? 'bg-[#9F2225] text-white self-end' : 'bg-gray-200 text-gray-800 self-start'}`}>
+              <strong className="block text-xs mb-1">{msg?.sender === user ? "You" : msg?.sender}</strong>
+              <span className="break-words">{msg?.text}</span>
+              <p className="text-[10px] text-white-500 mt-1 self-end">
+                {new Date(parseInt(msg?.time)).toLocaleTimeString()}
+              </p>
+            </div>
+          ))}
+          <div ref={messagesEndRef}></div>
+        </div>
+
+        {/* Message Input Section */}
+        <div className="flex mt-3 border-t border-gray-300 pt-3">
+          <form onSubmit={sendMessage} className="flex w-full gap-3 items-center">
+            <input
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              placeholder="Type a message..."
+              className="flex-grow px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none overflow-hidden min-h-[40px] max-h-[150px] w-full"
+              rows="1"
+            />
+            <button
+              type="submit"
+              className="ml-3 px-5 py-3 bg-[#9F2225] text-white rounded-lg hover:bg-[#9F2225] transition-all"
+            >
+              Send
+            </button>
+          </form>
+        </div>
       </div>
 
-      {/* Message Input */}
-      <input
-        type="text"
-        value={messageInput}
-        onChange={(e) => setMessageInput(e.target.value)}
-        placeholder="Type a message..."
-      />
-      <button onClick={sendMessage}>Send</button>
+      {/* <div className="flex-1 overflow-y-auto p-4 bg-gray-100 rounded-md flex flex-col gap-3 h-[70vh]">
+        {messages_list?.length > 0 ? (
+          messages_list?.map((partner, index) => (
+            <div key={index} className="p-3 rounded-lg text-sm flex flex-col shadow-md bg-gray-200 text-gray-800">
+              <strong>{partner}</strong> 
+              <p className="text-xs">Click to start chatting...</p>
+            </div>
+          ))
+        ) : (
+          <p>No chat partners found.</p>
+        )}
+      </div> */}
+
+
     </div>
+
   );
 };
 

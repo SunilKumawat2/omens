@@ -35,3 +35,13 @@ export const Chat_Token = async (data, headers) => {
         return error
     }
 }
+
+// <----------- call store ------------>
+export const astro_chat_token = async (data, headers) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/astro-chat-token`, data, { headers: headers })
+        return response
+    } catch (error) {
+        return error
+    }
+}

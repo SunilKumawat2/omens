@@ -88,6 +88,7 @@ import Page_Not_Found from '../page_not_found/Page_Not_Found'
 import Astrologer_Agora_Voice_Call from '../components/pages/astrologer/astrologer_agora_voice_call/Astrologer_Agora_Voice_Call'
 import Agora_Video_Call from '../agora/agora_video_call/Agora_Video_Call'
 import Agora_Chat from '../agora/agora_chat/Agora_Chat'
+import Astrologer_Agora_Chat from '../components/pages/astrologer/astrologer_agora_chat/Astrologer_Agora_Chat'
 
 const AllRoutes = () => {
   return (
@@ -170,6 +171,7 @@ const AllRoutes = () => {
         <Route path='/astrologer_agora_voice_call' element={<Astrologer_Agora_Voice_Call/>} />
         <Route path='/astrologer_save_Profile_update' element={<Astrologer_Save_Profile_Update />} />
         <Route path='/astrologer_wallet' element={<Astrologer_Wallet />} />
+        <Route path='/astrologer_agora_chat' element={<Astro_Protected_Without_login Component={Astrologer_Agora_Chat} />} />
 
         {/* <----------- kundli section's ----------------> */}
         <Route path='/free_kundli' element={<Free_Kundli />} />

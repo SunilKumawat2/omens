@@ -80,9 +80,6 @@ const Astrologer_Details = () => {
     // <-------- Handle Generate voice call agora token ------------>
     const Handle_Generate_chat_agora_token = async () => {
         setIs_Chat_Loading(true);
-        // const data = {
-        //     chat_uiid: "sunil_Kumawat_26"
-        // }
         const formData = new FormData();
         formData.append("chat_uiid","sunil_Kumawat_26")
         const token = User_Authentication();
@@ -157,14 +154,16 @@ const Astrologer_Details = () => {
         setIs_Chat_Loading(true);
         try {
             const { chat_token, chat_uiid } = await Handle_Generate_chat_agora_token();
+            console.log("handle_chat_click_chat_token_chat_uiid",{chat_token,chat_uiid})
 
             // ✅ Store token in localStorage
             localStorage.setItem("chat_token", chat_token);
             localStorage.setItem("chat_uiid", chat_uiid);
+            localStorage.setItem("chat_partner_uiid", id);
             console.log("chat_token", chat_token)
             console.log("chat_uiid", chat_uiid)
             // ✅ Navigate to chat page
-            navigate(`/agora_chat`);
+            navigate(`/agora_chat`, { state: {chat_token : chat_token , chat_uiid:chat_uiid} });
 
         } catch (error) {
             console.error("Error during chat setup:", error);
@@ -224,6 +223,7 @@ const Astrologer_Details = () => {
                 console.log("products_products_111111", response);
                 set_Astro_Details_List(response?.data?.data)
                 localStorage.setItem("astrologer_profile_image", response?.data?.data?.astrolist?.profile_image)
+                localStorage.setItem("astrologer_name", response?.data?.data?.astrolist?.name)
             } else {
                 const response = await Get_Web_Astrologer_Details("1", id,);
                 console.log("products_products_222222", response);

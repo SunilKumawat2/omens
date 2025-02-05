@@ -105,6 +105,10 @@ const Astrologer_List = () => {
             } else if (response?.response?.data?.status == "500") {
                 set_Is_Loading(false);
             }
+            else{
+                set_Is_Loading(false);
+
+            }
         } catch (error) {
             set_Is_Loading(false);
         }
