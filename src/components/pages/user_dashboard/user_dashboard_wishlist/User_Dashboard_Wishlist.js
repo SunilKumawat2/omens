@@ -138,13 +138,13 @@ const User_Dashboard_Wishlist = () => {
                                     <p className="max-w-[400px] mt-[15px] text-[14px] text-[#777] text-center leading-[23px]">Your product wish is our first priority.</p>
                                 </div>
                                 <div className="container-x mx-auto">
-                                    <div className="w-full my-10">
+                                    <div className="w-full my-10">  
 
                                         <div className="w-full bg-white shadow-xl p-5">
 
-                                            <div className="my_account w-full flex space-x-10">
+                                            <div className="my_account w-full md:flex md:space-x-10">
                                                 <User_Dashbaord_Common_Section />
-                                                <div className="flex-1">
+                                                <div className="flex-1 md:w-[70%]">
                                                     <div className="item-body dashboard-wrapper w-full">
                                                         <div className="relative w-full overflow-x-auto sm:rounded-lg">
                                                             {

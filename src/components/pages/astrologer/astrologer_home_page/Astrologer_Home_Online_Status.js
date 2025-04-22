@@ -319,7 +319,7 @@ const Astrologer_Home_Online_Status = () => {
                                                             </div>
                                                         </div>
                                                         <div className="bg-white py-5 text-center">
-                                                            <img src="../assets/img/icons/report-icon.png" className="m-auto"
+                                                            <img src={Common_Images_Transport?.report_icon} className="m-auto"
                                                                 alt="" />
                                                             <h2 className="text-md font-bold my-4">Report</h2>
                                                             <div>

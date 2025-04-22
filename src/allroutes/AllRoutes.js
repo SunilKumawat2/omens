@@ -103,7 +103,7 @@ const AllRoutes = () => {
       <Routes>
         {/* <-------- Routes of the Pages---------> */}
         <Route path='/' element={<Home />} />
-        <Route path='/blog/:slug/:id' element={<Home_Letest_Post_Details />} />
+        <Route path='/blog/:slug' element={<Home_Letest_Post_Details />} />
         <Route path='/blogs' element={<All_Letest_Post />} />
         <Route path='/about-us' element={<About_Us />} />
         <Route path='/disclaimer' element={<Disclaimer />} />

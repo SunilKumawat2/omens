@@ -8,7 +8,8 @@ import { IMG_BASE_URL } from '../../../../config/Config'
 import Loader from '../../../../loader/Loader'
 
 const Home_Letest_Post_Details = () => {
-    const { id } = useParams();
+    const get_letest_blog_result_id = localStorage.getItem("letest_blog_result_id");
+    //  const { id } = useParams();
     const [is_loading, set_Is_Loading] = useState(false)
     const [letest_post_details, set_Letest_Post_Details] = useState([]);
 
@@ -18,7 +19,7 @@ const Home_Letest_Post_Details = () => {
             try {
                 const response = await Get_Home_Page()
                 const blogs = response?.data?.data?.blog || [];
-                const matchedPost = blogs?.find((blog) => blog?.id === parseInt(id));
+                const matchedPost = blogs?.find((blog) => blog?.id === parseInt(get_letest_blog_result_id));
                 set_Letest_Post_Details(matchedPost)
                 set_Is_Loading(false)
             } catch (error) {

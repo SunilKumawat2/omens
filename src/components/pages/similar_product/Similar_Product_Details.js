@@ -238,7 +238,7 @@ const Similar_Product_Details = () => {
                                                     <div
                                                         className="single-pro-img single-pro-img-no-sidebar w-[40%] max-[991px]:w-full relative pr-[12px] max-[991px]:pl-[12px] max-[991px]:w-full max-[991px]:max-w-[500px] max-[991px]:m-auto max-[420px]:px-[0]">
                                                         <div
-                                                            className="single-product-scroll p-[15px] sticky top-[30px] rounded-[5px] border-[1px] border-solid border-[#eee]">
+                                                            className="single-product-scroll z-0 p-[15px] sticky top-[30px] rounded-[5px] border-[1px] border-solid border-[#eee]">
                                                             <Slider {...settingsMain} ref={(slider) => setNav1(slider)}>
                                                                 {product_details_list?.product?.product_images?.map((item, index) => (
                                                                     <div key={index} className="zoom-image-hover">

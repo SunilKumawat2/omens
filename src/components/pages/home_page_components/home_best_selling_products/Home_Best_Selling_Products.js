@@ -98,7 +98,7 @@ const Home_Best_Selling_Products = (home_data) => {
                     <div className="w-full mb-[-24px] px-[15px]">
                         <div className="col">
                             <div className="tab-content" id="myproTabContent">
-                                <div className="tab-pro-pane" id="snack">
+                                <div className="tab-pro-pane z-0" id="snack">
                                     <Slider {...productSliderSettings} className="w-full px-[5px]">
                                         {Best_Selling_Products?.map((product_list_result) => {
                                             const isOutOfStock = product_list_result?.current_stock <= 0;

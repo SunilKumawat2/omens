@@ -40,7 +40,7 @@ const Main_Slider = (home_data) => {
       <div className="flex flex-wrap justify-between items-center mx-auto">
         <div className="gi-main-content w-full md:px-[12px] p-3">
           {/* Hero Slider Start */}
-          <div className="gi-slider-content h-full relative">
+          <div className="gi-slider-content h-full relative z-0">
             <Slider {...settings}>
               {Get_Main_Slider?.length > 0 ? (
                 Get_Main_Slider.map((slide, index) => (

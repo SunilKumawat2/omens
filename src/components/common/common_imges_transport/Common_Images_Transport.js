@@ -13,8 +13,9 @@ import product_images3 from '../../../assets/img/product-images/03.png'
 import product_images4 from '../../../assets/img/product-images/04.png'
 import talk_to_premium_astro_banner from '../../../assets/img/banner/banner1.png'
 import sales_banner from '../../../assets/img/banner/banner2.png'
-import call_icon from '../../../assets/img/icons/call-icon.svg'
-import chat_icon from '../../../assets/img/icons/chat-icon.svg'
+import call_icon from '../../../assets/img/icons/call-icon.png'
+import chat_icon from '../../../assets/img/icons/chat-icon.png'
+import report_icon from '../../../assets/img/icons/report-icon.png'
 import astro1 from '../../../assets/img/astro/1.png'
 import astro3 from '../../../assets/img/astro/3.png'
 import astro2 from '../../../assets/img/astro/2.png'
@@ -115,6 +116,7 @@ const Common_Images_Transport = {
     sales_banner,
     call_icon,
     chat_icon,
+    report_icon,
     astro1,
     astro3,
     astro2,

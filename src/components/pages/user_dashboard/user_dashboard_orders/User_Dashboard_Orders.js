@@ -85,9 +85,9 @@ const User_Dashboard_Orders = () => {
 
                                                                                 <div className="w-full bg-white shadow-xl p-5">
 
-                                                                                        <div className="my_account w-full flex space-x-10">
+                                                                                        <div className="my_account w-full md:flex md:space-x-10">
                                                                                                 <User_Dashbaord_Common_Section />
-                                                                                                <div className="flex-1">
+                                                                                                <div className="flex-1 md:w-[70%]">
                                                                                                         <h1 className="font-bold text-[24px] text-qblack mb-4">Order List
                                                                                                         </h1>
                                                                                                         <div className="item-body dashboard-wrapper w-full">

@@ -477,11 +477,23 @@ const Product_List = () => {
                                                                                             </span>
                                                                                         </div>
                                                                                         <div className="flex flex-col mt-2 justify-center gap-4 items-center">
-                                                                                            <span className="new-price text-[#000] font-medium text-[16px]">
-                                                                                                Rs.{product_list_result?.purchase_price}
-                                                                                            </span>
+                                                                                            <div className="flex gap-4 items-center">
+                                                                                                <span className="new-price text-[#000] font-medium text-[16px]">
+                                                                                                    Rs.{product_list_result?.seller_price}
+                                                                                                </span>
+
+                                                                                                <span className="new-price text-gray-600 font-medium text-[16px] line-through">
+                                                                                                    Rs.{product_list_result?.purchase_price}
+                                                                                                </span>
+
+                                                                                              
+                                                                                            </div>
+                                                                                            <span className="new-price text-green-600 font-medium text-[16px]">
+                                                                                                    {product_list_result?.discount} {product_list_result?.discount_type} OFF
+                                                                                                </span>
                                                                                             <button onClick={() => {
-                                                                                                if (!isOutOfStock) { navigate(`/product/${product_list_result?.slug}`, { state: { product_list_result, category_id: category_id, subcategory_id: subcategory_id } }); }
+                                                                                                if (!isOutOfStock) { navigate(`/product/${product_list_result?.slug}`, 
+                                                                                                    { state: { product_list_result, category_id: category_id, subcategory_id: subcategory_id } }); }
                                                                                             }}
                                                                                                 type="button"
                                                                                                 className={`text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 

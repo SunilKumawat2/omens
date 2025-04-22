@@ -46,20 +46,19 @@ const User_DashBaord_DashBoard = () => {
                         <div className="container-x mx-auto">
                             <div className="w-full my-10">
                                 <div className="w-full bg-white shadow-xl p-5">
-                                    <div className="my_account w-full flex space-x-10">
+                                    <div className="my_account w-full md:flex md:space-x-10">
                                         <User_Dashbaord_Common_Section />
                                         
-                                        <div className="flex-1">
+                                        <div className="flex-1 md:w-[70%]">
                                             <div className="item-body w-full">
                                                 <div className="welcome-msg w-full">
                                                     <div>
-                                                        <h1 className="font-bold text-[24px] text-qblack">Dashboard
-                                                        </h1>
+                                                        <h1 className="font-bold text-[24px] text-qblack">Dashboard</h1>
                                                     </div>
                                                 </div>
-                                                <div className="w-full flex justify-between items-center mt-3 ">
+                                                <div className="w-full gap-3 md:flex space-y-5 md:space-y-0 justify-between items-center mt-3 ">
                                                     <div
-                                                        className="w-[252px] transition-all duration-300 ease-in-out p-6 bg-gray-100">
+                                                        className="w-full transition-all duration-300 ease-in-out p-3 md:p-6 bg-gray-100">
                                                         <div
                                                             className="w-[62px] h-[62px] rounded bg-white flex justify-center items-center">
                                                             <span><svg width="36" height="37" viewBox="0 0 36 37" fill="none"
@@ -81,7 +80,7 @@ const User_DashBaord_DashBoard = () => {
                                                         <span className="text-2xl font-bold mt-1 block">{user_dashboard_details?.new_orders}</span>
                                                     </div>
                                                     <div
-                                                        className="w-[252px] transition-all duration-300 ease-in-out p-6 bg-gray-100">
+                                                        className="w-full transition-all duration-300 ease-in-out p-3 md:p-6 bg-gray-100">
                                                         <div
                                                             className="w-[62px] h-[62px] rounded bg-white flex justify-center items-center">
                                                             <span><svg width="36" height="37" viewBox="0 0 36 37" fill="none"
@@ -103,7 +102,7 @@ const User_DashBaord_DashBoard = () => {
 
                                                     </div>
                                                     <div
-                                                        className="w-[252px] transition-all duration-300 ease-in-out p-6 bg-gray-100">
+                                                        className="w-full transition-all duration-300 ease-in-out p-3 md:p-6 bg-gray-100">
                                                         <div
                                                             className="w-[62px] h-[62px] rounded bg-white flex justify-center items-center">
                                                             <span><svg width="27" height="31" viewBox="0 0 27 31" fill="none"

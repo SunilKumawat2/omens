@@ -118,7 +118,7 @@ const get_category_list_result_slug = localStorage.getItem("category_list_result
                                                 <span className="text-[14px] text-[#777] max-[575px]:mb-[10px]">Showing {startIndex + 1}-{Math.min(startIndex + productsPerPage, sub_category_data?.length)} of {sub_category_data?.length} item(s)</span>
                                                 <ul className="gi-pro-pagination-inner flex">
                                                     <li>
-                                                        <button onClick={handlePrev} className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-[#5caf90] leading-[30px] h-[32px] bg-red-500 flex flex text-center align-top text-[16px] justify-center items-center rounded-[5px]">
+                                                        <button onClick={handlePrev} className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-red-600 leading-[30px] h-[32px] bg-red-500 flex flex text-center align-top text-[16px] justify-center items-center rounded-[5px]">
                                                             Prev
                                                         </button>
                                                     </li>
@@ -138,7 +138,7 @@ const get_category_list_result_slug = localStorage.getItem("category_list_result
                                                     ))}
 
                                                     <li>
-                                                        <button onClick={handleNext} className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-[#5caf90] leading-[30px] h-[32px] bg-red-500 flex flex text-center align-top text-[16px] justify-center items-center rounded-[5px]">
+                                                        <button onClick={handleNext} className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-red-600 leading-[30px] h-[32px] bg-red-500 flex flex text-center align-top text-[16px] justify-center items-center rounded-[5px]">
                                                             Next
                                                         </button>
                                                     </li>

@@ -17,7 +17,7 @@ const User_Dashbaord_Common_Section = () => {
         dispatch(fetchUserProfile());
     }, [dispatch]);
     return (
-        <div className="w-[300px] min-h-[600px] bg-[#f8f8f8] p-5">
+        <div className="md:w-[300px] min-h-[600px] bg-[#f8f8f8] p-5">
             {
                 isloading ? (
                     <Loader />
@@ -25,13 +25,13 @@ const User_Dashbaord_Common_Section = () => {
                     <div className="flex flex-col space-y-8">
                         <div className="p-6.1 rounded-xl text-center">
                             <div
-                                className="w-[90px] h-auto relative border border-border rounded-full mb-2.5 mx-auto overflow-hidden">
+                                className="h-auto relative mb-2.5 mx-auto overflow-hidden">
                                 {
                                     profile?.profile_image != null ? (
 
-                                        <img className="rounded-full" src={`${IMG_BASE_URL}${profile?.profile_image}`} alt="user" />
+                                        <img className="rounded-full border border-border mx-auto w-28 h-28" src={`${IMG_BASE_URL}${profile?.profile_image}`} alt="user" />
                                     ) : (
-                                        <img className="rounded-full" src={Common_Images_Transport?.user_logo} alt="user" />
+                                        <img className="rounded-full border border-border  mx-auto w-28 h-28" src={Common_Images_Transport?.user_logo} alt="user" />
                                     )
                                 }
                             </div>

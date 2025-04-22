@@ -28,23 +28,23 @@ const User_Dashboard_Order_Details = () => {
     // Current status code
     const currentStatus = order_details?.order?.status;
 
-  // Function to determine status color
-const getStatusClass = (statusCode, currentStatus) => {
+    // Function to determine status color
+    const getStatusClass = (statusCode, currentStatus) => {
+        if (currentStatus == 6) {
+            return "border-red-600 after:bg-red-600 text-red-600";
+        } else if (statusCode <= currentStatus) {
+            return "border-green-600 after:bg-green-600 text-green-600";
+        } else {
+            return "border-gray-300 after:bg-gray-300 text-gray-500";
+        }
+    };
+    // Filter statuses
+    let displayedStatuses;
     if (currentStatus == 6) {
-        return "border-red-600 after:bg-red-600 text-red-600";
-    } else if (statusCode <= currentStatus) {
-        return "border-green-600 after:bg-green-600 text-green-600";
+        displayedStatuses = statuses?.filter(s => s.code == 1 || s.code == 6); // Show only "Order" → "Cancelled"
     } else {
-        return "border-gray-300 after:bg-gray-300 text-gray-500";
+        displayedStatuses = statuses?.filter(s => s.code != 6); // Show full timeline without "Cancelled"
     }
-};
-// Filter statuses
-let displayedStatuses;
-if (currentStatus == 6) {
-    displayedStatuses = statuses?.filter(s => s.code == 1 || s.code == 6); // Show only "Order" → "Cancelled"
-} else {
-    displayedStatuses = statuses?.filter(s => s.code != 6); // Show full timeline without "Cancelled"
-}
 
 
 
@@ -218,25 +218,25 @@ if (currentStatus == 6) {
                                                                     <div id="gi-spt-nav-details" className="tab-single-pane">
                                                                         <div className="gi-single-pro-tab-desc py-5">
                                                                             <div className="widget-timeline style-1">
-                                                                            <ul className="relative after:top-5 after:bottom-12 after:absolute after:content-[''] after:w-[1px] after:left-2.5 after:border-r after:border-dashed after:border-black/15">
-        {displayedStatuses && displayedStatuses?.map((status) => (
-            <li className="relative mb-3.6" key={status.code}>
-                <div
-                    className={`rounded-full left-0 absolute top-2.5 size-5 border p-1 bg-white ${getStatusClass(
-                        status.code,
-                        currentStatus
-                    )} after:content-[''] after:size-2.5 after:rounded-full after:block`}
-                ></div>
-                <div className="p-2.5 pl-3.6 relative block ml-10">
-                    <a className="timeline-panel" href="javascript:void(0);">
-                        <h6 className={`mb-0 text-[15px] font-medium ${getStatusClass(status.code, currentStatus)}`}>
-                            {status.label}
-                        </h6>
-                    </a>
-                </div>
-            </li>
-        ))}
-    </ul>
+                                                                                <ul className="relative after:top-5 after:bottom-12 after:absolute after:content-[''] after:w-[1px] after:left-2.5 after:border-r after:border-dashed after:border-black/15">
+                                                                                    {displayedStatuses && displayedStatuses?.map((status) => (
+                                                                                        <li className="relative mb-3.6" key={status.code}>
+                                                                                            <div
+                                                                                                className={`rounded-full left-0 absolute top-2.5 size-5 border p-1 bg-white ${getStatusClass(
+                                                                                                    status.code,
+                                                                                                    currentStatus
+                                                                                                )} after:content-[''] after:size-2.5 after:rounded-full after:block`}
+                                                                                            ></div>
+                                                                                            <div className="p-2.5 pl-3.6 relative block ml-10">
+                                                                                                <a className="timeline-panel" href="javascript:void(0);">
+                                                                                                    <h6 className={`mb-0 text-[15px] font-medium ${getStatusClass(status.code, currentStatus)}`}>
+                                                                                                        {status.label}
+                                                                                                    </h6>
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    ))}
+                                                                                </ul>
 
                                                                             </div>
                                                                         </div>

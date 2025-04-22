@@ -20,17 +20,11 @@ const Astrologer_Home_Page = () => {
                 {/* Fixed Header */}
                 <Astrologer_after_Login_Header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md" />
 
-                {/* Main Section - Ensures it's not under the header */}
                 <div className="mt-[80px] px-2">
-                    <div className="bg-[#EFE9E0] py-4 mx-auto max-w-[1320px] px-4">
-                        {/* Flexbox wrapper for responsive layout */}
+                    {/* <div className="bg-[#EFE9E0] py-4 mx-auto max-w-[1320px] px-4">
                         <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-
-                            {/* Left Section: Profile Image & Upload Button */}
                             <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
                                 <div className="flex gap-3 items-center">
-                                    {/* <img src={`${IMG_BASE_URL}${astrologer_profile_image}`} alt="Profile"
-                                        className="w-16 h-16 rounded-full border" /> */}
                                     {
                                         profile?.profile_image != null ? (
                                             <img src={`${IMG_BASE_URL}${profile?.profile_image}`} className="w-16 h-16 rounded-full border" alt="User" />
@@ -47,8 +41,6 @@ const Astrologer_Home_Page = () => {
                                         </h5>
                                     </div>
                                 </div>
-
-                                {/* Awaiting Approval Button */}
                                 <div className="mt-2">
                                     <a href="#" className="inline-block text-[#9D2326] hover:text-white hover:bg-gray-900 rounded-full 
               text-sm px-5 py-1 border border-[#9D2326]">
@@ -56,8 +48,6 @@ const Astrologer_Home_Page = () => {
                                     </a>
                                 </div>
                             </div>
-
-                            {/* Right Section: Information */}
                             <div className="w-full md:w-1/2 border-t-2 md:border-t-0 md:border-l-2 border-[#D4D4D4] px-4 py-2">
                                 <p className="text-gray-600 text-sm leading-relaxed text-center md:text-left">
                                     We Are introducing a new design to present astrologers’ profiles to our users.
@@ -66,12 +56,9 @@ const Astrologer_Home_Page = () => {
                             </div>
 
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
-
-
-
 
             {/* <------- Strologer Home Online Status --------> */}
             <Astrologer_Home_Online_Status />

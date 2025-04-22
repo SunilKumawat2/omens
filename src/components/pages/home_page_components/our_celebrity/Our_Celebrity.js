@@ -65,7 +65,7 @@ const Our_Celebrity = ({ data }) => {
                             </div>
                         </div>
 
-                        <div className="gi-deal-block" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="300">
+                        <div className="gi-deal-block z-0" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="300">
                             <Slider {...settings} className="w-full">
                                 {our_celebrity_list?.map((our_celebrity_result, index) => (
                                     <div className="px-2" key={index}>

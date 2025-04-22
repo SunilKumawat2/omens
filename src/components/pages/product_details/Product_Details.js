@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Similar_Product from '../similar_product/Similar_Product'
+import Product_Return_Policy from './Product_Return_Policy'
 
 const Product_Details = () => {
     const navigate = useNavigate();
@@ -337,7 +338,7 @@ const Product_Details = () => {
 
                                                             </div>
                                                         </div> */}
-                                                        <div className="single-product-scroll px-0 py-2 sticky top-[30px] rounded-[5px] border border-[#eee] bg-white">
+                                                        <div className="single-product-scroll z-0 px-0 py-2 sticky top-[30px] rounded-[5px] border border-[#eee] bg-white">
                                                             {/* Main Slider */}
                                                             <Slider {...settingsMain} ref={(slider) => setNav1(slider)} className="!p-0 !m-0">
                                                                 {product_details_list?.product?.product_images?.map((item, index) => (
@@ -634,6 +635,7 @@ const Product_Details = () => {
                                                                     }
 
                                                                 </div>
+                                                              
                                                                 <div className="gi-single-pro-tab mt-[40px]">
                                                                     <div className="md:flex justify-between gap-4">
                                                                         <div className="w-full">
@@ -710,6 +712,8 @@ const Product_Details = () => {
                         </section>
                         {/* <!-- related product  --> */}
                         <Similar_Product data={product_details_list?.related_products} />
+                          {/* <- ----- retrun policy ------> */}
+                          <Product_Return_Policy/>
                         {/* <----------- Private Confidential ------------>*/}
                         <Home_Private_Confidential />
                         {/* <------------- Footer section's ---------------> */}

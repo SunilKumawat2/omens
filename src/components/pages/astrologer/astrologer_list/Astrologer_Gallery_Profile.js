@@ -66,7 +66,7 @@ const Astrologer_Gallery_Profile = ({ data }) => {
                         Gallery
                     </h5>
                     <div className="w-full">
-                        <div className="astrologer_gallery">
+                        <div className="astrologer_gallery z-0">
                             <Slider {...settings}>
                                 {astro_details_list_slider.map((astro_details_list_slider_result, index) => (
                                     <div key={index} className="astro_gallery">

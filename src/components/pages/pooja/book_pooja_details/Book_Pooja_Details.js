@@ -11,7 +11,7 @@ import Footer from "../../../common/footer/Footer"
 const Book_Pooja_Details = () => {
     const navigate = useNavigate();
     const [pooja_list, set_Pooja_List] = useState([]);
-    console.log("Customer_Testimonials",pooja_list?.pooja_reviews)
+    console.log("Customer_Testimonials", pooja_list?.pooja_reviews)
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -64,7 +64,7 @@ const Book_Pooja_Details = () => {
             setTimeLeft(calculateTimeLeft());
         }, 1000);
 
-        return () => clearInterval(timer); 
+        return () => clearInterval(timer);
     }, [pooja_list?.pooja_list?.pooja_date, pooja_list?.pooja_list?.from_time]);
     return (
         <div>
@@ -142,6 +142,32 @@ const Book_Pooja_Details = () => {
                                                                     </a>
                                                                 </div>
                                                                 <p className="mt-3 text-gray-500 line-clamp-3">{pooja_list?.pooja_list?.astro?.astrodetail?.about_us}</p>
+                                                                <div className="flex items-center gap-3 mt-3">
+                                                                    {/* Rating Stars */}
+                                                                    <div className="flex items-center">
+                                                                        {Array.from({ length: 5 }).map((_, index) => {
+                                                                            const rating = parseFloat(pooja_list?.avg_rating || 0);
+                                                                            return (
+                                                                                <svg
+                                                                                    key={index}
+                                                                                    className={`w-4 h-4 ${index < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"
+                                                                                        }`}
+                                                                                    fill="currentColor"
+                                                                                    viewBox="0 0 20 20"
+                                                                                >
+                                                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.975h4.181c.969 0 1.371 1.24.588 1.81l-3.388 2.463 1.286 3.975c.3.921-.755 1.688-1.54 1.117L10 13.011l-3.388 2.463c-.784.571-1.838-.196-1.539-1.117l1.285-3.975-3.388-2.463c-.783-.57-.38-1.81.588-1.81h4.181l1.286-3.975z" />
+                                                                                </svg>
+                                                                            );
+                                                                        })}
+                                                                    </div>
+
+                                                                    {/* Pooja Done Info */}
+                                                                    <p className="text-gray-500 bg-gray-100 px-3 py-2 rounded-full w-[150px] text-center text-sm">
+                                                                        {pooja_list?.pooja_done} Pooja's done
+                                                                    </p>
+                                                                </div>
+
+
 
                                                                 <div
                                                                     className={`mt-5 ${timeLeft.hasExpired ? "cursor-not-allowed opacity-50" : ""
@@ -165,8 +191,8 @@ const Book_Pooja_Details = () => {
                                                                 >
                                                                     <Link
                                                                         className={`h-[40px] leading-[50px] text-center text-[14px] py-[10px] px-[25px] transition-all duration-[0.3s] ease-in-out relative rounded-full items-center font-semibold tracking-[0.02rem] border-[0] ${timeLeft.hasExpired
-                                                                                ? "bg-[#9F2225] text-white"
-                                                                                : "bg-[#9F2225] text-[#fff] hover:bg-[#333] hover:text-[#fff]"
+                                                                            ? "bg-[#9F2225] text-white"
+                                                                            : "bg-[#9F2225] text-[#fff] hover:bg-[#333] hover:text-[#fff]"
                                                                             }`}
                                                                     >
                                                                         <i className="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
@@ -194,7 +220,7 @@ const Book_Pooja_Details = () => {
                             </div>
                         </section>
                         {/*  */}
-                        <Book_Pooja_Details_Testimonals data={pooja_list?.pooja_reviews}/>
+                        <Book_Pooja_Details_Testimonals data={pooja_list?.pooja_reviews} />
                         {/*  */}
                         <Home_Private_Confidential />
                         {/*  */}

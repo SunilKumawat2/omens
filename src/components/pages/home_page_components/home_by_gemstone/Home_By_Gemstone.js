@@ -161,7 +161,7 @@ const GemstoneCarousel = (home_data) => {
                     <p>No products available</p>
                   )}
                 </Slider> */}
-                <div className="gi-deal-block mt-5 mx-[-12px]">
+                <div className="gi-deal-block mt-5 mx-[-12px] z-0">
                   <Slider {...settings}>
                     {category_list?.length > 0 ? (
                       category_list.map((category_list_result, index) => (

@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { IMG_BASE_URL } from '../../../../config/Config'
 import Astrologer_after_Login_Header from '../astrologer_after_login_header/Astrologer_after_Login_Header'
+import Slider from 'react-slick'
 
 const Astrologer_Save_Profile = () => {
     const dispatch = useDispatch();
@@ -53,6 +54,44 @@ const Astrologer_Save_Profile = () => {
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     };
+
+
+    const slidesToShow = profile?.profile_images?.length < 4 ? profile?.profile_images?.length : 4;
+
+    const settings = {
+        infinite: profile?.profile_images?.length > 1,
+        speed: 500,
+        slidesToShow: slidesToShow,
+        slidesToScroll: 1,
+        autoplay: profile?.profile_images?.length > 1,
+        autoplaySpeed: 2000,
+        arrows: profile?.profile_images?.length > 1,
+        variableWidth: false,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: profile?.profile_images?.length < 3 ? profile?.profile_images?.length : 3,
+                    variableWidth: false,
+                },
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: profile?.profile_images?.length < 2 ? profile?.profile_images?.length : 2,
+                    variableWidth: false,
+                },
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    variableWidth: false,
+                },
+            },
+        ],
+    };
+
     return (
         <div>
             {/*  */}
@@ -170,8 +209,20 @@ const Astrologer_Save_Profile = () => {
                                                         className="gi-pro-stitle font-normal mb-2 text-[#3B4959] text-[20px] font-semibold leading-[1.2]">
                                                         Gallery
                                                     </h5>
+                                                    <Slider {...settings} className="px-2">
+                                                        {profile?.profile_images?.map((img, index) => (
+                                                            <div key={index} className="px-2">
+                                                                <img
+                                                                    className="w-full h-[180px] object-contain rounded bg-white p-2"
+                                                                    src={`${IMG_BASE_URL}${img?.image_file}`}
+                                                                    alt={`Gallery ${index}`}
+                                                                />
+
+                                                            </div>
+                                                        ))}
+                                                    </Slider>
                                                     <div className="grid grid-cols-5 gap-4">
-                                                        {
+                                                        {/* {
                                                             profile?.profile_images?.map((astro_profile_gallery, index) => (
                                                                 <div key={index}>
                                                                     <img
@@ -182,7 +233,8 @@ const Astrologer_Save_Profile = () => {
                                                                     />
                                                                 </div>
                                                             ))
-                                                        }
+                                                        } */}
+
                                                     </div>
                                                 </div>
 

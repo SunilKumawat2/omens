@@ -131,7 +131,7 @@ const Home_Astro_Chat_Call = (home_data) => {
 
                     </div>
 
-                    <div className="w-full mb-[-24px] px-[15px]">
+                    <div className="w-full mb-[-24px] px-[15px] z-0">
                         <Slider {...settings}>
                             {live_astro?.map((astro_list_result, index) => (
                                 <div key={index} className="px-2">

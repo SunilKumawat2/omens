@@ -47,7 +47,7 @@ const HeroSection = () => {
     <section className="gi-category bg-gray-100 py-12 md:py-10 lg:py-12 overflow-hidden">
       <div className="container mx-auto max-w-screen-xl">
         <div className="w-full px-6 lg:px-8">
-          <Slider {...settings} className="flex items-center gap-4 lg:gap-6">
+          <Slider {...settings} className="flex items-center gap-4 lg:gap-6 z-0">
             {/* Chat with Astro */}
             <div className="p-4 rounded-lg bg-[#fff6ec] shadow-lg">
               <Link to="/astrologer-list">

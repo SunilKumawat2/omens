@@ -950,3 +950,9 @@ table.table-autow-full.custome_tab td {
 .slick-prev:before, .slick-next:before {
   color: #f53d3d !important; 
 }
+.clamped-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

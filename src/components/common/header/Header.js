@@ -7,6 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCartList } from '../../../redux/actions/cartActions';
 import { Global_Settings } from '../../../api/global/Global';
 import { IMG_BASE_URL } from '../../../config/Config';
+import { get_favourite_product_list } from '../../../api/category_product/Category_Product';
+import { User_Authentication } from '../../../user_authentication/User_Authentication';
+import { toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const Header = () => {
     const navigate = useNavigate()
@@ -15,9 +20,11 @@ const Header = () => {
     const [is_language_Open, setIs_Language_Open] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState("English");
     const { cartlist, isloading, error } = useSelector((state) => state?.cartlist);
+    console.log("cartlist", cartlist)
     const [cart_list, set_Cart_List] = useState(cartlist || []);
     const [get_settings, setGet_Settings] = useState({});
-
+    const [wishlist, set_WishList] = useState([]);
+    const [is_loading, set_Is_Loading] = useState(false)
     useEffect(() => {
         const Handle_Get_settings = async () => {
             try {
@@ -52,9 +59,33 @@ const Header = () => {
         dispatch(fetchCartList());
     }, [dispatch]);
 
+    const handle_get_favourite_product_list = async () => {
+        try {
+            const token = User_Authentication();
+            if (!token) {
+                // toast("User token not found")
+                set_Is_Loading(false)
+                throw new Error("User token not found");
+            }
+            const response = await get_favourite_product_list({ Authorization: `Bearer ${token}` });
+            set_WishList(response?.data?.data?.favourite);
+            if (response?.data?.status == "200") {
+
+            }
+        }
+        catch (error) {
+
+        }
+    }
+
+    useEffect(() => {
+        handle_get_favourite_product_list();
+    }, [])
     return (
         <div>
             <CartProvider>
+                {/* <-------- ToastContainer ------------> */}
+                <ToastContainer style={{ marginTop: "120px" }} />
                 <header className="gi-header bg-[#fff] z-[14] max-[991px]:z-[16] relative">
                     {/* <!-- Header Top Start --> */}
                     <div className="header-top py-[10px] text-[#fff] bg-gradient-to-r from-[#9F2225] to-[#FFB500]">
@@ -157,7 +188,8 @@ const Header = () => {
                                             </div>
                                             <div className="gi-btn-desc flex flex-col uppercase ml-[10px]">
                                                 <span
-                                                    className="gi-btn-title transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1] text-[#fff] tracking-[0.6px] capitalize font-medium">Wishlist</span>
+                                                    className="gi-header-count gi-wishlist-count w-[15px] h-[15px] text-blue-400 flex items-center justify-center
+                                                     rounded-[50%] text-[11px] rounded-lg bg-white absolute top-[-2px] right-[-6px] opacity-[0.8]">{wishlist?.length}</span>
 
                                             </div>
                                         </Link>
@@ -178,13 +210,17 @@ const Header = () => {
                                                 leading-[1] text-[#fff] tracking-[0.6px] capitalize font-medium">
                                                     {
                                                         is_user_active ? <Link className='flex items-center gap-2' to="/cart" >
-                                                            <i className="fi-rr-shopping-bag text-[#fff] text-[18px] leading-[17px]"></i></Link> : <Link className='flex items-center gap-2' to="/user-login" >
-                                                            <i className="fi-rr-shopping-bag text-[#fff] text-[18px] leading-[17px]"></i></Link>
+                                                            <i className="fi-rs-shopping-cart text-[#fff] text-[18px] leading-[17px]">
+                                                            </i></Link> : <Link className='flex items-center gap-2' to="/user-login" >
+                                                            <i className="fi-rs-shopping-cart text-[#fff] text-[18px] leading-[17px]"></i></Link>
                                                     }
-                                                    {/* {
-                                                        is_user_active ? <Cart_Sidebar /> : <Link className='flex items-center gap-2' to="/user_login" >
-                                                            <i className="fi-rr-shopping-bag text-[#fff] text-[18px] leading-[17px]"></i> Cart</Link>
-                                                    } */}
+                                                    {
+                                                        cart_list?.length > 0 && (
+                                                            <span
+                                                                className="gi-header-count gi-cart-count  w-[15px] h-[15px] text-blue-400 flex items-center
+                                                             justify-center rounded-lg bg-white text-[11px]  absolute top-[-2px] right-[-6px] opacity-[0.8]">{cart_list?.length}</span>
+                                                        )
+                                                    }
 
                                                 </span>
 
@@ -304,7 +340,7 @@ const Header = () => {
                                                 </div>
                                                 <span
                                                     className="gi-header-count gi-wishlist-count w-[15px] h-[15px] text-[#fff] flex items-center justify-center
-                                                     rounded-[50%] text-[11px] absolute top-[-2px] right-[-6px] opacity-[0.8]">3</span>
+                                                     rounded-[50%] text-[11px] absolute top-[-2px] right-[-6px] opacity-[0.8]">{wishlist?.length}</span>
                                             </Link>
                                             {/* <!-- Header Wishlist End --> */}
 
@@ -314,11 +350,13 @@ const Header = () => {
                                                 <div className="header-icon relative flex">
                                                     {/* {
                                                         is_user_active ? <Cart_Sidebar /> : <Link className='flex items-center gap-2' to="/user_login" >
-                                                            <i className="fi-rr-shopping-bag text-[#fff] text-[22px] leading-[17px]"></i></Link>
+                                                            <i className="fi-rs-shopping-cart text-[#fff] text-[22px] leading-[17px]"></i></Link>
                                                     } */}
                                                     {
-                                                        is_user_active ? <Link className='flex items-center gap-2' to="/cart"><i className="fi-rr-shopping-bag text-[#fff] text-[22px] leading-[17px]"></i></Link> : <Link className='flex items-center gap-2' to="/user-login" >
-                                                            <i className="fi-rr-shopping-bag text-[#fff] text-[22px] leading-[17px]"></i></Link>
+                                                        is_user_active ? <Link className='flex items-center gap-2' to="/cart">
+                                                            <i className="fi-rs-shopping-cart text-[#fff] text-[22px] leading-[17px]">
+                                                            </i></Link> : <Link className='flex items-center gap-2' to="/user-login" >
+                                                            <i className="fi-rs-shopping-cart text-[#fff] text-[22px] leading-[17px]"></i></Link>
                                                     }
                                                 </div>
                                                 {
@@ -450,13 +488,13 @@ const Header = () => {
                                                                     Matching</Link>
 
                                                             </li>
-                                                            <li
+                                                            {/* <li
                                                                 className="non-drop mx-[20px] transition-all duration-[0.3s] ease-in-out max-[1199px]:mx-[15px]">
                                                                 <Link to="/book-pooja-list"
                                                                     className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[60px] capitalize text-[#4b5966] flex items-center font-medium">
                                                                     Shop by Jewellery
                                                                 </Link>
-                                                            </li>
+                                                            </li> */}
                                                             <li
                                                                 className="non-drop mx-[20px] transition-all duration-[0.3s] ease-in-out max-[1199px]:mx-[15px]">
                                                                 <Link to="/book-pooja-list"
