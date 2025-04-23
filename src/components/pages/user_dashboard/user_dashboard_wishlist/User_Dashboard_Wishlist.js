@@ -157,7 +157,7 @@ const User_Dashboard_Wishlist = () => {
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Image</th>
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Name</th>
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Date</th>
-                                                                                    <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Price</th>
+                                                                                    <th scope="col"  className="p-[0.5rem] text-left text-[#4b5966]">Price</th>
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Status</th>
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Actions</th>
                                                                                 </tr>

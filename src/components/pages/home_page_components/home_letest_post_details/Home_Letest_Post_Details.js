@@ -59,7 +59,7 @@ const Home_Letest_Post_Details = () => {
                                                         <Link to="/" className="relative text-white"><i className="fi-rr-home text-[#fff]"></i> Home</Link>
                                                     </li>
                                                     <li className="gi-breadcrumb-item inline-block text-[14px] font-normal tracking-[0.02rem] leading-[1.2] capitalize">
-                                                        <span className="relative text-white">/ Blog Details</span>
+                                                        <span className="relative text-white">/ {letest_post_details?.slug}</span>
                                                     </li>
 
                                                 </ul>
@@ -82,15 +82,14 @@ const Home_Letest_Post_Details = () => {
                                                 <div className="gi-single-blog-item">
                                                     <div className="single-blog-info">
                                                         <figure className="blog-img mb-[16px] h-[500px] overflow-hidden">
-                                                            <a href="#">
-                                                                <img src={`${IMG_BASE_URL}${letest_post_details?.image}`} alt="blog imag" className="w-full h-full object-cover rounded-[5px]" />
-                                                            </a>
+                                                            <img src={`${IMG_BASE_URL}${letest_post_details?.image}`} alt="blog imag" className="w-full h-full object-contain rounded-[5px]" />
+
                                                         </figure>
                                                         <div className="single-blog-detail">
                                                             <label className="mb-[15px] text-[#999] inline-block">Author - <a href="#" className="text-[#999] hover:text-[#5caf90]">{letest_post_details?.author_name}</a></label>
-                                                            <h3 className="text-[22px] font-semibold text-[#4b5966] leading-[1.2] mb-[6px] max-[767px]:text-[20px] max-[575px]:text-[19px]">Marketing Guide: 5 Steps to Success.</h3>
-                                                            <p className="gi-text text-[#777] text-[14px] mb-[16px]">{letest_post_details?.short_description}</p>
-                                                            <p className="text-[#777] text-[14px] mb-[16px]">{letest_post_details?.long_description}</p>
+                                                            {/* <h3 className="text-[22px] font-semibold text-[#4b5966] leading-[1.2] mb-[6px] max-[767px]:text-[20px] max-[575px]:text-[19px]">Marketing Guide: 5 Steps to Success.</h3> */}
+                                                            {/* <p className="gi-text text-[#777] text-[14px] mb-[16px]">{letest_post_details?.short_description}</p> */}
+                                                            <p className="text-[#777] text-[14px] mb-[16px]" dangerouslySetInnerHTML={{ __html: letest_post_details?.long_description }}/>
                                                         </div>
                                                     </div>
                                                 </div>

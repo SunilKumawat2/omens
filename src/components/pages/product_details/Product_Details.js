@@ -25,7 +25,7 @@ const Product_Details = () => {
     const [subcategory_id, setSubcategoryId] = useState(null);
     const [active_tab, set_Active_Tab] = useState("0");
     const [is_loading, set_Is_Loading] = useState(false)
-    const [product_details_list, set_Product_Details_List] = useState([]);
+    const [product_details_list, set_Product_Details_List] = useState({});
     console.log("product_details_list", product_details_list)
     const [certificate, set_Certificate] = useState(null)
     const [energization, set_Energization] = useState(null)
@@ -67,6 +67,7 @@ const Product_Details = () => {
                 try {
                     const response = await Get_Product_Details({ id: product_list_result?.id, category_id: category_id, subcategory_id: subcategory_id });
                     set_Product_Details_List(response?.data?.data);
+                    console.log("response_response_response", response?.data?.data)
                 } catch (error) {
                     console.error("Error fetching product details:", error);
                 } finally {
@@ -473,14 +474,26 @@ const Product_Details = () => {
                                                                         className="gi-single-sku mb-[8px] text-[14px] px-4 rounded-full leading-[32px] bg-[#F6EAD9] text-[#443A2E] tracking-[0.02rem]">SKU:{product_details_list?.product?.sku}</span>
                                                                 </div>
                                                                 <div className="gi-single-stoke flex flex-col">
-                                                                    <span
-                                                                        className="gi-single-sku mb-[8px] text-[14px] px-4 rounded-full leading-[32px] bg-[#DADADA] text-[#443A2E] tracking-[0.02rem]">Origin:{product_details_list?.product?.origin?.name}</span>
+                                                                    {product_details_list?.product?.origin?.name && (
+                                                                        <span className="gi-single-sku mb-[8px] text-[14px] px-4 rounded-full leading-[32px] bg-[#DADADA] text-[#443A2E] tracking-[0.02rem]">
+                                                                            Origin: {product_details_list?.product?.origin?.name}
+                                                                        </span>
+                                                                    )}
+
+                                                                </div>
+                                                                <div className="gi-single-stoke flex flex-col">
+                                                                    {product_details_list?.product?.origin?.name && (
+                                                                        <span className="gi-single-sku mb-[8px] text-[14px] px-4 rounded-full leading-[32px] bg-green-300 text-[#443A2E] tracking-[0.02rem]">
+                                                                           Current Stock: {product_details_list?.product?.current_stock}
+                                                                        </span>
+                                                                    )}
+
                                                                 </div>
                                                                 <div className="gi-single-stoke flex flex-col">
                                                                     {
                                                                         product_details_list?.product?.current_stock > 0 ? (
                                                                             <span className="gi-single-ps-title leading-[1] text-[14px] text-[#5caf90] tracking-[0]">
-                                                                                IN STOCK
+                                                                                IN STOCK 
                                                                             </span>
                                                                         ) : (
                                                                             <span className="gi-single-ps-title leading-[1] text-[14px] text-[#ff0000] tracking-[0]">
@@ -635,7 +648,7 @@ const Product_Details = () => {
                                                                     }
 
                                                                 </div>
-                                                              
+
                                                                 <div className="gi-single-pro-tab mt-[40px]">
                                                                     <div className="md:flex justify-between gap-4">
                                                                         <div className="w-full">
@@ -712,8 +725,8 @@ const Product_Details = () => {
                         </section>
                         {/* <!-- related product  --> */}
                         <Similar_Product data={product_details_list?.related_products} />
-                          {/* <- ----- retrun policy ------> */}
-                          <Product_Return_Policy/>
+                        {/* <- ----- retrun policy ------> */}
+                        <Product_Return_Policy />
                         {/* <----------- Private Confidential ------------>*/}
                         <Home_Private_Confidential />
                         {/* <------------- Footer section's ---------------> */}

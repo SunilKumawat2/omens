@@ -187,9 +187,14 @@ const Header = () => {
                                                 <i className="fi-rr-heart text-[18px] text-[#fff] leading-[17px]"></i>
                                             </div>
                                             <div className="gi-btn-desc flex flex-col uppercase ml-[10px]">
-                                                <span
-                                                    className="gi-header-count gi-wishlist-count w-[15px] h-[15px] text-blue-400 flex items-center justify-center
-                                                     rounded-[50%] text-[11px] rounded-lg bg-white absolute top-[-2px] right-[-6px] opacity-[0.8]">{wishlist?.length}</span>
+                                                {
+                                                    wishlist?.length > 0 && (
+                                                        <span
+                                                            className="gi-header-count gi-wishlist-count w-[15px] h-[15px] text-blue-400 flex items-center justify-center
+                                                         rounded-[50%] text-[11px] rounded-lg bg-white absolute top-[-2px] right-[-6px] opacity-[0.8]">{wishlist?.length}</span>
+
+                                                    )
+                                                }
 
                                             </div>
                                         </Link>
@@ -338,9 +343,14 @@ const Header = () => {
                                                 <div className="header-icon relative flex">
                                                     <i className="fi-rr-heart text-[24px] leading-[17px]"></i>
                                                 </div>
-                                                <span
-                                                    className="gi-header-count gi-wishlist-count w-[15px] h-[15px] text-[#fff] flex items-center justify-center
-                                                     rounded-[50%] text-[11px] absolute top-[-2px] right-[-6px] opacity-[0.8]">{wishlist?.length}</span>
+                                                {
+                                                    wishlist?.length > 0 && (
+                                                        <span
+                                                            className="gi-header-count gi-wishlist-count w-[15px] h-[15px] text-[#fff] flex items-center justify-center
+                                                         rounded-[50%] text-[11px] absolute top-[-2px] right-[-6px] opacity-[0.8]">{wishlist?.length}</span>
+                                                    )
+                                                }
+
                                             </Link>
                                             {/* <!-- Header Wishlist End --> */}
 

@@ -144,7 +144,7 @@ const User_Dashboard_Profile = () => {
                                         <User_Dashbaord_Common_Section data={user_profile} />
                                         <div className="flex-1">
                                             <div className=" w-full">
-                                                <h1 className="font-bold text-[24px] text-qblack mb-4">Profile</h1>
+                                                {/* <h1 className="font-bold text-[24px] text-qblack mb-4">Profile</h1> */}
                                                 {
                                                     isLoading ? (
                                                         <Loader />
@@ -154,7 +154,7 @@ const User_Dashboard_Profile = () => {
 
                                                                 <div className="w-full">
                                                                     <div className="gi-login-wrap flex gi-register-half w-[100%] flex-col">
-                                                                        <h4 className="text-lg font-semibold">Update Profile Picture</h4>
+                                                                        {/* <h4 className="text-lg font-semibold">Update Profile Picture</h4> */}
 
                                                                         <div className="iconflexd text-center relative mb-5">
                                                                             <div className="columns relative w-[300px] m-auto">

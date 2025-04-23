@@ -2,8 +2,7 @@ import React from 'react'
 
 const Product_Description = (product_details_list) => {
     const product_description_data = product_details_list?.data?.product
-    console.log("Product_Description", product_details_list?.data?.
-        product)
+    console.log("Product_Description", product_details_list?.data?.product)
     return (
         <div id="gi-spt-nav-details" className="tab-single-pane">
             <div className="gi-single-pro-tab-desc py-5">
@@ -33,7 +32,7 @@ const Product_Description = (product_details_list) => {
                                 </li>
                             )
                         }
-                        {
+                        {/* {
                             product_description_data?.composition != null && (
                                 <li
                                     className="list-disc text-[15px] text-[#777] tracking-[0.02rem] leading-[1.6]">
@@ -42,7 +41,7 @@ const Product_Description = (product_details_list) => {
                                     {product_description_data?.composition}
                                 </li>
                             )
-                        }
+                        } */}
                         {
                             product_description_data?.return_policy != null && (
                                 <li
@@ -84,7 +83,7 @@ const Product_Description = (product_details_list) => {
                                 </li>
                             )
                         }
-                        {
+                        {/* {
                             product_description_data?.cut && (
                                 <li
                                     className="list-disc text-[15px] text-[#777] tracking-[0.02rem] leading-[1.6]">
@@ -93,7 +92,7 @@ const Product_Description = (product_details_list) => {
                                     {product_description_data?.cut}
                                 </li>
                             )
-                        }
+                        } */}
                         {
                             product_description_data?.color?.name && (
                                 <li
