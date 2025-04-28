@@ -7,11 +7,39 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Astrologer_Footer from "../astrologer_footer/Astrologer_Footer"
+import { get_astro_wallet_detail, get_astro_wallet_history } from '../../../../api/astrologer/Astrologer'
 
 const Astrologer_Wallet = () => {
     const [is_loading, set_Is_Loading] = useState(false)
     const [get_wallet_details, set_Wallet_Details] = useState({})
     const [get_wallet_list, set_Wallet_List] = useState([])
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 10;
+
+    // Calculate total pages safely
+    const totalPages = Math.ceil(get_wallet_list?.length / productsPerPage) || 1;
+
+    // Calculate the products to display on the current page
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const currentProduct = get_wallet_list?.slice(startIndex, startIndex + productsPerPage) || [];
+
+    // Pagination controls
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleNext = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrev = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
     useEffect(() => {
         const handle_Get_Wallet_Details = async () => {
@@ -23,7 +51,7 @@ const Astrologer_Wallet = () => {
                     set_Is_Loading(false)
                     throw new Error("User token not found");
                 }
-                const response = await Get_Wallet_Details({ Authorization: `Bearer ${token}` })
+                const response = await get_astro_wallet_detail({ Authorization: `Bearer ${token}` })
                 if (response?.data?.status == "200") {
                     set_Wallet_Details(response?.data?.data)
                     set_Is_Loading(false)
@@ -49,7 +77,7 @@ const Astrologer_Wallet = () => {
                     set_Is_Loading(false)
                     throw new Error("User token not found");
                 }
-                const response = await get_wallet_history({ Authorization: `Bearer ${token}` })
+                const response = await get_astro_wallet_history({ Authorization: `Bearer ${token}` })
                 if (response?.data?.status == "200") {
                     set_Wallet_List(response?.data?.data)
                     set_Is_Loading(false)
@@ -86,8 +114,8 @@ const Astrologer_Wallet = () => {
         <div>
             {/*  */}
             <Astrologer_after_Login_Header />
-              {/* <-------- ToastContainer ------------> */}
-      <ToastContainer style={{ marginTop: "120px" }} />
+            {/* <-------- ToastContainer ------------> */}
+            <ToastContainer style={{ marginTop: "120px" }} />
             {
                 is_loading ? (
                     <Loader />
@@ -193,7 +221,7 @@ const Astrologer_Wallet = () => {
                                                             <table className="table text-sm table_hover w-full">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Tran. ID</th>
+                                                                        <th>S.No</th>
                                                                         <th>Name</th>
                                                                         <th>Date</th>
                                                                         <th>Amount</th>
@@ -202,10 +230,10 @@ const Astrologer_Wallet = () => {
                                                                 </thead>
                                                                 <tbody>
                                                                     {
-                                                                        get_wallet_list?.map((get_wallet_result) => {
+                                                                        currentProduct?.map((get_wallet_result,index) => {
                                                                             return (
                                                                                 <tr>
-                                                                                    <td>{get_wallet_result?.transuction_id}</td>
+                                                                                    <td>{index+1}</td>
                                                                                     <td>{get_wallet_result?.place}</td>
                                                                                     <td>{formatDateTime(get_wallet_result?.created_at)}</td>
                                                                                     {
@@ -222,6 +250,46 @@ const Astrologer_Wallet = () => {
                                                                     }
                                                                 </tbody>
                                                             </table>
+                                                            {/* <!-- Pagination Start --> */}
+                                                            <div className="gi-pro-pagination pt-[15px] pb-[15px] flex justify-between items-center border-t-[1px] border-solid border-[#eee] max-[575px]:flex-col">
+                                                                <span className="text-[14px] text-[#777] max-[575px]:mb-[10px]">Showing {startIndex + 1}-{Math.min(startIndex + productsPerPage, get_wallet_list?.length)} of {get_wallet_list?.length} Astrologer Wallet(s)</span>
+                                                                <ul className="gi-pro-pagination-inner flex">
+                                                                    {currentPage > 1 && (
+                                                                        <li>
+                                                                            <button
+                                                                                onClick={handlePrev}
+                                                                                className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-[#5caf90] leading-[30px] h-[32px] bg-red-500 flex text-center align-top text-[16px] justify-center items-center rounded-[5px]"
+                                                                            >
+                                                                                Prev
+                                                                            </button>
+                                                                        </li>
+                                                                    )}
+                                                                    {[...Array(totalPages).keys()].map((page) => (
+                                                                        <li key={page} className="inline-block float-left mr-[5px]">
+                                                                            <button
+                                                                                onClick={() => handlePageChange(page + 1)}
+                                                                                className={`transition-all duration-[0.3s] m-1 p-2 ease-in-out w-[32px] h-[32px] font-light 
+                    text-[#777] leading-[32px] bg-[#eee] flex text-center align-top 
+                    text-[16px] justify-center items-center rounded-[5px]
+                    ${currentPage === page + 1 ? 'active bg-red-500 text-white' : 'bg-gray-300 text-white'}`}
+                                                                            >
+                                                                                {page + 1}
+                                                                            </button>
+                                                                        </li>
+                                                                    ))}
+                                                                    {currentPage < totalPages && (
+                                                                        <li>
+                                                                            <button
+                                                                                onClick={handleNext}
+                                                                                className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-[#5caf90] leading-[30px] h-[32px] bg-red-500 flex text-center align-top text-[16px] justify-center items-center rounded-[5px]"
+                                                                            >
+                                                                                Next
+                                                                            </button>
+                                                                        </li>
+                                                                    )}
+                                                                </ul>
+
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -235,7 +303,7 @@ const Astrologer_Wallet = () => {
                 )
             }
             {/*  */}
-            <Astrologer_Footer/>
+            <Astrologer_Footer />
         </div>
     )
 }

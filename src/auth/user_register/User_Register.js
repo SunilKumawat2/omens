@@ -78,7 +78,7 @@ const User_Register = () => {
             const response = await UserRegister(user_register_data)
             if (response?.data?.status == "200") {
                 setIsLoading(false)
-                navigate("/user_register_otp_verify", {
+                navigate("/user-register-otp-verify", {
                     state: {
                         mobile: mobileNumber,
                         country_code: `+${countryCode}`,
@@ -193,7 +193,7 @@ const User_Register = () => {
                                                     <span className="text-[#777] text-[14px]">
                                                         Already have an account?
                                                     </span>
-                                                    <Link to="/user_login"
+                                                    <Link to="/user-login"
                                                         className="gi-btn-1 btn py-[8px] px-[15px] text-[#9F2225] border-[0] transition-all duration-[0.3s] ease-in-out overflow-hidden text-center text-[14px] font-semibold relative rounded-[5px] hover:text-[#333]">
                                                         Login
                                                     </Link>

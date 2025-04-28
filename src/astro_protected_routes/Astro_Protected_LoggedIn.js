@@ -9,7 +9,7 @@ const Astro_Protected_LoggedIn = (props) => {
         let User_Login = localStorage.getItem("astro_is_active")
         let user_token = localStorage.getItem("user_token")
         if(User_Login){
-         navigate("/astrologer_home")
+         navigate("/astrologer-home")
         }
       //  if(user_token){
       //   navigate("/astrologer_profile")

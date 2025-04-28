@@ -13,7 +13,6 @@ const User_Dashboard_Order_Details = () => {
     const { id: orderId } = useParams();
     const [is_loading, set_Is_Loading] = useState(false)
     const [order_details, set_order_details] = useState([])
-    console.log(",mdfkjdf", order_details)
     const [activeTab, setActiveTab] = useState("0");
 
     // Status codes and labels
@@ -29,15 +28,23 @@ const User_Dashboard_Order_Details = () => {
     // Current status code
     const currentStatus = order_details?.order?.status;
 
+    // Function to determine status color
     const getStatusClass = (statusCode, currentStatus) => {
-        if (statusCode <= currentStatus) {
-            return "border-success after:bg-success";
-        } else if (statusCode === currentStatus) {
-            return "border-primary after:bg-primary";
+        if (currentStatus == 6) {
+            return "border-red-600 after:bg-red-600 text-red-600";
+        } else if (statusCode <= currentStatus) {
+            return "border-green-600 after:bg-green-600 text-green-600";
         } else {
-            return "border-[#cfcfcf] after:bg-[#cfcfcf]";
+            return "border-gray-300 after:bg-gray-300 text-gray-500";
         }
     };
+    // Filter statuses
+    let displayedStatuses;
+    if (currentStatus == 6) {
+        displayedStatuses = statuses?.filter(s => s.code == 1 || s.code == 6); // Show only "Order" → "Cancelled"
+    } else {
+        displayedStatuses = statuses?.filter(s => s.code != 6); // Show full timeline without "Cancelled"
+    }
 
 
 
@@ -72,7 +79,6 @@ const User_Dashboard_Order_Details = () => {
         }
     }, [orderId]);
 
-    console.log("kdfhkshf", order_details)
     return (
         <div>
             {/* <-------- Header section's ------------> */}
@@ -87,9 +93,7 @@ const User_Dashboard_Order_Details = () => {
                             <div className="myaccount-section w-full">
                                 <div className="container-x mx-auto">
                                     <div className="w-full my-10">
-
                                         <div className="w-full bg-white shadow-xl p-5">
-
                                             <div className="my_account w-full flex space-x-10">
                                                 <User_Dashbaord_Common_Section />
                                                 <div className="flex-1">
@@ -169,7 +173,7 @@ const User_Dashboard_Order_Details = () => {
                                                                         {
                                                                             order_details?.order?.status == "5" && (
                                                                                 <li onClick={() => {
-                                                                                    navigate("/add_product_review", {
+                                                                                    navigate("/add_productreview", {
                                                                                         state: {
                                                                                             order_details_result: order_details_result?.product_id
                                                                                         }
@@ -215,17 +219,19 @@ const User_Dashboard_Order_Details = () => {
                                                                         <div className="gi-single-pro-tab-desc py-5">
                                                                             <div className="widget-timeline style-1">
                                                                                 <ul className="relative after:top-5 after:bottom-12 after:absolute after:content-[''] after:w-[1px] after:left-2.5 after:border-r after:border-dashed after:border-black/15">
-                                                                                    {statuses?.map((status) => (
+                                                                                    {displayedStatuses && displayedStatuses?.map((status) => (
                                                                                         <li className="relative mb-3.6" key={status.code}>
                                                                                             <div
                                                                                                 className={`rounded-full left-0 absolute top-2.5 size-5 border p-1 bg-white ${getStatusClass(
-                                                                                                    status?.code,
+                                                                                                    status.code,
                                                                                                     currentStatus
                                                                                                 )} after:content-[''] after:size-2.5 after:rounded-full after:block`}
                                                                                             ></div>
                                                                                             <div className="p-2.5 pl-3.6 relative block ml-10">
                                                                                                 <a className="timeline-panel" href="javascript:void(0);">
-                                                                                                    <h6 className="mb-0 text-[15px] font-medium text-black">{status.label}</h6>
+                                                                                                    <h6 className={`mb-0 text-[15px] font-medium ${getStatusClass(status.code, currentStatus)}`}>
+                                                                                                        {status.label}
+                                                                                                    </h6>
                                                                                                 </a>
                                                                                             </div>
                                                                                         </li>

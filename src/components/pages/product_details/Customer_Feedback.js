@@ -48,7 +48,7 @@ const Customer_Feedback = (product_details_list) => {
             {
                 Product_reviews?.length > 0 && (
                     <div className="w-[400px]">
-                        <div className="single-add-more p-5 my-[40px] bg-[#F3F3F3]">
+                        <div className="single-add-more p-5 my-[40px] bg-[#F3F3F3] z-0">
                             <h2 className="text-2xl font-bold mb-5">
                                 Customer <span className="text-[#9F2225]">Feedback</span>
                             </h2>

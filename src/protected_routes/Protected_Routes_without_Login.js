@@ -8,7 +8,7 @@ const Protected_Routes_without_Login = (props) => {
     useEffect(() => {
         let User_Login = localStorage.getItem("user_is_active")
         if (!User_Login) {
-            navigate("/user_login")
+            navigate("/user-login")
         }
 
     }, [navigate])

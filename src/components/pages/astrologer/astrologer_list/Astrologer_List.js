@@ -105,7 +105,7 @@ const Astrologer_List = () => {
             } else if (response?.response?.data?.status == "500") {
                 set_Is_Loading(false);
             }
-            else{
+            else {
                 set_Is_Loading(false);
 
             }
@@ -158,14 +158,14 @@ const Astrologer_List = () => {
                                                 <div className="flex flex-wrap w-full">
                                                     {currentProduct?.map((astro_list_result) => {
                                                         return (
-                                                            <Link to={`/astrologer_details/${astro_list_result?.id}`} className="min-[992px]:w-[33.33%] min-[768px]:w-[50%] min-[576px]:w-[50%] max-[420px]:w-full px-[12px] max-[575px]:w-[50%] max-[575px]:mx-auto mb-6 grid_call_chat">
+                                                            <Link to={`/astrologer-details/${astro_list_result?.id}`} className="min-[992px]:w-[33.33%] min-[768px]:w-[50%] min-[576px]:w-[50%] max-[420px]:w-full px-[12px] max-[575px]:w-[50%] max-[575px]:mx-auto mb-6 grid_call_chat">
                                                                 <div className="gi-product-content bg-white" >
                                                                     <div className="gi-product-inner transition-all duration-[0.3s] ease-in-out overflow-hidden rounded-[5px] shadow-xl">
                                                                         <div className="gi-pro-image-outer transition-all duration-[0.3s] delay-[0s] ease z-[11] relative">
                                                                             <div className="astro_bg">
 
                                                                                 <div className="flex justify-between items-center">
-                                                                                    <Link to={`/astrologer_details/${astro_list_result?.id}`} className="mx-[5px] text-center grid  grid-flow-row auto-rows-max gap-2 items-center justify-center text-[15px]">
+                                                                                    <Link to={`/astrologer-details/${astro_list_result?.id}`} className="mx-[5px] text-center grid  grid-flow-row auto-rows-max gap-2 items-center justify-center text-[15px]">
                                                                                         Call
                                                                                         <img src={Common_Images_Transport?.call_icon} className="m-auto"
                                                                                             alt="" />
@@ -173,7 +173,7 @@ const Astrologer_List = () => {
                                                                                     <h6
                                                                                         className="gi-pro-stitle text-center font-normal text-[#000] text-[14px] font-semibold leading-[1.2] mt-4 capitalize">
                                                                                         Rs.{astro_list_result?.minute_rate}/min</h6>
-                                                                                    <Link to={`/astrologer_details/${astro_list_result?.id}`}
+                                                                                    <Link to={`/astrologerdetails/${astro_list_result?.id}`}
                                                                                         className="mx-[5px] text-center grid  grid-flow-row auto-rows-max gap-2 items-center justify-center text-[15px]">
                                                                                         Chat
                                                                                         <img src={Common_Images_Transport?.chat_icon} className="m-auto"
@@ -215,7 +215,7 @@ const Astrologer_List = () => {
                                                                             <a href="#">
                                                                                 <h5 className="gi-pro-stitle font-normal text-[#3B4959] text-[18px] font-semibold leading-[1.2] capitalize">{astro_list_result?.name}</h5>
                                                                             </a>
-                                                                            <div className="mt-2">
+                                                                            {/* <div className="mt-2">
                                                                                 <div className="skills-container">
                                                                                     {astro_list_result?.skills && (
                                                                                         <span className="whitespace-nowrap inline-block text-gray-900 hover:text-white border border-gray-300 hover:bg-gray-900 rounded-full text-sm px-3 py-1 text-center mt-2">
@@ -242,6 +242,34 @@ const Astrologer_List = () => {
                                                                                 <span
                                                                                     className="whitespace-nowrap inline-block text-gray-900 hover:text-white border border-gray-300 hover:bg-gray-900 rounded-full text-sm px-3 py-1 text-center mt-2">
                                                                                     {astro_list_result?.experience}</span>
+                                                                            </div> */}
+                                                                            <div className="mt-2">
+                                                                                <div className="skills-container">
+                                                                                    {astro_list_result?.skills && (
+                                                                                        <span
+                                                                                            className="line-clamp-1 text-gray-900 text-sm text-center mt-2"
+                                                                                        >
+                                                                                            Skills: <span className='text-gray-900 font-medium'>{astro_list_result?.skills}</span>
+                                                                                        </span>
+                                                                                    )}
+                                                                                    {/* {astro_list_result?.skills?.split(',')?.length > 1 && (
+                                                                    <span className="inline-block text-gray-500 text-sm ml-2">...</span>
+                                                                )} */}
+                                                                                </div>
+                                                                                <div className="language-container">
+                                                                                    {/* {astro_list_result?.language && ( */}
+                                                                                    <span
+                                                                                        className="line-clamp-1 text-gray-900 text-sm text-center mt-1 mb-2"
+                                                                                    >
+                                                                                        Language: <span className='text-gray-900 font-medium'>{astro_list_result?.language}</span>
+                                                                                    </span>
+                                                                                    {/* )} */}
+                                                                                    {/* {astro_list_result?.language?.split(',')?.length > 1 && (
+                                                                    <span className="inline-block text-gray-500 text-sm ml-2">...</span>
+                                                                )} */}
+                                                                                </div>
+                                                                                <span
+                                                                                    className="text-gray-900 text-sm px-3 py-1 text-center mt-2">Exp.<span className='font-bold'>{astro_list_result?.experience}</span></span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -303,7 +331,7 @@ const Astrologer_List = () => {
                                                             className="gi-sidebar-title font-semibold text-gray-700 flex justify-between text-[17px] leading-tight cursor-pointer"
                                                             onClick={toggle_skills_accordtion}
                                                         >
-                                                            Skills ▼
+                                                            Skills <i class="gicon gi-angle-down"></i>
                                                         </h3>
                                                     </div>
                                                     {/* Accordion Content */}
@@ -343,10 +371,13 @@ const Astrologer_List = () => {
                                                 {/* Sidebar Category Block */}
                                                 <div className="gi-sidebar-block mb-4">
                                                     <div className="gi-sb-title border-b border-gray-200 pb-4">
-                                                        <div className="text-red-700 text-lg mb-4 flex justify-between items-center cursor-pointer">
-                                                            <h3 className={`gi-sidebar-title font-semibold text-gray-700 flex justify-between text-[17px] leading-tight cursor-pointer `} onClick={toggle_langauge_accordtion}>Language ▼</h3>
-                                                            <span className={`transform transition-transform ${is_Open_Langauge ? "rotate-180" : ""}`} onClick={toggle_langauge_accordtion}> </span>
-                                                        </div>
+                                                        
+                                                        <h3
+                                                            className="gi-sidebar-title font-semibold text-gray-700 flex justify-between text-[17px] leading-tight cursor-pointer"
+                                                            onClick={toggle_langauge_accordtion}
+                                                        >
+                                                            Language <i class="gicon gi-angle-down"></i>
+                                                        </h3>
                                                     </div>
                                                     {/* Accordion Content */}
                                                     <div

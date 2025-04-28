@@ -1,11 +1,46 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IMG_BASE_URL } from "../../../../config/Config";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Home_Best_Selling_Products = (home_data) => {
+    const Best_Selling_Products = home_data?.data?.best_selling_product;
     const navigate = useNavigate();
-    // <------- get the Best Selling Products as a props ------------>
-    const Best_Selling_Products = home_data?.data?.best_selling_product
+
+    const slidesToShowProduct = Best_Selling_Products?.length < 4 ? Best_Selling_Products?.length : 4;
+
+    const productSliderSettings = {
+        infinite: Best_Selling_Products?.length > slidesToShowProduct,
+        speed: 500,
+        slidesToShow: slidesToShowProduct,
+        slidesToScroll: 1,
+        autoplay: Best_Selling_Products?.length > 1,
+        autoplaySpeed: 2500,
+        arrows: Best_Selling_Products?.length > 1,
+        variableWidth: false,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: Best_Selling_Products?.length < 3 ? Best_Selling_Products?.length : 3,
+                },
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: Best_Selling_Products?.length < 2 ? Best_Selling_Products?.length : 2,
+                },
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                },
+            },
+        ],
+    };
 
     return (
         <div>
@@ -49,7 +84,7 @@ const Home_Best_Selling_Products = (home_data) => {
 
                         </div>
                         <div onClick={() => {
-                            navigate("/home_view_all_product", {
+                            navigate("/all-best-selling-product", {
                                 state: {
                                     gemstone_product: Best_Selling_Products,
                                     category_id: Best_Selling_Products && Best_Selling_Products[0]?.cat_id,
@@ -63,36 +98,43 @@ const Home_Best_Selling_Products = (home_data) => {
                     <div className="w-full mb-[-24px] px-[15px]">
                         <div className="col">
                             <div className="tab-content" id="myproTabContent">
-                                <div className="tab-pro-pane" id="snack">
-                                    <div className="custome_jewellery w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-                                        {
-                                            Best_Selling_Products?.map((product_list_result) => {
-                                                const isOutOfStock = product_list_result?.current_stock <= 0;
-                                                return (
-                                                    <div onClick={() => navigate("/product_details", {
-                                                        state: {
-                                                            product_list_result,
-                                                            category_id: product_list_result?.cat_id,
-                                                            subcategory_id: product_list_result?.sub_id,
+                                <div className="tab-pro-pane z-0" id="snack">
+                                    <Slider {...productSliderSettings} className="w-full px-[5px]">
+                                        {Best_Selling_Products?.map((product_list_result) => {
+                                            const isOutOfStock = product_list_result?.current_stock <= 0;
+                                            return (
+                                                <div key={product_list_result?.id} className="px-2">
+                                                    <div
+                                                        onClick={() =>
+                                                            navigate(`/product/${product_list_result?.slug}`, {
+                                                                state: {
+                                                                    product_list_result,
+                                                                    category_id: product_list_result?.cat_id,
+                                                                    subcategory_id: product_list_result?.sub_id,
+                                                                },
+                                                            })
                                                         }
-                                                    })}
-                                                        key={product_list_result?.id}
-                                                        className={`gi-product-content h-full ${isOutOfStock ? "opacity-50 pointer-events-none" : ""}`}>
+                                                        className={`gi-product-content h-full ${isOutOfStock ? "opacity-50 pointer-events-none" : ""}`}
+                                                    >
                                                         <div className="gi-product-inner transition-all duration-[0.3s] ease-in-out cursor-pointer overflow-hidden rounded-[5px] shadow-xl pt-4">
                                                             <div className="gi-pro-image-outer transition-all duration-[0.3s] delay-[0s] ease z-[11] relative">
                                                                 <div className="gi-pro-image overflow-hidden">
                                                                     <a className="image productimg7 relative block overflow-hidden">
-                                                                        {
-                                                                            product_list_result?.product_images && product_list_result?.product_images[0]?.file_type === "image" ? (
-                                                                                <img className="main-image w-32 md:w-10 transition-all duration-[0.3s] ease delay-[0s] h-32 md:h-40" src={`${IMG_BASE_URL}${product_list_result?.product_images[0]?.image_url}`}
-                                                                                    alt="Product"
+                                                                        {product_list_result?.product_images &&
+                                                                            product_list_result?.product_images[0]?.file_type === "image" ? (
+                                                                            <img
+                                                                                className="main-image w-32 md:w-10 transition-all duration-[0.3s] ease delay-[0s] h-32 md:h-40"
+                                                                                src={`${IMG_BASE_URL}${product_list_result?.product_images[0]?.image_url}`}
+                                                                                alt="Product"
+                                                                            />
+                                                                        ) : (
+                                                                            <video controls className="main-image w-32 md:w-10 transition-all duration-[0.3s] ease delay-[0s] h-32 md:h-40">
+                                                                                <source
+                                                                                    src={product_list_result?.product_images[0]?.video_url}
+                                                                                    type="video/mp4"
                                                                                 />
-                                                                            ) : (
-                                                                                <video controls className="main-image w-32 md:w-10 transition-all duration-[0.3s] ease delay-[0s] h-32 md:h-40">
-                                                                                    <source src={product_list_result?.product_images[0]?.video_url} type="video/mp4" />
-                                                                                </video>
-                                                                            )
-                                                                        }
+                                                                            </video>
+                                                                        )}
                                                                     </a>
                                                                     {isOutOfStock && (
                                                                         <div className="absolute top-2 right-2 bg-red-600 text-white text-sm px-2 py-1 rounded">
@@ -104,13 +146,10 @@ const Home_Best_Selling_Products = (home_data) => {
 
                                                             <div className="gi-pro-content h-full p-[15px] md:p-[25px] md:pt-[20px] relative z-[10] flex flex-col text-center">
                                                                 <a href="#">
-                                                                    <h5 className="gi-pro-stitle font-normal text-[#0F1726] text-[16px] font-semibold leading-[1.2] capitalize">
-                                                                        {product_list_result?.meta_title}
+                                                                    <h5 className="gi-pro-stitle font-normal text-[#0F1726] text-[16px] font-semibold leading-[1.2] capitalize truncate overflow-hidden whitespace-nowrap">
+                                                                        {product_list_result?.name}
                                                                     </h5>
                                                                 </a>
-                                                                <p className="text-[#939292] text-[15px] leading-5 my-3 overflow-hidden whitespace-nowrap text-ellipsis">
-                                                                    {product_list_result?.short_description}
-                                                                </p>
 
                                                                 <div className="gi-pro-rat-price mt-[5px] mb-[0] flex flex-col">
                                                                     <span className="gi-price">
@@ -123,8 +162,9 @@ const Home_Best_Selling_Products = (home_data) => {
                                                                 <button
                                                                     type="button"
                                                                     className={`text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 
-                                                                     focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-3 dark:border-gray-600 
-                                                                     dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 ${isOutOfStock ? "cursor-not-allowed" : ""}`}
+                              focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-3 dark:border-gray-600 
+                              dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 ${isOutOfStock ? "cursor-not-allowed" : ""
+                                                                        }`}
                                                                     disabled={isOutOfStock}
                                                                 >
                                                                     {isOutOfStock ? "Not Available" : "View More"}
@@ -132,10 +172,10 @@ const Home_Best_Selling_Products = (home_data) => {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                );
-                                            })
-                                        }
-                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </Slider>
                                 </div>
                             </div>
                         </div>

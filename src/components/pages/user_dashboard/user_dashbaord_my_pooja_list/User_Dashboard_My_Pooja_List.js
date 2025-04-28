@@ -155,7 +155,7 @@ const User_Dashboard_My_Pooja_List = () => {
                                                                                                         localStorage.setItem("pooja_id", JSON.stringify(get_booked_pooja_list_result?.pooja_id));
                                                                                                     }}
                                                                                                     >
-                                                                                                        <Link to="/add_pooja_review" className='bg-red-700 text-white p-[3px] rounded-[6px]'>Review</Link>
+                                                                                                        <Link to="/add-pooja-review" className='bg-red-700 text-white p-[3px] rounded-[6px]'>Review</Link>
                                                                                                     </span>
                                                                                                 )
                                                                                             }

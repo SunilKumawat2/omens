@@ -23,6 +23,8 @@ import { ToastContainer } from "react-toastify";
 import Loader from "../../loader/Loader";
 import { useNavigate } from "react-router-dom";
 import Astrologer_Header from "../../components/pages/astrologer/astrologer_header/Astrologer_Header";
+import { get_language_and_skills } from "../../api/astrologer/Astrologer";
+import {Link} from "react-router-dom"
 
 const Astrologer_Register = () => {
     const navigate = useNavigate()
@@ -32,6 +34,9 @@ const Astrologer_Register = () => {
     const [mobileNumber, setMobileNumber] = useState('');
     const [countryCode, setCountryCode] = useState('IN');
     const [isValid, setIsValid] = useState(false);
+    const [astrologer_skills, set_Astrologer_Skills] = useState([])
+    const [astrologer_language, set_Astrologer_Language] = useState([])
+    console.log("astrologer_skills", astrologer_skills)
     const [astro_register_form, set_Astro_Register_Form] = useState({
         name: "",
         email: "",
@@ -80,7 +85,7 @@ const Astrologer_Register = () => {
                     return;
                 }
 
-                const previewUrl = URL.createObjectURL(file); 
+                const previewUrl = URL.createObjectURL(file);
                 set_Astro_Register_Form({
                     ...astro_register_form,
                     [fieldName]: file,
@@ -198,7 +203,7 @@ const Astrologer_Register = () => {
             if (response?.data?.status == "200") {
                 setIsLoading(false)
                 set_Astro_Register_Form({})
-                navigate("/astrologer_register_otp_verify", {
+                navigate("/astrologer-register-otp-verify", {
                     state: {
                         mobile: mobileNumber,
                         country_code: `+${countryCode}`,
@@ -228,11 +233,40 @@ const Astrologer_Register = () => {
             }
         };
     }, [astro_register_form?.profileImgPreview]);
- 
+
     // <------- clear the local storage --------->
-    useEffect(()=>{
+    useEffect(() => {
         localStorage.clear("")
     })
+
+    useEffect(() => {
+        const handle_get_language_and_skills = async () => {
+            try {
+                const response = await get_language_and_skills();
+                const skills = response?.data?.data?.skills || [];
+                const languages = response?.data?.data?.languages || [];
+
+                // Convert skills into { value, label } format
+                const formattedSkills = skills?.map(skill => ({
+                    value: skill.skill,  // Assuming skills have an 'id' field
+                    label: skill.skill // Assuming skills have a 'name' field
+                }));
+                // Convert skills into { value, label } format
+                const formattedlanguages = languages?.map(language => ({
+                    value: language?.language,  // Assuming skills have an 'id' field
+                    label: language?.language // Assuming skills have a 'name' field
+                }));
+
+                set_Astrologer_Skills(formattedSkills);
+                set_Astrologer_Language(formattedlanguages);
+            } catch (error) {
+                console.error("Error fetching skills:", error);
+            }
+        };
+
+        handle_get_language_and_skills();
+    }, []);
+
     return (
         <div>
             {/*  */}
@@ -401,7 +435,7 @@ const Astrologer_Register = () => {
                                                         className="mb-[10px] text-[#4b5966] text-[15px] font-medium tracking-[0] leading-[1] p-1">
                                                         Languages</label>
                                                     <Select
-                                                        options={language_options} // Make sure options is an array of { value, label } objects
+                                                        options={astrologer_language} // Make sure options is an array of { value, label } objects
                                                         isMulti
                                                         name="language"
                                                         value={astro_register_form.language} // Directly use the array
@@ -420,17 +454,16 @@ const Astrologer_Register = () => {
                                                 </div>
 
                                                 <div className="gi-login-wrap flex gi-register-half w-[100%] flex-col">
-                                                    <label
-                                                        className="mb-[10px] text-[#4b5966] text-[15px] font-medium tracking-[0] leading-[1] p-1">
+                                                    <label className="mb-[10px] text-[#4b5966] text-[15px] font-medium tracking-[0] leading-[1] p-1">
                                                         Skills</label>
                                                     <div className="iconflex">
                                                         <img src={Common_Images_Transport?.skills_icon} alt="" />
                                                         <Select
-                                                            options={skills_options} // Make sure options is an array of { value, label } objects
+                                                            options={astrologer_skills}  // Dynamically populated options
                                                             isMulti
                                                             name="skills"
-                                                            value={astro_register_form.skills} // Directly use the array
-                                                            onChange={(selected) => handle_astro_register_form(selected, "skills")} // Pass selected options to handler
+                                                            value={astro_register_form.skills} // Ensure it's an array of objects { value, label }
+                                                            onChange={(selected) => handle_astro_register_form(selected, "skills")}
                                                             placeholder="Select options..."
                                                             className="react-select-container p-1 text-gray-500 bg-white border rounded-lg"
                                                             classNamePrefix="react-select"
@@ -442,6 +475,7 @@ const Astrologer_Register = () => {
                                                                 }),
                                                             }}
                                                         />
+
                                                     </div>
                                                 </div>
 
@@ -474,7 +508,17 @@ const Astrologer_Register = () => {
                                                         className="w-full mt-[20px] block p-[14px] text-center text-[#fff] bg-gradient-to-r from-[#9F2225] to-[#FFB500] rounded-[5px] text-[#777] text-[16px] outline-[0] h-[50px]">Submit</button>
                                                 </div>
 
-
+                                                <span className="gi-login-wrap gi-login-btn mt-[20px] flex flex-row justify-center gap-3 items-center">
+                            <span className="text-[#777] text-[14px]">
+                            If you have an account with us, please log in.
+                            </span>
+                            <Link
+                              to="/astrologer-login"
+                              className="gi-btn-1 btn py-[8px] px-[15px] text-[#9F2225] border-[0] transition-all duration-[0.3s] ease-in-out overflow-hidden text-center text-[14px] font-semibold relative rounded-[5px] hover:text-[#333]"
+                            >
+                               Login Account
+                            </Link>
+                          </span>
                                             </form>
                                         </div>
                                     </div>

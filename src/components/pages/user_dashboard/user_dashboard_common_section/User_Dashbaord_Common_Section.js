@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Common_Images_Transport from '../../../common/common_imges_transport/Common_Images_Transport'
 import { Link } from 'react-router-dom'
 import { IMG_BASE_URL } from '../../../../config/Config'
@@ -7,6 +7,8 @@ import { fetchUserProfile } from '../../../../redux/actions/userProfileActions'
 import Loader from '../../../../loader/Loader'
 
 const User_Dashbaord_Common_Section = () => {
+    const get_active_tabs = localStorage.getItem("active_tabs")
+    const [active_tabs,set_Active_Tabs] = useState(get_active_tabs || 0);
     const dispatch = useDispatch();
     const { profile, isloading, error } = useSelector((state) => state.user_profile);
     console.log("User_Dashbaord_Common_Section", profile)
@@ -16,8 +18,10 @@ const User_Dashbaord_Common_Section = () => {
     useEffect(() => {
         dispatch(fetchUserProfile());
     }, [dispatch]);
+
+
     return (
-        <div className="w-[300px] min-h-[600px] bg-[#f8f8f8] p-5">
+        <div className="md:w-[300px] min-h-[600px] bg-[#f8f8f8] p-5">
             {
                 isloading ? (
                     <Loader />
@@ -25,22 +29,24 @@ const User_Dashbaord_Common_Section = () => {
                     <div className="flex flex-col space-y-8">
                         <div className="p-6.1 rounded-xl text-center">
                             <div
-                                className="w-[90px] h-auto relative border border-border rounded-full mb-2.5 mx-auto overflow-hidden">
+                                className="h-auto relative mb-2.5 mx-auto overflow-hidden">
                                 {
                                     profile?.profile_image != null ? (
 
-                                        <img className="rounded-full" src={`${IMG_BASE_URL}${profile?.profile_image}`} alt="user" />
+                                        <img className="rounded-full border border-border mx-auto w-28 h-28" src={`${IMG_BASE_URL}${profile?.profile_image}`} alt="user" />
                                     ) : (
-                                        <img className="rounded-full" src={Common_Images_Transport?.user_logo} alt="user" />
+                                        <img className="rounded-full border border-border  mx-auto w-28 h-28" src={Common_Images_Transport?.user_logo} alt="user" />
                                     )
                                 }
                             </div>
                             <h5 className="text-dark text-lg font-medium">{profile?.name}</h5>
                             <span className="text-sm text-[#9F2225]">{profile?.email}</span>
                         </div>
-                        <div className="item group"><Link to="/user_dashBaord">
+                        <div className="item group"><Link to="/user-dashBaord">
                             <div
-                                className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 hover">
+                                 className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 0 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(0)
+                                    localStorage.setItem("active_tabs",0)
+                                }}>
                                 <span><svg width="17" height="17" viewBox="0 0 17 17" fill="none"
                                     className="fill-current" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -62,9 +68,11 @@ const User_Dashbaord_Common_Section = () => {
                                     className=" font-normal text-base">Dashbaord</span>
                             </div>
                         </Link></div>
-                        <div className="item group"><Link to="/user_profile">
-                            <div
-                                className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 hover">
+                        <div className="item group"><Link to="/user-profile">
+                            <div 
+                                className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 1 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(1)
+                                    localStorage.setItem("active_tabs",1)
+                                }}>
                                 <span><svg width="14" height="19" viewBox="0 0 14 19" fill="none"
                                     className="fill-current" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -76,9 +84,11 @@ const User_Dashbaord_Common_Section = () => {
                                 </svg></span><span className=" font-normal text-base">Profile</span>
                             </div>
                         </Link></div>
-                        <div className="item group"><Link to="/user_wallet">
+                        <div className="item group"><Link to="/user-wallet">
                             <div
-                                className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 hover">
+                                 className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 2 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(2)
+                                    localStorage.setItem("active_tabs",2)
+                                }}>
                                 <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-wallet-fill"
                                     viewBox="0 0 16 16">
@@ -90,9 +100,11 @@ const User_Dashbaord_Common_Section = () => {
                             </div>
                         </Link></div>
 
-                        <div className="item group"><Link to="/user_orders">
+                        <div className="item group"><Link to="/user-orders">
                             <div
-                                className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 hover">
+                                 className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 3 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(3)
+                                    localStorage.setItem("active_tabs",3)
+                                }}>
                                 <span><svg width="15" height="18" viewBox="0 0 15 18" fill="none"
                                     class="fill-current" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -104,9 +116,11 @@ const User_Dashbaord_Common_Section = () => {
                                 </svg></span><span className=" font-normal text-base">Order</span>
                             </div>
                         </Link></div>
-                        <div className="item group"><Link to="/user_wishlist">
+                        <div className="item group"><Link to="/user-wishlist">
                             <div
-                                className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 hover">
+                                className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 4 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(4)
+                                    localStorage.setItem("active_tabs",4)
+                                }}>
                                 <span><svg width="16" height="14" viewBox="0 0 16 14" fill="none"
                                     className="fill-current" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -116,9 +130,11 @@ const User_Dashbaord_Common_Section = () => {
                                     className=" font-normal text-base">Wishlist</span>
                             </div>
                         </Link></div>
-                        <div className="item group"><Link to="/user_address">
+                        <div className="item group"><Link to="/user-address">
                             <div
-                                className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 hover">
+                                className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 5 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(5)
+                                    localStorage.setItem("active_tabs",5)
+                                }}>
                                 <span><svg width="14" height="20" viewBox="0 0 14 20" fill="none"
                                     className="fill-current" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -143,9 +159,11 @@ const User_Dashbaord_Common_Section = () => {
                             </div>
                         </Link></div>
 
-                        <div className="item group"><Link to="/user_my_pooja_list">
+                        <div className="item group"><Link to="/user-my-pooja-list">
                             <div
-                                className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 hover">
+                                className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 6 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(6)
+                                    localStorage.setItem("active_tabs",6)
+                                }}>
                                 <span><svg width="16" height="19" viewBox="0 0 16 19" fill="none"
                                     className="fill-current" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -155,8 +173,10 @@ const User_Dashbaord_Common_Section = () => {
                             </div>
                         </Link></div>
                         <div className="item group">
-                            <Link to="/follow_list">
-                                <div className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 transition-colors duration-300">
+                            <Link to="/follow-list">
+                                <div className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 7 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(7)
+                                    localStorage.setItem("active_tabs",7)
+                                }}>
                                     {/* SVG Icon */}
                                     <span>
                                         <svg
@@ -178,10 +198,11 @@ const User_Dashbaord_Common_Section = () => {
                             </Link>
                         </div>
 
-
-                        <div className="item group"><Link to="/user_logout">
+                        <div className="item group"><Link to="/user-logout">
                             <div
-                                className="flex space-x-3 items-center text-gray-400 hover:text-gray-900 hover">
+                                className={`flex space-x-3 items-center text-gray-400 ${active_tabs == 8 ? "text-gray-900":null}`} onClick={()=>{set_Active_Tabs(8)
+                                    localStorage.setItem("active_tabs",8)
+                                }}>
                                 <span><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                     className="fill-current" xmlns="http://www.w3.org/2000/svg">
                                     <path

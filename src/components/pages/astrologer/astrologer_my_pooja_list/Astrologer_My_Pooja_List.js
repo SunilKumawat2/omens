@@ -14,6 +14,9 @@ const Astrologer_My_Pooja_List = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [get_pooja_list, set_Get_Pooja_List] = useState([]);
     const [expandedId, setExpandedId] = useState(null);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
+
 
 
     const handleToggle = (id) => {
@@ -34,25 +37,33 @@ const Astrologer_My_Pooja_List = () => {
 
     // <------- delete my pooja list ---------->
     const Handle_delete_my_pooja = async (id) => {
-        const formdata = new FormData()
-        formdata.append("id",id)
+        const formdata = new FormData();
+        formdata.append("id", id);
         try {
             const token = User_Authentication();
             if (!token) {
                 setIsLoading(false);
-                toast("token not found's")
+                toast("Token not found");
                 throw new Error("User token not found");
             }
-            const response = await Astologer_Delete_Pooja(formdata, { Authorization: `Bearer ${token}` })
-            if (response?.data?.status == "200") {
-                set_Get_Pooja_List((prevList) => prevList.filter((pooja) => pooja.id !== id));
-                setIsLoading(false)
-            }
-        }
-        catch (error) {
+            const response = await Astologer_Delete_Pooja(formdata, {
+                Authorization: `Bearer ${token}`,
+            });
 
+            console.log("response", response?.response?.data);
+            if (response?.data?.status == "200") {
+                set_Get_Pooja_List((prevList) =>
+                    prevList.filter((pooja) => pooja.id !== id)
+                );
+                setIsLoading(false);
+            } else if (response?.response?.data?.status == "500") {
+                toast.error(response?.response?.data?.message);
+            }
+        } catch (error) {
+            console.log("error", error);
         }
-    }
+    };
+
 
     useEffect(() => {
         const Handle_Astro_Get_Pooja_List = async () => {
@@ -116,22 +127,24 @@ const Astrologer_My_Pooja_List = () => {
                                                                 <img src={`${IMG_BASE_URL}${get_pooja_list_result?.image}`} className="rounded-md h-16 w-16" alt="" />
                                                                 <div>
                                                                     <h5 className="text-lg font-medium text-black">{get_pooja_list_result?.title}</h5>
-                                                                    <p class="text-[#EDA801] text-sm clamped-text">{get_pooja_list_result?.short_description}</p>
+                                                                    {/* <p class="text-[#EDA801] text-sm clamped-text">
+                                                                        {get_pooja_list_result?.short_description}</p> */}
+
                                                                 </div>
                                                             </div>
-                                                            <div className="deletebtn" onClick={() => Handle_delete_my_pooja(get_pooja_list_result?.id)}>
+                                                            <div
+                                                                className="deletebtn cursor-pointer"
+                                                                onClick={() => {
+                                                                    setDeleteId(get_pooja_list_result?.id);
+                                                                    setShowConfirmModal(true);
+                                                                }}
+                                                            >
                                                                 <a href="#"><img src={Common_Images_Transport?.delete_icon} alt="" /></a>
                                                             </div>
+
                                                         </div>
-                                                        <div className="description text-gray-400 font-medium mt-3">
-                                                            <div>
-                                                                <p className={` ${expandedId === get_pooja_list_result?.id ? "" : "clamped-text"}`}> {get_pooja_list_result?.description} </p>
-                                                                <button className="text-red-800 mt-2" onClick={() => handleToggle(get_pooja_list_result?.id)}>
-                                                                    {expandedId === get_pooja_list_result?.id ? "View Less" : "View More"}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="shadow rounded-md p-4 mt-3">
+
+                                                        <div className=" rounded-md p-4 mt-3">
                                                             <div className="grid grid-cols-2 gap-4">
                                                                 <div>
                                                                     <span className="text-sm text-gray-400">Category</span>
@@ -161,6 +174,22 @@ const Astrologer_My_Pooja_List = () => {
                                                             </div>
 
                                                         </div>
+                                                        <div className="description text-gray-400 font-medium mt-3">
+                                                            <div>
+                                                                <p className={`${expandedId == get_pooja_list_result?.id ? "" : "clamped-text"}`}>
+                                                                    {get_pooja_list_result?.description}
+                                                                </p>
+                                                                {get_pooja_list_result?.description?.length > 100 && (
+                                                                    <button
+                                                                        className="text-red-800 mt-2"
+                                                                        onClick={() => handleToggle(get_pooja_list_result?.id)}
+                                                                    >
+                                                                        {expandedId == get_pooja_list_result?.id ? "View Less" : "View More"}
+                                                                    </button>
+                                                                )}
+
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 )
                                             })
@@ -170,6 +199,32 @@ const Astrologer_My_Pooja_List = () => {
                                 </div>
                             </div>
                         </section>
+                        {showConfirmModal && (
+                            <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+                                <div className="bg-white rounded-lg shadow-xl p-6 w-[90%] max-w-sm text-center">
+                                    <h2 className="text-lg font-semibold mb-2">Are you sure?</h2>
+                                    <p className="text-gray-600 mb-4">Do you want to delete this pooja?</p>
+                                    <div className="flex justify-center gap-3">
+                                        <button
+                                            onClick={() => setShowConfirmModal(false)}
+                                            className="bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 px-4 rounded"
+                                        >
+                                            Close
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                Handle_delete_my_pooja(deleteId);
+                                                setShowConfirmModal(false);
+                                            }}
+                                            className="bg-red-700 hover:bg-red-800 text-white font-semibold py-2 px-4 rounded"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         {/*  */}
                         <Astrologer_Footer />
                     </>

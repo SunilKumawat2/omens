@@ -9,19 +9,23 @@ import Loader from '../../../../loader/Loader'
 const Category_List = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { category_list_result } = location.state || {};
-    const [is_loading, set_Is_Loading] = useState(false)
+    const { category_list_result } = location?.state || {};
+    console.log("category_list_result",category_list_result)
+    localStorage.setItem("sub_category_slug",category_list_result?.slug)
+    const [is_loading, set_Is_Loading] = useState(false);
     const [sub_category_data, set_Sub_Category_Data] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 12; 
+    const productsPerPage = 12;
+const get_category_list_result_slug = localStorage.getItem("category_list_result_slug")
+    // Ensure sub_category_data is always a valid array
+    const validSubCategoryData = Array.isArray(sub_category_data) ? sub_category_data : [];
 
-    // Calculate the total pages
-    const totalPages = Math.ceil(sub_category_data?.length / productsPerPage);
+    // Calculate total pages safely
+    const totalPages = Math.ceil(validSubCategoryData?.length / productsPerPage);
 
-    // Calculate the products to display on the current page
+    // Calculate products for current page
     const startIndex = (currentPage - 1) * productsPerPage;
-    const currentSubCategory = sub_category_data?.slice(startIndex, startIndex + productsPerPage);
-
+    const currentSubCategory = validSubCategoryData?.slice(startIndex, startIndex + productsPerPage);
 
     // Handle pagination (next, prev, page number click)
     const handlePageChange = (page) => {
@@ -82,7 +86,11 @@ const Category_List = () => {
                                             <div className="shop-pro-inner mx-[-12px]">
                                                 <div className="flex flex-wrap w-full">
                                                     {currentSubCategory?.map((sub_category_result) => (
-                                                        <div key={sub_category_result?.id} onClick={() => navigate("/product_list", { state: {sub_category_result, category_id: category_list_result?.id } })} className="min-[992px]:w-[25%] min-[768px]:w-[50%] min-[576px]:w-[50%] max-[420px]:w-full px-[12px] gi-product-box max-[575px]:w-[50%] max-[575px]:mx-auto pro-gl-content mb-6">
+                                                        <div key={sub_category_result?.id} onClick={() =>
+                                                            navigate(`/${get_category_list_result_slug}/${sub_category_result?.slug}`, {
+                                                                state: { sub_category_result, category_id: category_list_result?.id },
+                                                            })
+                                                        } className="min-[992px]:w-[25%] min-[768px]:w-[50%] min-[576px]:w-[50%] max-[420px]:w-full px-[12px] gi-product-box max-[575px]:w-[50%] max-[575px]:mx-auto pro-gl-content mb-6">
                                                             <div className="gi-product-content h-full">
                                                                 <div className="gi-product-inner transition-all duration-[0.3s] ease-in-out cursor-pointer overflow-hidden rounded-[5px] shadow-xl pt-4">
                                                                     <div className="gi-pro-image-outer transition-all duration-[0.3s] delay-[0s] ease z-[11] relative">
@@ -112,7 +120,7 @@ const Category_List = () => {
                                                 <span className="text-[14px] text-[#777] max-[575px]:mb-[10px]">Showing {startIndex + 1}-{Math.min(startIndex + productsPerPage, sub_category_data?.length)} of {sub_category_data?.length} item(s)</span>
                                                 <ul className="gi-pro-pagination-inner flex">
                                                     <li>
-                                                        <button onClick={handlePrev} className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-[#5caf90] leading-[30px] h-[32px] bg-red-500 flex flex text-center align-top text-[16px] justify-center items-center rounded-[5px]">
+                                                        <button onClick={handlePrev} className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-red-600 leading-[30px] h-[32px] bg-red-500 flex flex text-center align-top text-[16px] justify-center items-center rounded-[5px]">
                                                             Prev
                                                         </button>
                                                     </li>
@@ -132,7 +140,7 @@ const Category_List = () => {
                                                     ))}
 
                                                     <li>
-                                                        <button onClick={handleNext} className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-[#5caf90] leading-[30px] h-[32px] bg-red-500 flex flex text-center align-top text-[16px] justify-center items-center rounded-[5px]">
+                                                        <button onClick={handleNext} className="next w-auto px-[13px] text-[#fff] m-1 p-2 bg-red-600 leading-[30px] h-[32px] bg-red-500 flex flex text-center align-top text-[16px] justify-center items-center rounded-[5px]">
                                                             Next
                                                         </button>
                                                     </li>

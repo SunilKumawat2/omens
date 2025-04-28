@@ -154,7 +154,7 @@ const Cart_Sidebar = () => {
                                     <Link to="/cart" onClick={()=>setIsOpen(false)}
                                         className="gi-btn-1 w-[100%]  h-[40px] block uppercase font-medium text-[14px] py-[8px] px-[15px] leading-[22px] bg-[#4b5966] text-[#fff] border-[0] transition-all duration-[0.3s] ease-in-out overflow-hidden text-center relative rounded-[5px] hover:bg-[#9F2225] hover:text-[#fff]">View
                                         Cart</Link>
-                                    {/* <Link to="/order_place"
+                                    {/* <Link to="/order-place"
                                         className="gi-btn-2 w-[48%] h-[40px] block uppercase font-medium text-[14px] py-[8px] px-[15px] leading-[22px]
                                          bg-[#9F2225] text-[#fff] text-center rounded-[5px] transition-all dummy-[0.3s] ease-in-out hover:bg-[#4b5966]">Checkout</Link> */}
                                 </div>

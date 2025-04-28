@@ -7,6 +7,7 @@ import Loader from "../../../../loader/Loader";
 
 const Astrologer_Logout = () => {
   const [is_loading, setis_loading] = useState(false);
+  const navigate = useNavigate();
 
   // <------ Handle logout functionliy here ---------->
   const handle_logout = async () => {
@@ -20,9 +21,11 @@ const Astrologer_Logout = () => {
       const response = await logout({ Authorization: `Bearer ${token}` });
       if (response?.data?.status == "200") {
         localStorage.clear();
+        navigate("/astrologer-login")
       }
       console.log("response", response);
     } catch (error) {
+      navigate("/astrologer-login")
       console.log("error", error);
     }
   };

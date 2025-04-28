@@ -32,7 +32,7 @@ const Astrologer_Wait_List = () => {
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <a href="#"
-                                        className="text-red-700 hover:text-white border border-red-900 bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-white rounded-full text-sm px-5 py-2.5 text-center dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">User
+                                        className="text-white hover:text-white border border-red-900 bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-white rounded-full text-sm px-5 py-2.5 text-center dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">User
                                         Details</a>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@ const Astrologer_Wait_List = () => {
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <a href="#"
-                                        className="text-red-700 hover:text-white border border-red-900 bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-white rounded-full text-sm px-5 py-2.5 text-center dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">User
+                                        className="text-white hover:text-white border border-red-900 bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-white rounded-full text-sm px-5 py-2.5 text-center dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">User
                                         Details</a>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@ const Astrologer_Wait_List = () => {
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <a href="#"
-                                        className="text-red-700 hover:text-white border border-red-900 bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-white rounded-full text-sm px-5 py-2.5 text-center dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">User
+                                        className="text-white hover:text-white border border-red-900 bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-white rounded-full text-sm px-5 py-2.5 text-center dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">User
                                         Details</a>
                                 </div>
                             </div>

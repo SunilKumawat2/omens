@@ -16,11 +16,12 @@ const Astrologer_Save_Profile_Update = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [astro_step_active_form, set_Astro_Active_Form] = useState("0");
     const [profileImg, setProfileImg] = useState([]);
-
+    const get_astrologer_update_profile_form_dob = localStorage.getItem("astrologer_update_profile_form_dob")
+    console.log("get_astrologer_update_profile_form_dob",get_astrologer_update_profile_form_dob)
     // <-------- astro update form -------->
     const [astrologer_update_profile_form, set_Astrologer_Update_Profile_Form] = useState({
         name: "",
-        dob: "",
+        dob: get_astrologer_update_profile_form_dob,
         birth_place: "",
         faith: "",
         address: "",
@@ -31,8 +32,13 @@ const Astrologer_Save_Profile_Update = () => {
         degree: "",
         collage_school: "",
         from_astroogy: "",
-        hourly_rate: "",
-        minute_rate: "",
+        // hourly_rate: "",
+        // minute_rate: "",
+        chat_rate: "",
+        audio_call_rate: "",
+        emergency_audio_call_rate: "",
+        emergency_video_call_rate: "",
+        video_call_rate: "",
         instagram: "",
         facebook: "",
         linked_in: "",
@@ -42,7 +48,7 @@ const Astrologer_Save_Profile_Update = () => {
         about_us: "",
         profileImg: []
     })
-    console.log("astrologer_update_profile_form", astrologer_update_profile_form?.hourly_rate)
+    console.log("astrologer_update_profile_form", astrologer_update_profile_form?.dob)
 
     // <-------- Handle Astro Update Profile --------->
     const handle_change_astro_profile_update = async (e) => {
@@ -67,6 +73,7 @@ const Astrologer_Save_Profile_Update = () => {
         // }
         if (!astrologer_update_profile_form?.dob) {
             toast("Please enter your date of birth");
+
             setIsLoading(false);
             return;
         }
@@ -149,7 +156,7 @@ const Astrologer_Save_Profile_Update = () => {
                 set_Astro_Active_Form("1");
                 setIsLoading(false);
                 await get_astro_profile({ Authorization: `Bearer ${token}` });
-                set_Astrologer_Update_Profile_Form(response?.data?.data?.astrodetail);
+                set_Astrologer_Update_Profile_Form(response?.data?.data);
             }
             else if (response?.response?.data?.status == false) {
                 setIsLoading(false)
@@ -167,50 +174,70 @@ const Astrologer_Save_Profile_Update = () => {
         e.preventDefault();
         setIsLoading(true)
         console.log("Form is being submitted...");
-        // if (!astrologer_update_profile_form?.hourly_rate) {
-        //     toast("Please enter your hourly rate");
-        //     setIsLoading(false)
-        //     return;
-        // }
-        // if (!astrologer_update_profile_form?.minute_rate) {
-        //     toast("Please enter your minute rate");
-        //     setIsLoading(false)
-        //     return;
-        // }
+        if (!astrologer_update_profile_form?.astro_amounts?.chat_rate) {
+            toast("Please enter your chat rate");
+            setIsLoading(false)
+            return;
+        }
+        if (!astrologer_update_profile_form?.astro_amounts?.audio_call_rate) {
+            toast("Please enter your audio call rate");
+            setIsLoading(false)
+            return;
+        }
+        if (!astrologer_update_profile_form?.astro_amounts?.video_call_rate) {
+            toast("Please enter your video call rate");
+            setIsLoading(false)
+            return;
+        }
+        if (!astrologer_update_profile_form?.astro_amounts?.emergency_audio_call_rate) {
+            toast("Please enter your emergency audio call rate");
+            setIsLoading(false)
+            return;
+        }
+        if (!astrologer_update_profile_form?.astro_amounts?.emergency_video_call_rate) {
+            toast("Please enter your emergency video call rate");
+            setIsLoading(false)
+            return;
+        }
 
-        if (!astrologer_update_profile_form?.instagram || !isValidInstagramLink(astrologer_update_profile_form?.instagram)) {
+        if (!astrologer_update_profile_form?.astrodetail?.instagram) {
             toast("Please enter a valid Instagram profile URL.");
             setIsLoading(false)
             return;
         }
-        if (!astrologer_update_profile_form?.facebook || !isValidFacebookLink(astrologer_update_profile_form?.facebook)) {
+        if (!astrologer_update_profile_form?.astrodetail?.facebook) {
             toast("Please enter a valid facebook profile URL.");
             setIsLoading(false)
             return;
         }
-        if (!astrologer_update_profile_form?.linked_in || !isValidLinkedInLink(astrologer_update_profile_form?.linked_in)) {
+        if (!astrologer_update_profile_form?.astrodetail?.linked_in) {
             toast("Please enter a valid linkedIn profile URL.");
             setIsLoading(false)
             return;
         }
-        if (!astrologer_update_profile_form?.youtube || !isValidYouTubeLink(astrologer_update_profile_form?.youtube)) {
+        if (!astrologer_update_profile_form?.astrodetail?.youtube) {
             toast("Please enter a valid youtube profile URL.");
             setIsLoading(false)
             return;
         }
-        if (!astrologer_update_profile_form?.website || !isValidWebsite(astrologer_update_profile_form?.website)) {
+        if (!astrologer_update_profile_form?.astrodetail?.website) {
             toast("Please enter a valid website URL.");
             setIsLoading(false)
             return;
         }
-        if (!astrologer_update_profile_form?.about_us) {
+        if (!astrologer_update_profile_form?.astrodetail?.about_us) {
             toast("Please enter about to astrologer");
             setIsLoading(false)
             return;
         }
         const formData = new FormData();
-        formData.append('hourly_rate', astrologer_update_profile_form?.hourly_rate);
-        formData.append('minute_rate', astrologer_update_profile_form?.minute_rate);
+        // formData.append('hourly_rate', astrologer_update_profile_form?.hourly_rate);
+        // formData.append('minute_rate', astrologer_update_profile_form?.minute_rate);
+        formData.append('video_call_rate', astrologer_update_profile_form?.astro_amounts?.video_call_rate);
+        formData.append('emergency_video_call_rate', astrologer_update_profile_form?.astro_amounts?.emergency_video_call_rate);
+        formData.append('emergency_audio_call_rate', astrologer_update_profile_form?.astro_amounts?.emergency_audio_call_rate);
+        formData.append('audio_call_rate', astrologer_update_profile_form?.astro_amounts?.audio_call_rate);
+        formData.append('chat_rate', astrologer_update_profile_form?.astro_amounts?.chat_rate);
         formData.append('instagram', astrologer_update_profile_form?.instagram);
         formData.append('facebook', astrologer_update_profile_form?.facebook);
         formData.append('linked_in', astrologer_update_profile_form?.linked_in);
@@ -230,7 +257,7 @@ const Astrologer_Save_Profile_Update = () => {
             if (response?.data?.status == true) {
                 set_Astro_Active_Form("2");
                 setIsLoading(false)
-                set_Astrologer_Update_Profile_Form(response?.data?.data?.astrodetail)
+                set_Astrologer_Update_Profile_Form(response?.data?.data)
             }
             else if (response?.response?.data?.status == false) {
                 setIsLoading(false)
@@ -268,8 +295,8 @@ const Astrologer_Save_Profile_Update = () => {
             const response = await Astrolger_Profile_Update(formData, { Authorization: `Bearer ${token}` });
             if (response?.data?.status === true) {
                 setIsLoading(false);
-                set_Astrologer_Update_Profile_Form(response?.data?.data?.astrodetail);
-                // navigate("/astrologer_home");
+                set_Astrologer_Update_Profile_Form(response?.data?.data);
+                // navigate("/astrologer-home");
             } else if (response?.response?.data?.status === false) {
                 setIsLoading(false);
                 toast(response?.response?.data?.message);
@@ -298,6 +325,8 @@ const Astrologer_Save_Profile_Update = () => {
                 if (response?.data?.status === true) {
                     const astro_data = response?.data?.data || {};
                     const astroDetail = response?.data?.data?.astrodetail || {};
+                    const astro_amounts = response?.data?.data?.astro_amounts || {};
+                    console.log("astro_amounts_astro_amounts", astro_amounts)
                     set_Astrologer_Update_Profile_Form({
                         name: astro_data?.name,
                         dob: astroDetail?.dob || "",
@@ -311,8 +340,11 @@ const Astrologer_Save_Profile_Update = () => {
                         degree: astroDetail?.degree || "",
                         collage_school: astroDetail?.collage_school || "",
                         from_astroogy: astroDetail?.from_astroogy || "",
-                        minute_rate: astro_data?.minute_rate || "",
-                        hourly_rate: astro_data?.hourly_rate || "",
+                        audio_call_rate: astro_amounts?.audio_call_rate || "",
+                        video_call_rate: astro_amounts?.video_call_rate || "",
+                        chat_rate: astro_amounts?.chat_rate || "",
+                        emergency_audio_call_rate: astro_amounts?.emergency_audio_call_rate || "",
+                        emergency_video_call_rate: astro_amounts?.emergency_video_call_rate || "",
                         youtube: astroDetail?.youtube || "",
                         linked_in: astroDetail?.linked_in || "",
                         website: astroDetail?.website || "",
@@ -375,6 +407,7 @@ const Astrologer_Save_Profile_Update = () => {
         return `${year}-${month}-${day}`;
     };
 
+        localStorage.setItem("astrologer_update_profile_form_dob", astrologer_update_profile_form?.dob)
 
     return (
         <div>
@@ -515,7 +548,7 @@ const Astrologer_Save_Profile_Update = () => {
                                                                     </div>
                                                                 </div>
                                                                 <div className="button-row flex justify-between w-full mt-4">
-                                                                    <button className="btn btn-primary bg-[#9D2326] p-2 px-5 text-white" type="submit">Next</button>
+                                                                    <button className="btn btn-primary bg-[#9D2326] p-2 px-5 text-white" type="submit">Next1</button>
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -525,7 +558,7 @@ const Astrologer_Save_Profile_Update = () => {
                                                         <form className="multisteps-form__form" method='post' onSubmit={handle_submit_astro_Price_details}>
                                                             <div className="multisteps-form__content">
                                                                 <div className="input-grid flex w-full space-x-2.5 mb-6">
-                                                                    <div className="w-1/2">
+                                                                    {/* <div className="w-1/2">
                                                                         <div className="input-com"><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Hourly Rate</label>
                                                                             <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
                                                                                 <input placeholder="₹ 900" name='hourly_rate' value={astrologer_update_profile_form?.hourly_rate} onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="number" required />
@@ -537,6 +570,53 @@ const Astrologer_Save_Profile_Update = () => {
                                                                         <div className="input-com "><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Minute Rate</label>
                                                                             <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
                                                                                 <input placeholder="₹ 15" name='minute_rate' value={astrologer_update_profile_form?.minute_rate} onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="number" required />
+                                                                                <span className="text-sm w-[145px]">| Per Minute</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div> */}
+                                                                    <div className="w-1/3">
+                                                                        <div className="input-com "><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Chat Rate</label>
+                                                                            <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
+                                                                                <input placeholder="₹ 15" name='chat_rate' value={astrologer_update_profile_form?.chat_rate} onChange={handle_change_astro_profile_update}
+                                                                                    className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="number" required />
+                                                                                <span className="text-sm w-[145px]">| Per Minute</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="w-1/3">
+                                                                        <div className="input-com "><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Audio Call Rate</label>
+                                                                            <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
+                                                                                <input placeholder="₹ 15" name='audio_call_rate' value={astrologer_update_profile_form?.audio_call_rate} onChange={handle_change_astro_profile_update}
+                                                                                    className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="number" required />
+                                                                                <span className="text-sm w-[145px]">| Per Minute</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="w-1/3">
+                                                                        <div className="input-com "><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Video Call Rate</label>
+                                                                            <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
+                                                                                <input placeholder="₹ 15" name='video_call_rate' value={astrologer_update_profile_form?.video_call_rate} onChange={handle_change_astro_profile_update}
+                                                                                    className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="number" required />
+                                                                                <span className="text-sm w-[145px]">| Per Minute</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="input-grid flex w-full space-x-2.5 mb-6">
+                                                                    <div className="w-1/2">
+                                                                        <div className="input-com "><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Emergency Audio Call</label>
+                                                                            <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
+                                                                                <input placeholder="₹ 15" name='emergency_audio_call_rate' value={astrologer_update_profile_form?.emergency_audio_call_rate} onChange={handle_change_astro_profile_update}
+                                                                                    className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="number" required />
+                                                                                <span className="text-sm w-[145px]">| Per Minute</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="w-1/2">
+                                                                        <div className="input-com "><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Emergency Video Call</label>
+                                                                            <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
+                                                                                <input placeholder="₹ 15" name='emergency_video_call_rate' value={astrologer_update_profile_form?.emergency_video_call_rate} onChange={handle_change_astro_profile_update}
+                                                                                    className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="number" required />
                                                                                 <span className="text-sm w-[145px]">| Per Minute</span>
                                                                             </div>
                                                                         </div>
@@ -592,8 +672,9 @@ const Astrologer_Save_Profile_Update = () => {
                                                                 </div>
                                                                 <div className="button-row flex justify-between w-full mt-4">
                                                                     <div>
-                                                                        <button className="btn btn-primary js-btn-prev bg-[#9C9C9C] mr-3 p-2 px-5 text-white" type="button" title="Prev" onClick={() => set_Astro_Active_Form("0")}>Prev</button>
-                                                                        <button className="btn btn-primary bg-[#9D2326] p-2 px-5 text-white" type="submit">Next</button>
+                                                                        <button className="btn btn-primary js-btn-prev bg-[#9C9C9C] mr-3 p-2 px-5 text-white" type="button"
+                                                                         title="Prev" onClick={() => set_Astro_Active_Form("0")}>Prev1</button>
+                                                                        <button className="btn btn-primary bg-[#9D2326] p-2 px-5 text-white" type="submit">Next2</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -652,7 +733,7 @@ const Astrologer_Save_Profile_Update = () => {
                                                                 </div>
                                                                 <div className="button-row flex justify-between w-full mt-4">
                                                                     <div>
-                                                                        <button className="btn btn-primary js-btn-prev bg-[#9C9C9C] mr-3 p-2 px-5 text-white" type="button" title="Prev" onClick={() => set_Astro_Active_Form("1")}>Prev</button>
+                                                                        <button className="btn btn-primary js-btn-prev bg-[#9C9C9C] mr-3 p-2 px-5 text-white" type="button" title="Prev" onClick={() => set_Astro_Active_Form("1")}>Prev3</button>
                                                                         <button className="btn btn-primary bg-[#9D2326] p-2 px-5 text-white" type="submit" >Submit</button>
                                                                     </div>
                                                                 </div>

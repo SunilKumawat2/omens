@@ -8,12 +8,13 @@ const AgoraChat = () => {
   const astrologer_name = localStorage.getItem("astrologer_name");
   const [messages, setMessages] = useState([]);
   const [messages_list, setMessages_List] = useState([]);
+  console.log("messages_list", messages_list)
   const [messageInput, setMessageInput] = useState('');
   const [conn, setConn] = useState(null);
   const messagesEndRef = useRef(null); // Auto-scroll reference
 
   // Dummy user credentials (Replace with real ones)
-  const accessToken = "007eJxTYLjxxNovPr1a4lCsTPa77r51E4RCG9svPdY9Kf678YiIhLgCQ6JBimmaRYqZWaqBoYmZkUliimmKmaVpSmqSRVqSmWXy3s+L0hsCGRmSDeaxMjKwMjACIYivwmCalpRilJxioJtqlGyma2iYmqZrYW6SpJuYYpZoZJZoZmZhlAQAoScoZw==";
+  const accessToken = "007eJxTYLjxY0tD0dOm2LcNTMqrtDarHPve3rf74NJEkakvd+u1z1ZSYEg0SDFNs0gxM0s1MDQxMzJJTDFNMbM0TUlNskhLMrNM3iSwPb0hkJHhznE5JkYGVgZGIATxVRhM05JSjJJTDHRTjZLNdA0NU9N0LcxNknQTU8wSjcwSzcwsjJIAlVsqaA==";
   const user = "sunil_omens_5";
   const chatPartner = "sunil_receiver_26";
 
@@ -54,7 +55,7 @@ const AgoraChat = () => {
         };
 
         const result = await conn.fetchHistoryMessages(options);
-        setMessages_List(result)
+        // setMessages_List(result)
         console.log("📩 Chat History:", result[0]?.data);
 
         if (result && result) {
@@ -76,47 +77,46 @@ const AgoraChat = () => {
     }
   }, [conn, user, chatPartner]);
 
-  // Fetch Chat Partners
-  // useEffect(() => {
-  //   const fetchChatPartners = async () => {
-  //     if (!conn || !user) return;
-  
-  //     try {
-  //       // Log the conn object to inspect its methods
-  //       console.log("Conn object:", conn);
-  
-  //       // Check if the method exists on the conn object
-  //       if (typeof conn.getConversations !== 'function') {
-  //         console.error("Error: getConversations is not available on conn.");
-  //         return;
-  //       }
-  
-  //       // If the method exists, proceed with fetching conversations
-  //       const conversations = await conn.getConversations();
-  //       console.log("All Conversations:", conversations);
-  
-  //       const participants = new Set();
-  
-  //       conversations.forEach((conversation) => {
-  //         const members = conversation.getMembers();  
-  //         members.forEach((member) => {
-  //           if (member !== user) {  
-  //             participants.add(member);  
-  //           }
-  //         });
-  //       });
-  
-  //       setMessages_List(Array.from(participants));  // Update state with the list of participants
-  
-  //     } catch (error) {
-  //       console.error("Error fetching chat partners:", error);
-  //     }
-  //   };
-  
-  //   if (conn) {
-  //     fetchChatPartners();
-  //   }
-  // }, [conn, user]);
+  useEffect(() => {
+    const fetchChatPartners = async () => {
+      if (!conn || !user) return;
+
+      try {
+        // Fetch the list of conversations the user is part of
+        const conversations = await conn.getConversationList();
+
+        console.log("All Conversations:", conversations);
+
+        const participants = new Set();
+
+        conversations.forEach((conversation) => {
+          // Get members of the conversation
+          const members = conversation.getMembers(); // Get the members of the conversation
+          console.log("members", members);
+
+          members.forEach((member) => {
+            if (member !== user) { // Exclude the current user
+              participants.add(member); // Add the other participants
+            }
+          });
+        });
+
+        // Convert the Set to an array and update the state
+        const chatPartners = Array.from(participants);
+
+        setMessages_List(chatPartners);
+        console.log("All Chat Partners:", chatPartners);
+
+      } catch (error) {
+        console.error("Error fetching chat partners:", error);
+      }
+    };
+
+    if (conn) {
+      fetchChatPartners();
+    }
+  }, [conn, user]);
+
 
 
 
@@ -207,19 +207,21 @@ const AgoraChat = () => {
         </div>
       </div>
 
-      {/* <div className="flex-1 overflow-y-auto p-4 bg-gray-100 rounded-md flex flex-col gap-3 h-[70vh]">
+      <div className="flex-1 overflow-y-auto p-4 bg-gray-100 rounded-md flex flex-col gap-3 h-[70vh]">
+        {/* Display all chat partners */}
         {messages_list?.length > 0 ? (
           messages_list?.map((partner, index) => (
             <div key={index} className="p-3 rounded-lg text-sm flex flex-col shadow-md bg-gray-200 text-gray-800">
-              <strong>{partner}</strong> 
+              {/* Example: Display the partner's ID or name */}
+              <strong>{partner?.from || "Unknown Partner"}</strong> {/* Safely access from */}
               <p className="text-xs">Click to start chatting...</p>
             </div>
           ))
         ) : (
           <p>No chat partners found.</p>
         )}
-      </div> */}
 
+      </div>
 
     </div>
 

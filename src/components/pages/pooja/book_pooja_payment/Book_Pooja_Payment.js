@@ -34,7 +34,7 @@ const Book_Pooja_Payment = () => {
             const response = await Book_Pooja(data, { Authorization: `Bearer ${token}` });
             if (response?.data?.status == "200") {
                 toast("Pooja booked successfully");
-                navigate("/user_my_pooja_list");
+                navigate("/user-my-pooja-list");
             }
             console.log("Booking Response:", response);
         } catch (error) {
@@ -48,7 +48,7 @@ const Book_Pooja_Payment = () => {
         if (payment_status == "Success") {
             Handle_Book_pooja(transaction_id); 
             toast("Pooja booked successfully");
-            navigate("/user_my_pooja_list");
+            navigate("/use-my-pooja-list");
         }
     };
 
@@ -204,14 +204,12 @@ const Book_Pooja_Payment = () => {
 
                                             </div>
                                             <div class="mt-5">
-                                                <Link
-                                                    class="bg-[#9F2225] h-[40px] leading-[50px] text-center text-[14px] py-[10px] px-[25px] bg-[#4b5966] text-[#fff] transition-all duration-[0.3s] ease-in-out relative rounded-full items-center font-semibold tracking-[0.02rem] border-[0] hover:bg-[#333] hover:text-[#fff]"><i
-                                                        class="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
+                                              
                                                     <Razor_Pay
                                                         Price={price}
                                                         onPaymentSuccess={handlePaymentSuccess}
                                                         buttonContent="Payment Now"
-                                                    /></Link>
+                                                    />
                                             </div>
                                         </div>
                                     </div>

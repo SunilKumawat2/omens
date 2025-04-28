@@ -9,15 +9,18 @@ const Astro_Protected_Without_login = (props) => {
         let User_Login = localStorage.getItem("astro_is_active")
         let profile_step = localStorage.getItem("profile_step")
         if (!User_Login) {
-            navigate("/astrologer_login")
+            navigate("/astrologerlogin")
         }
       
         if(profile_step == "1"){
-            navigate("/astrologer_profile")
+            navigate("/astrologer-profile")
        }  
         if(profile_step == "2"){
-            navigate("/astrologer_profile")
+            navigate("/astrologer-profile")
        }  
+    //     if(profile_step == "3"){
+    //         navigate("/astrologer_home")
+    //    }  
        
       
     }, [navigate])

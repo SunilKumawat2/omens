@@ -47,6 +47,21 @@ export const Get_Pooja_List_Details = async ({ id, category_id }) => {
     }
 };
 
+// <---------- Get Pooja details ----------->
+export const Get_Pooja_List_app_Details = async (id, category_id, headers) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/app-pooja`, {
+            params: {
+                id,
+                category_id
+            }, headers: headers
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
+
 // <------------ Book Pooja -------------->
 export const Book_Pooja = async (data, header) => {
     try {

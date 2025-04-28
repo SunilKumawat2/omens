@@ -156,7 +156,7 @@ const User_Dashbaord_wallet = () => {
                                                                 </div>
                                                             </div>
                                                             <div>
-                                                                <Link to="/user_wallet_recharge" className="btn bg-red-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">Recharge</Link>
+                                                                <Link to="/user-wallet-recharge" className="btn bg-red-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">Recharge</Link>
                                                             </div>
                                                         </div>
                                                         <div className="mt-5">
@@ -180,7 +180,7 @@ const User_Dashbaord_wallet = () => {
                                                                                     <td>{get_wallet_result?.place}</td>
                                                                                     <td>{formatDateTime(get_wallet_result?.created_at)}</td>
                                                                                     {
-                                                                                        get_wallet_result?.transaction_type == "cr" ? (
+                                                                                        get_wallet_result?.transaction_type == "CR" ? (
                                                                                             <td className="text-green-700 font-medium">+Rs.{get_wallet_result?.req_amount}</td>
                                                                                         ) : (
                                                                                             <td className="text-red-700 font-medium">-Rs.{get_wallet_result?.req_amount}</td>

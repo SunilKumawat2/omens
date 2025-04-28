@@ -12,12 +12,13 @@ export const Sub_Category_List = async (User_register_data) => {
 }
 
 // <-------- Product List ------------------->
-export const Product_List_Data = async ({ category_id, subcategory_id, origin_id, shape_id, color_id,treatment_id,min_amount,max_amount }) => {
+export const Product_List_Data = async ({ origin_id, shape_id, color_id, treatment_id, min_amount, max_amount }) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/web-product-list`, {
             params: {
-                category_id,
-                subcategory_id,
+                // category_id,
+                // subcategory_id,
+                is_best: "1",
                 origin_id,
                 shape_id,
                 color_id,
@@ -49,7 +50,31 @@ export const Get_Product_Details = async ({ id, category_id, subcategory_id }) =
 };
 
 // <-------- Get_Product_list ------------->
-export const Get_Product_List = async ({ category_id, subcategory_id, origin_id, shape_id,color_id,treatment_id,min_amount,max_amount }, headers) => {
+export const Get_Product_List = async ({ is_best, origin_id, shape_id, color_id, treatment_id, min_amount, max_amount }, headers) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/product-list`, {
+            params: {
+                // category_id,
+                // subcategory_id,
+                is_best: "1",
+                origin_id,
+                shape_id,
+                color_id,
+                treatment_id,
+                min_amount,
+                max_amount
+            }
+            , headers: headers
+        }
+        );
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
+
+// <-------- Get_Product_list ------------->
+export const Get_Product_List_Category_wise = async ({ category_id, subcategory_id, origin_id, shape_id, color_id, treatment_id, min_amount, max_amount }, headers) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/product-list`, {
             params: {
@@ -70,6 +95,30 @@ export const Get_Product_List = async ({ category_id, subcategory_id, origin_id,
         return error;
     }
 };
+
+// <-------- Get_Product_list ------------->
+export const Product_List_Data_Category_wise = async ({ category_id, subcategory_id, origin_id, shape_id, color_id, treatment_id, min_amount, max_amount }, headers) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/web-product-list`, {
+            params: {
+                category_id,
+                subcategory_id,
+                origin_id,
+                shape_id,
+                color_id,
+                treatment_id,
+                min_amount,
+                max_amount
+            }
+            , headers: headers
+        }
+        );
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
+
 // <-------- Product List ------------------->
 export const Add_To_Cart = async (add_to_cart_data, headers) => {
     try {
@@ -272,6 +321,17 @@ export const get_favourite_product_list = async (headers) => {
 export const web_user_dashboard = async (headers) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/web-user-dashboard`, { headers: headers });
+        return response;
+    } catch (error) {
+        console.error("Error fetching order details:", error);
+        return error;
+    }
+};
+
+// <--------- wallet-detail -------------->
+export const get_return_policy = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/return-policy`);
         return response;
     } catch (error) {
         console.error("Error fetching order details:", error);

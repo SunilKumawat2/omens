@@ -1,45 +1,97 @@
 import React, { useState, useEffect } from 'react'
 import Header from '../../../common/header/Header'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Get_Pooja_List_Details } from '../../../../api/pooja/Pooja';
+import { Get_Pooja_List_app_Details, Get_Pooja_List_Details } from '../../../../api/pooja/Pooja';
 import Loader from '../../../../loader/Loader';
 import { IMG_BASE_URL } from '../../../../config/Config';
 import Book_Pooja_Details_Testimonals from './Book_Pooja_Details_Testimonals';
 import Home_Private_Confidential from "../../home_page_components/home_private_confidential/Home_Private_Confidential"
 import Footer from "../../../common/footer/Footer"
+import { User_Authentication } from '../../../../user_authentication/User_Authentication';
 
 const Book_Pooja_Details = () => {
     const navigate = useNavigate();
     const [pooja_list, set_Pooja_List] = useState([]);
-    console.log("Customer_Testimonials",pooja_list?.pooja_reviews)
+    console.log("Customer_Testimonials", pooja_list?.pooja_reviews)
     const [isLoading, setIsLoading] = useState(false)
+    const Get_user_is_active = localStorage.getItem("user_is_active")
+    // useEffect(() => {
+    //     const Handle_Get_Pooja_List = async () => {
+    //         setIsLoading(true);
+    //         try {
+    //             const storedData = localStorage.getItem("poojaDetails");
+    //             if (storedData) {
+    //                 const { id, category_id } = JSON.parse(storedData);
+    //                 const response = await Get_Pooja_List_Details({ id, category_id });
+    //                 if (response?.data?.status == "200") {
+    //                     setIsLoading(false);
+    //                     set_Pooja_List(response?.data?.data);
+    //                 } else if (response?.response?.data?.status == "500") {
+    //                     setIsLoading(false);
+    //                 }
+    //             } else {
+    //                 console.error("No pooja details found in localStorage");
+    //                 setIsLoading(false);
+    //             }
+    //         } catch (error) {
+    //             setIsLoading(false);
+    //             console.error("Error fetching pooja list:", error);
+    //         }
+    //     };
+
+    //     Handle_Get_Pooja_List();
+    // }, []);
 
     useEffect(() => {
         const Handle_Get_Pooja_List = async () => {
             setIsLoading(true);
             try {
                 const storedData = localStorage.getItem("poojaDetails");
-                if (storedData) {
-                    const { id, category_id } = JSON.parse(storedData);
-                    const response = await Get_Pooja_List_Details({ id, category_id });
-                    if (response?.data?.status == "200") {
-                        setIsLoading(false);
-                        set_Pooja_List(response?.data?.data);
-                    } else if (response?.response?.data?.status == "500") {
-                        setIsLoading(false);
-                    }
-                } else {
+
+                if (!storedData) {
                     console.error("No pooja details found in localStorage");
-                    setIsLoading(false);
+                    return;
                 }
+
+                const { id, category_id } = JSON.parse(storedData);
+
+                let response;
+
+                if (Get_user_is_active) {
+                    const token = User_Authentication();
+                    if (!token) {
+                        throw new Error("User token not found");
+                    }
+
+                    response = await Get_Pooja_List_app_Details(
+                        id,
+                        category_id,
+                        { Authorization: `Bearer ${token}` }
+                    );
+                    console.log("Authenticated Pooja List Response:", response);
+                } else {
+                    response = await Get_Pooja_List_Details({ id, category_id });
+                    console.log("Guest Pooja List Response:", response);
+                }
+
+                if (response?.data?.status == "200") {
+                    set_Pooja_List(response.data.data);
+                } else if (response?.response?.data?.status == "500") {
+                    console.warn("Server returned 500 status");
+                }
+
             } catch (error) {
-                setIsLoading(false);
                 console.error("Error fetching pooja list:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         Handle_Get_Pooja_List();
     }, []);
+
+
+
 
     const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0, hasExpired: false });
 
@@ -64,7 +116,7 @@ const Book_Pooja_Details = () => {
             setTimeLeft(calculateTimeLeft());
         }, 1000);
 
-        return () => clearInterval(timer); 
+        return () => clearInterval(timer);
     }, [pooja_list?.pooja_list?.pooja_date, pooja_list?.pooja_list?.from_time]);
     return (
         <div>
@@ -130,7 +182,7 @@ const Book_Pooja_Details = () => {
 
                                                             <div className="detail w-full border-t pt-3 mt-3  p-4 pt-0">
                                                                 <div className="more-info">
-                                                                    <a href="astrologer-details.html">
+                                                                    <Link to={`/astrologer-details/${pooja_list?.pooja_list?.astro?.id}`}>
                                                                         <div className="flex gap-3 items-center">
                                                                             <img src={`${IMG_BASE_URL}${pooja_list?.pooja_list?.astro?.profile_image}`} className="rounded-full w-16 h-16"
                                                                                 alt="" />
@@ -139,40 +191,88 @@ const Book_Pooja_Details = () => {
                                                                                 {/* <span className="font-medium text-sm text-gray-500">{pooja_list?.pooja_list?.astro?.astrodetail?.}</span> */}
                                                                             </div>
                                                                         </div>
-                                                                    </a>
-                                                                </div>
-                                                                <p className="mt-3 text-gray-500 line-clamp-3">{pooja_list?.pooja_list?.astro?.astrodetail?.about_us}</p>
-
-                                                                <div
-                                                                    className={`mt-5 ${timeLeft.hasExpired ? "cursor-not-allowed opacity-50" : ""
-                                                                        }`}
-                                                                    onClick={() => {
-                                                                        if (!timeLeft.hasExpired) {
-                                                                            navigate("/book_pooja_payment", {
-                                                                                state: {
-                                                                                    title: pooja_list?.pooja_list?.title,
-                                                                                    image: pooja_list?.pooja_list?.image,
-                                                                                    pooja_date: pooja_list?.pooja_list?.pooja_date,
-                                                                                    from_time: pooja_list?.pooja_list?.from_time,
-                                                                                    to_time: pooja_list?.pooja_list?.to_time,
-                                                                                    astro_name: pooja_list?.pooja_list?.astro?.name,
-                                                                                    price: pooja_list?.pooja_list?.price,
-                                                                                    id: pooja_list?.pooja_list?.id,
-                                                                                },
-                                                                            });
-                                                                        }
-                                                                    }}
-                                                                >
-                                                                    <Link
-                                                                        className={`h-[40px] leading-[50px] text-center text-[14px] py-[10px] px-[25px] transition-all duration-[0.3s] ease-in-out relative rounded-full items-center font-semibold tracking-[0.02rem] border-[0] ${timeLeft.hasExpired
-                                                                                ? "bg-[#9F2225] text-white"
-                                                                                : "bg-[#9F2225] text-[#fff] hover:bg-[#333] hover:text-[#fff]"
-                                                                            }`}
-                                                                    >
-                                                                        <i className="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
-                                                                        {timeLeft.hasExpired ? "Time Out" : "Book Now"}
                                                                     </Link>
                                                                 </div>
+                                                                <p className="mt-3 text-gray-500 line-clamp-3">{pooja_list?.pooja_list?.astro?.astrodetail?.about_us}</p>
+                                                                <div className="flex items-center gap-3 mt-3">
+                                                                    {/* Rating Stars */}
+                                                                    <div className="flex items-center">
+                                                                        {Array.from({ length: 5 }).map((_, index) => {
+                                                                            const rating = parseFloat(pooja_list?.avg_rating || 0);
+                                                                            return (
+                                                                                <svg
+                                                                                    key={index}
+                                                                                    className={`w-4 h-4 ${index < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"
+                                                                                        }`}
+                                                                                    fill="currentColor"
+                                                                                    viewBox="0 0 20 20"
+                                                                                >
+                                                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.975h4.181c.969 0 1.371 1.24.588 1.81l-3.388 2.463 1.286 3.975c.3.921-.755 1.688-1.54 1.117L10 13.011l-3.388 2.463c-.784.571-1.838-.196-1.539-1.117l1.285-3.975-3.388-2.463c-.783-.57-.38-1.81.588-1.81h4.181l1.286-3.975z" />
+                                                                                </svg>
+                                                                            );
+                                                                        })}
+                                                                    </div>
+
+                                                                    {/* Pooja Done Info */}
+                                                                    <p className="text-gray-500 bg-gray-100 px-3 py-2 rounded-full w-[150px] text-center text-sm">
+                                                                        {pooja_list?.pooja_done} Pooja's done
+                                                                    </p>
+                                                                </div>
+
+
+                                                                {
+                                                                    pooja_list?.pooja_list?.is_book == true ? (
+                                                                        <div
+                                                                            className={`mt-5 ${timeLeft.hasExpired ? "cursor-not-allowed opacity-50" : ""}`}>
+                                                                            <Link
+                                                                                className={`h-[40px] leading-[50px] text-center text-[14px] py-[10px] px-[25px] transition-all duration-[0.3s] ease-in-out relative rounded-full items-center font-semibold tracking-[0.02rem] border-[0] ${timeLeft.hasExpired
+                                                                                    ? "bg-green-600 text-white"
+                                                                                    : "bg-green-600 text-[#fff] hover:bg-[#333] hover:text-[#fff]"
+                                                                                    }`}
+                                                                            >
+                                                                                <i className="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
+                                                                                {timeLeft.hasExpired ? "Time Out" : "Booked ✓"}
+                                                                            </Link>
+
+
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div
+                                                                            className={`mt-5 ${timeLeft.hasExpired ? "cursor-not-allowed opacity-50" : ""
+                                                                                }`}
+                                                                            onClick={() => {
+                                                                                if (!timeLeft.hasExpired) {
+                                                                                    navigate("/book-pooja-payment", {
+                                                                                        state: {
+                                                                                            title: pooja_list?.pooja_list?.title,
+                                                                                            image: pooja_list?.pooja_list?.image,
+                                                                                            pooja_date: pooja_list?.pooja_list?.pooja_date,
+                                                                                            from_time: pooja_list?.pooja_list?.from_time,
+                                                                                            to_time: pooja_list?.pooja_list?.to_time,
+                                                                                            astro_name: pooja_list?.pooja_list?.astro?.name,
+                                                                                            price: pooja_list?.pooja_list?.price,
+                                                                                            id: pooja_list?.pooja_list?.id,
+                                                                                        },
+                                                                                    });
+                                                                                }
+                                                                            }}
+                                                                        >
+
+                                                                            <Link
+                                                                                className={`h-[40px] leading-[50px] text-center text-[14px] py-[10px] px-[25px] transition-all duration-[0.3s] ease-in-out relative rounded-full items-center font-semibold tracking-[0.02rem] border-[0] ${timeLeft.hasExpired
+                                                                                    ? "bg-[#9F2225] text-white"
+                                                                                    : "bg-[#9F2225] text-[#fff] hover:bg-[#333] hover:text-[#fff]"
+                                                                                    }`}
+                                                                            >
+                                                                                <i className="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
+                                                                                {timeLeft.hasExpired ? "Time Out" : "Book Now"}
+                                                                            </Link>
+
+
+                                                                        </div>
+                                                                    )
+                                                                }
+
 
                                                             </div>
                                                         </div>
@@ -194,7 +294,7 @@ const Book_Pooja_Details = () => {
                             </div>
                         </section>
                         {/*  */}
-                        <Book_Pooja_Details_Testimonals data={pooja_list?.pooja_reviews}/>
+                        <Book_Pooja_Details_Testimonals data={pooja_list?.pooja_reviews} />
                         {/*  */}
                         <Home_Private_Confidential />
                         {/*  */}
