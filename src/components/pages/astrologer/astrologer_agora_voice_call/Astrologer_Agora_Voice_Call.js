@@ -122,7 +122,7 @@ const Astrologer_Agora_Voice_Call = () => {
       }
     }
     // Navigate to astrologer home after ending the call
-    navigate("/astrologer_home");
+    navigate("/astrologer-home");
     window.location.reload()
   };
 

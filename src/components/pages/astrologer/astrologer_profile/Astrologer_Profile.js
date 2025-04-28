@@ -28,8 +28,11 @@ const Astrologer_Profile = () => {
         degree: "",
         collage_school: "",
         from_astroogy: "",
-        hourly_rate: "",
-        minute_rate: "",
+        // hourly_rate: "",
+        // minute_rate: "",
+        chat_rate: "",
+        audio_call_rate: "",
+        emergency_audio_call_rate: "",
         instagram: "",
         facebook: "",
         linked_in: "",
@@ -146,13 +149,28 @@ const Astrologer_Profile = () => {
         e.preventDefault();
         setIsLoading(true)
         console.log("Form is being submitted...");
-        if (!astrologer_update_profile_form?.hourly_rate) {
-            toast("Please enter your hourly rate");
+        // if (!astrologer_update_profile_form?.hourly_rate) {
+        //     toast("Please enter your hourly rate");
+        //     setIsLoading(false)
+        //     return;
+        // }
+        // if (!astrologer_update_profile_form?.minute_rate) {
+        //     toast("Please enter your minute rate");
+        //     setIsLoading(false)
+        //     return;
+        // }
+        if (!astrologer_update_profile_form?.chat_rate) {
+            toast("Please enter your chat rate ");
             setIsLoading(false)
             return;
         }
-        if (!astrologer_update_profile_form?.minute_rate) {
-            toast("Please enter your minute rate");
+        if (!astrologer_update_profile_form?.audio_call_rate) {
+            toast("Please enter your audio call rate ");
+            setIsLoading(false)
+            return;
+        }
+        if (!astrologer_update_profile_form?.emergency_audio_call_rate) {
+            toast("Please enter your emergency audio call rate ");
             setIsLoading(false)
             return;
         }
@@ -188,9 +206,14 @@ const Astrologer_Profile = () => {
         }
         const formData = new FormData();
         formData.append('profile_step', 2);
-        formData.append('hourly_rate', astrologer_update_profile_form?.hourly_rate);
-        formData.append('minute_rate', astrologer_update_profile_form?.minute_rate);
+        // formData.append('hourly_rate', astrologer_update_profile_form?.hourly_rate);
+        // formData.append('minute_rate', astrologer_update_profile_form?.minute_rate);
         formData.append('instagram', astrologer_update_profile_form?.instagram);
+        formData.append('chat_rate', astrologer_update_profile_form?.chat_rate);
+        formData.append('emergency_video_call_rate', astrologer_update_profile_form?.emergency_video_call_rate);
+        formData.append('video_call_rate', astrologer_update_profile_form?.video_call_rate);
+        formData.append('audio_call_rate', astrologer_update_profile_form?.audio_call_rate);
+        formData.append('emergency_audio_call_rate', astrologer_update_profile_form?.emergency_audio_call_rate);
         formData.append('facebook', astrologer_update_profile_form?.facebook);
         formData.append('linked_in', astrologer_update_profile_form?.linked_in);
         formData.append('youtube', astrologer_update_profile_form?.youtube);
@@ -243,7 +266,8 @@ const Astrologer_Profile = () => {
                 setIsLoading(false);
                 set_Astrologer_Update_Profile_Form(response?.data?.data?.astrodetail);
                 localStorage.setItem("astro_is_active", true)
-                navigate("/astrologer_home")
+                localStorage.setItem("profile_step", 3)
+                navigate("/astrologer-home")
             }
             else if (response?.response?.data?.status == "500") {
                 setIsLoading(false)
@@ -282,9 +306,12 @@ const Astrologer_Profile = () => {
                         degree: astroDetail?.degree || "",
                         collage_school: astroDetail?.collage_school || "",
                         from_astroogy: astroDetail?.from_astroogy || "",
-                        minute_rate: astroDetail?.minute_rate || "",
-                        hourly_rate: astroDetail?.hourly_rate || "",
+                        // minute_rate: astroDetail?.minute_rate || "",
+                        // hourly_rate: astroDetail?.hourly_rate || "",
                         youtube: astroDetail?.youtube || "",
+                        chat_rate: astroDetail?.chat_rate || "",
+                        audio_call_rate: astroDetail?.audio_call_rate || "",
+                        emergency_audio_call_rate: astroDetail?.emergency_audio_call_rate || "",
                         linked_in: astroDetail?.linked_in || "",
                         website: astroDetail?.website || "",
                         facebook: astroDetail?.facebook || "",
@@ -307,7 +334,8 @@ const Astrologer_Profile = () => {
                     localStorage.setItem("profile_step", 2)
                 } else if (response?.data?.data?.profile_step == "3") {
                     localStorage.setItem("astro_is_active", true)
-                    navigate("/astrologer_home")
+                    localStorage.setItem("profile_step", 3)
+                    navigate("/astrologer-home")
                 }
             } catch (error) {
                 console.log("Error fetching profile:", error);
@@ -331,7 +359,7 @@ const Astrologer_Profile = () => {
     useEffect(() => {
         const user_token = localStorage.getItem("user_token")
         if (!user_token) {
-            navigate('/astrologer_login')
+            navigate('/astrologer-login')
         }
     }, [])
 
@@ -451,7 +479,7 @@ const Astrologer_Profile = () => {
                                                                 </div>
                                                                 <div className="button-row flex justify-between w-full mt-4">
                                                                     <button className="btn btn-primary bg-[#9D2326] p-2 px-5 text-white" type="submit">Next</button>
-                                                                    <button className="btn btn-primary text-[#9D2326]" type="button" title="Next" onClick={() => { navigate("/astrologer_login") }}>Back to Login</button>
+                                                                    <button className="btn btn-primary text-[#9D2326]" type="button" title="Next" onClick={() => { navigate("/astrologer-login") }}>Back to Login</button>
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -461,19 +489,55 @@ const Astrologer_Profile = () => {
                                                         <form className="multisteps-form__form" method='post' onSubmit={handle_submit_astro_Price_details}>
                                                             <div className="multisteps-form__content">
                                                                 <div className="input-grid flex w-full space-x-2.5 mb-6">
-                                                                    <div className="w-1/2">
-                                                                        <div className="input-com"><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Hourly Rate</label>
+                                                                    <div className="w-1/3">
+                                                                        <div className="input-com"><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Chat Rate</label>
                                                                             <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
-                                                                                <input placeholder="₹ 900" name='hourly_rate' value={astrologer_update_profile_form?.hourly_rate} onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="text" />
-                                                                                <span className="text-sm w-[120px]">| Per hour</span>
+                                                                                <input placeholder="₹ 900" name='chat_rate' value={astrologer_update_profile_form?.chat_rate}
+                                                                                    onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray 
+                                                                                 font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="text" />
+                                                                                <span className="text-sm w-[120px]"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="w-1/3">
+                                                                        <div className="input-com"><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Audio Call Rate</label>
+                                                                            <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
+                                                                                <input placeholder="₹ 900" name='audio_call_rate' value={astrologer_update_profile_form?.audio_call_rate}
+                                                                                    onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray 
+                                                                                 font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="text" />
+                                                                                <span className="text-sm w-[120px]"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="w-1/3">
+                                                                        <div className="input-com"><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Emergency Audio Call Rate</label>
+                                                                            <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
+                                                                                <input placeholder="₹ 900" name='emergency_audio_call_rate' value={astrologer_update_profile_form?.emergency_audio_call_rate}
+                                                                                    onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray 
+                                                                                 font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="text" />
+                                                                                <span className="text-sm w-[120px]"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="input-grid flex w-full space-x-2.5 mb-6">
+                                                                    <div className="w-1/2">
+                                                                        <div className="input-com"><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Video Call Rate</label>
+                                                                            <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
+                                                                                <input placeholder="₹ 900" name='video_call_rate' value={astrologer_update_profile_form?.video_call_rate}
+                                                                                    onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray 
+                                                                                 font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="text" />
+                                                                                <span className="text-sm w-[120px]"></span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div className="w-1/2">
-                                                                        <div className="input-com "><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Minute Rate</label>
+                                                                        <div className="input-com"><label className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">Emergency Video Call Rate</label>
                                                                             <div className="input-wrapper border border-qgray-border bg-white flex items-center  overflow-hidden relative ">
-                                                                                <input placeholder="₹ 15" name='minute_rate' value={astrologer_update_profile_form?.minute_rate} onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray  font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="text" />
-                                                                                <span className="text-sm w-[145px]">| Per Minute</span>
+                                                                                <input placeholder="₹ 900" name='emergency_video_call_rate' value={astrologer_update_profile_form?.emergency_video_call_rate}
+                                                                                    onChange={handle_change_astro_profile_update} className="input-field w-full placeholder:text-sm text-sm px-4 text-dark-gray 
+                                                                                 font-normal bg-white focus:ring-0 focus:outline-none h-[50px]" type="text" />
+                                                                                <span className="text-sm w-[120px]"></span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -531,7 +595,7 @@ const Astrologer_Profile = () => {
                                                                         <button className="btn btn-primary js-btn-prev bg-[#9C9C9C] mr-3 p-2 px-5 text-white" type="button" title="Prev" onClick={() => set_Astro_Active_Form("0")}>Prev</button>
                                                                         <button className="btn btn-primary bg-[#9D2326] p-2 px-5 text-white" type="submit">Next</button>
                                                                     </div>
-                                                                    <button className="btn btn-primary text-[#9D2326]" type="button" title="Next" onClick={() => { navigate("/astrologer_login") }}>Back to Login</button>
+                                                                    <button className="btn btn-primary text-[#9D2326]" type="button" title="Next" onClick={() => { navigate("/astrologerlogin") }}>Back to Login</button>
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -574,7 +638,7 @@ const Astrologer_Profile = () => {
                                                                         <button className="btn btn-primary js-btn-prev bg-[#9C9C9C] mr-3 p-2 px-5 text-white" type="button" title="Prev" onClick={() => set_Astro_Active_Form("1")}>Prev</button>
                                                                         <button className="btn btn-primary bg-[#9D2326] p-2 px-5 text-white" type="submit" >Submit</button>
                                                                     </div>
-                                                                    <button className="btn btn-primary text-[#9D2326]" type="button" title="Next" onClick={() => { navigate("/astrologer_login"); }}>Back to Login</button>
+                                                                    <button className="btn btn-primary text-[#9D2326]" type="button" title="Next" onClick={() => { navigate("/astrologer-login"); }}>Back to Login</button>
                                                                 </div>
                                                             </div>
                                                         </form>

@@ -86,7 +86,7 @@ const Astrologer_Pooja_Process = () => {
             if (response?.data?.status == "200") {
                 setIsLoading(false);
                 setIsModalOpen(false)
-                navigate('/astrologer_pooja_complete_list')
+                navigate('/astrologer-pooja-complete-list')
             }
             else if (response?.response?.data?.status == "500") {
                 setIsLoading(false);
@@ -126,19 +126,19 @@ const Astrologer_Pooja_Process = () => {
                                                     <li
                                                         className="inline-block align-top text-[14px] text-[#777] uppercase p-[0] cursor-pointer font-medium transition-all duration-[0.3s] ease delay-[0s] leading-[20px] tracking-[0.7px] mr-[20px] max-[991px]:mr-[30px] max-[480px]:mr-[20px]">
                                                         <Link className="nav-link activ_tab relative font-medium p-[0] max-[480px]:text-[13px] max-[480px]:leading-[28px]"
-                                                            to="/astrologer_new_Pooja_process_list">
+                                                            to="/astrologer-new-Pooja-process-list">
                                                             New</Link>
                                                     </li>
                                                     <li
                                                         className="inline-block align-top text-[14px] text-[#777] uppercase p-[0] cursor-pointer font-medium transition-all duration-[0.3s] ease delay-[0s] leading-[20px] tracking-[0.7px] mr-[20px] max-[991px]:mr-[30px] max-[480px]:mr-[20px]">
                                                         <Link className="nav-link activ_tab active relative font-medium p-[0] max-[480px]:text-[13px] max-[480px]:leading-[28px]"
-                                                            to="/astrologer_pooja_process">
+                                                            to="/astrologer-pooja-process">
                                                             Process</Link>
                                                     </li>
                                                     <li
                                                         className="inline-block align-top text-[14px] text-[#777] uppercase p-[0] cursor-pointer font-medium transition-all duration-[0.3s] ease delay-[0s] leading-[20px] tracking-[0.7px]">
                                                         <Link className="nav-link activ_tab  relative font-medium p-[0] max-[480px]:text-[13px] max-[480px]:leading-[28px]"
-                                                            to="/astrologer_pooja_complete_list">
+                                                            to="/astrologer-pooja-complete-list">
                                                             Complete</Link>
                                                     </li>
                                                 </ul>

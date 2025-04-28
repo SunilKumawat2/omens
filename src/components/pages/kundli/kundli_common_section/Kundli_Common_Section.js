@@ -14,7 +14,7 @@ const Kundli_Common_Section = () => {
                         <div className="min-[992px]:w-[20%] min-[576px]:w-[50%] w-full wow fadeInUp" data-wow-delay=".4s">
                             <div
                                 className="gi-ser-inner transition-all duration-[0.3s] ease delay-[0s] text-center">
-                                <Link to="/free_kundli">
+                                <Link to="/free-kundli">
                                     <div className="gi-service-image mb-3">
                                         <img src={Common_Images_Transport?.free_kundli2} className="m-auto w-32 rounded-full border border-white border-2" alt="" />
                                     </div>
@@ -28,7 +28,7 @@ const Kundli_Common_Section = () => {
                         <div className="min-[992px]:w-[20%] min-[576px]:w-[50%] w-full wow fadeInUp" data-wow-delay=".4s">
                             <div
                                 className="gi-ser-inner transition-all duration-[0.3s] ease delay-[0s] text-center">
-                                <Link to="/kundli_matching">
+                                <Link to="/kundli-matching">
                                     <div className="gi-service-image mb-3">
                                         <img src={Common_Images_Transport?.ku_ma} className="m-auto w-32 rounded-full border border-white border-2" alt="" />
                                     </div>
@@ -42,7 +42,7 @@ const Kundli_Common_Section = () => {
                         <div className="min-[992px]:w-[20%] min-[576px]:w-[50%] w-full wow fadeInUp" data-wow-delay=".4s">
                             <div
                                 className="gi-ser-inner transition-all duration-[0.3s] ease delay-[0s] text-center">
-                                <Link to="/daily_panchang">
+                                <Link to="/daily-panchang">
                                     <div className="gi-service-image mb-3">
                                         <img src={Common_Images_Transport?.panchange} className="m-auto w-32 rounded-full border border-white border-2" alt="" />
                                     </div>
@@ -56,7 +56,7 @@ const Kundli_Common_Section = () => {
                         <div className="min-[992px]:w-[20%] min-[576px]:w-[50%] w-full wow fadeInUp" data-wow-delay=".4s">
                             <div
                                 className="gi-ser-inner transition-all duration-[0.3s] ease delay-[0s] text-center">
-                                <Link to="/daily_horoscope">
+                                <Link to="/daily-horoscope">
                                     <div className="gi-service-image mb-3">
                                         <img src={Common_Images_Transport?.daily_horoscope} className="m-auto w-32 rounded-full border border-white border-2" alt="" />
                                     </div>
@@ -70,7 +70,7 @@ const Kundli_Common_Section = () => {
                         <div className="min-[992px]:w-[20%] min-[576px]:w-[50%] w-full wow fadeInUp" data-wow-delay=".4s">
                             <div
                                 className="gi-ser-inner transition-all duration-[0.3s] ease delay-[0s] text-center">
-                                <Link to="/love_calculator">
+                                <Link to="/love-calculator">
                                     <div className="gi-service-image mb-3">
                                         <img src={Common_Images_Transport?.love_calculater} className="m-auto w-32 rounded-full border border-white border-2" alt="" />
                                     </div>

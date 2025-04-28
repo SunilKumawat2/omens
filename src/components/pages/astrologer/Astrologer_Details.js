@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import { db } from "../../../firebase/Firebase"; // Firestore instance
 import Header from '../../common/header/Header'
 import Kundli_Main_Banner from '../kundli/kundli_main_bannner/Kundli_Main_Banner'
 import Home_Private_Confidential from '../home_page_components/home_private_confidential/Home_Private_Confidential'
@@ -17,194 +19,21 @@ import { Agora_Generate_Token, Chat_Token } from '../../../api/agora/Agora'
 import AgoraRTC from "agora-rtc-sdk-ng";
 // import WebIM from "agora-chat";
 import AC from 'agora-chat';
+import axios from 'axios';
 
 const Astrologer_Details = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [is_voice_call_loading, setIs_Voice_Call_Loading] = useState(false);
-    const [is_video_call_loading, setIs_Video_Call_Loading] = useState(false);
     const [is_Chat_loading, setIs_Chat_Loading] = useState(false);
     const [astro_details_list, set_Astro_Details_List] = useState([]);
     const [is_chat_assistant, set_Is_Chat_Assistant] = useState(false)
     const [is_loading, set_Is_Loading] = useState(false);
     const Get_user_is_active = localStorage.getItem("user_is_active")
 
-    // <-------- Handle Generate voice call agora token ------------>
-    const Handle_Generate_voice_call_agora_token = async () => {
-        setIs_Voice_Call_Loading(true);
-        const token = User_Authentication();
-        if (!token) {
-            setIs_Voice_Call_Loading(false);
-            throw new Error("User token not found");
-        }
+    const handle_chat_click = ()=>{
+        navigate("/download_app")
+    }
 
-        try {
-            const response = await Agora_Generate_Token(
-                { type: "audio", receiver_id: id }, // 26 Your receiver_id can change based on your requirements
-                { Authorization: `Bearer ${token}` }
-            );
-            console.log("response_response", response?.data?.data);
-            setIs_Voice_Call_Loading(false);
-            return response?.data?.data;
-        } catch (error) {
-            setIs_Voice_Call_Loading(false);
-            console.error("Error generating token:", error);
-            throw error;
-        }
-    };
-
-    // <-------- Handle Generate voice call agora token ------------>
-    const Handle_Generate_video_call_agora_token = async () => {
-        setIs_Video_Call_Loading(true);
-        const token = User_Authentication();
-        if (!token) {
-            setIs_Video_Call_Loading(false);
-            throw new Error("User token not found");
-        }
-
-        try {
-            const response = await Agora_Generate_Token(
-                { type: "video", receiver_id: id }, // 26 Your receiver_id can change based on your requirements
-                { Authorization: `Bearer ${token}` }
-            );
-            console.log("response_response", response?.data?.data);
-            setIs_Video_Call_Loading(false);
-            return response?.data?.data;
-        } catch (error) {
-            setIs_Video_Call_Loading(false);
-            console.error("Error generating token:", error);
-            throw error;
-        }
-    };
-
-    // <-------- Handle Generate voice call agora token ------------>
-    const Handle_Generate_chat_agora_token = async () => {
-        setIs_Chat_Loading(true);
-        const formData = new FormData();
-        formData.append("chat_uiid","sunil_Kumawat_26")
-        const token = User_Authentication();
-        if (!token) {
-            setIs_Chat_Loading(false);
-            throw new Error("User token not found");
-        }
-        try {
-            const response = await Chat_Token(formData, { Authorization: `Bearer ${token}` });
-            console.log("response_response", response?.data?.data);
-            setIs_Chat_Loading(false);
-            return response?.data?.data;
-        } catch (error) {
-            setIs_Chat_Loading(false);
-            console.error("Error generating token:", error);
-            throw error;
-        }
-    };
-
-    //<------ Handle call button for the voice call ------------->
-    const handle_voice_call_click = async () => {
-        setIs_Voice_Call_Loading(true);
-        try {
-            const { channel, sender_token, sender_id, call_duration } = await Handle_Generate_voice_call_agora_token();
-            localStorage.setItem("channel", channel)
-            localStorage.setItem("sender_token", sender_token)
-            localStorage.setItem("sender_id", sender_id)
-            {
-                call_duration >= 1 ? (
-                    navigate(`/Voice_Call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}&appid=${process.env.REACT_APP_AGORA_APP_ID}&astro_details_list=${astro_details_list?.astrolist?.name}&receiver_id=${id}`)
-                ) : (
-                    alert("insufficient balance in your wallet !")
-                )
-            }
-
-            // Initialize Agora RTC client
-            const rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-            await rtcClient.join(AGORA_APP_ID, channel, sender_token, sender_id);
-            const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-            await rtcClient.publish(audioTrack);
-
-            console.log("Joined the Agora channel and published local audio track.");
-        } catch (error) {
-            console.error("Error joining channel or publishing audio:", error);
-        } finally {
-            setIs_Voice_Call_Loading(false);
-        }
-    };
-
-    //<------ Handle call button for the voice call ------------->
-    //   const handle_chat_click = async () => {
-    //     setIs_Chat_Loading(true);
-    //     try {
-    //       const { chat_token, chat_uiid } = await Handle_Generate_chat_agora_token();
-    //       localStorage.setItem("chat_token", chat_token);
-    //       localStorage.setItem("chat_uiid", chat_uiid);
-    //       navigate(`/agora_chat`);
-    //       const agoraChatClient = new WebIM.connection({
-    //         appKey: AGORA_APP_CHAT_APP_KEY, 
-    //       });
-    //       await agoraChatClient.open({ user: chat_uiid, pwd: chat_token });
-    //       console.log("Logged in successfully to Agora Chat");
-    //       window.agoraChatClient = agoraChatClient;
-    //     } catch (error) {
-    //       console.error("Error during Agora chat setup:", error);
-    //     } finally {
-    //       setIs_Chat_Loading(false);
-    //     }
-    //   };
-
-    const handle_chat_click = async () => {
-        setIs_Chat_Loading(true);
-        try {
-            const { chat_token, chat_uiid } = await Handle_Generate_chat_agora_token();
-            console.log("handle_chat_click_chat_token_chat_uiid",{chat_token,chat_uiid})
-
-            // ✅ Store token in localStorage
-            localStorage.setItem("chat_token", chat_token);
-            localStorage.setItem("chat_uiid", chat_uiid);
-            localStorage.setItem("chat_partner_uiid", id);
-            console.log("chat_token", chat_token)
-            console.log("chat_uiid", chat_uiid)
-            // ✅ Navigate to chat page
-            navigate(`/agora_chat`, { state: {chat_token : chat_token , chat_uiid:chat_uiid} });
-
-        } catch (error) {
-            console.error("Error during chat setup:", error);
-        } finally {
-            setIs_Chat_Loading(false);
-        }
-    };
-
-
-    //<------ Handle call button for the voice call ------------->
-    const handle_video_call_click = async () => {
-        setIs_Video_Call_Loading(true);
-        try {
-            // Generate token and other necessary details for the video call
-            const { channel, sender_token, sender_id } = await Handle_Generate_video_call_agora_token();
-
-            // Store the generated values in localStorage for later use
-            localStorage.setItem("channel", channel);
-            localStorage.setItem("sender_token", sender_token);
-            localStorage.setItem("sender_id", sender_id);
-
-            // Navigate to the video call page with query params
-            navigate(`/agora_video_call?channel=${channel}&sender_token=${sender_token}&sender_id=${sender_id}&appid=${process.env.REACT_APP_AGORA_APP_ID}&astro_details_list=${astro_details_list?.astrolist?.name}`);
-
-            // Initialize Agora RTC client for video call
-            const rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-
-            // Join the Agora channel using the provided token and user ID
-            await rtcClient.join(AGORA_APP_ID, channel, sender_token, sender_id);
-
-            // Create and publish local video and audio tracks
-            const [audioTrack, videoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();
-            await rtcClient.publish([audioTrack, videoTrack]);
-
-            console.log("Joined the Agora channel and published local audio and video tracks.");
-        } catch (error) {
-            console.error("Error joining channel or publishing audio/video:", error);
-        } finally {
-            setIs_Video_Call_Loading(false);
-        }
-    };
 
     //    <--------- get the astologer details pages ------------->
     const Handle_Get_Astrologer_details = async () => {
@@ -296,13 +125,13 @@ const Astrologer_Details = () => {
                                     <div className="shop-pro-content">
                                         <div className="shop-pro-inner mx-[-12px]">
                                             <div className="flex flex-wrap w-full">
-                                                <div className="min-[992px]:w-[100%] min-[768px]:w-[50%] min-[576px]:w-[100%] max-[420px]:w-full px-[12px] max-[575px]:w-[100%] max-[575px]:mx-auto mb-6 grid_call_chat">
-                                                    <div className="gi-product-content overflow-hidden rounded-[5px] shadow-xl p-6 bg-white">
+                                                <div className="min-[992px]:w-[100%] min-[768px]:w-[100%] min-[576px]:w-[100%] max-[420px]:w-full px-[12px] max-[575px]:w-[100%] max-[575px]:mx-auto mb-6 grid_call_chat">
+                                                    <div className="gi-product-content  overflow-hidden rounded-[5px] shadow-xl p-6 bg-white">
                                                         <div className="gi-product-inner md:flex lg:flex gap-3 transition-all duration-[0.3s] ease-in-out ">
-                                                            <div className="gi-pro-image overflow-hidden">
+                                                            <div className="gi-pro-image w-[140px]">
 
                                                                 <a href="#"
-                                                                    className="image productimg relative block overflow-hidden pointer-events-none">
+                                                                    className="image productimg relative block pointer-events-none">
                                                                     {
                                                                         astro_details_list?.astrolist?.profile_image != null ? (
                                                                             <img className="main-image rounded-full m-auto  w-[120px] h-[120px] transition-all duration-[0.3s] ease delay-[0s]"
@@ -344,48 +173,37 @@ const Astrologer_Details = () => {
 
                                                                 <div className="mt-2">
                                                                     <span
-                                                                        className="whitespace-nowrap inline-block text-gray-900 m-2 hover:text-white border border-gray-300 hover:bg-gray-900 rounded-full text-sm px-3 py-1 text-center mt-2">
-                                                                        {astro_details_list?.astrolist?.skills}</span>
+                                                                        className="whitespace-nowrap inline-block text-gray-500 mt-2 mr-4">
+                                                                       Skills: <span className='text-gray-900 font-medium'>{astro_details_list?.astrolist?.skills}</span></span>
                                                                     <span
-                                                                        className="whitespace-nowrap inline-block text-gray-900 m-2 hover:text-white border border-gray-300 hover:bg-gray-900 rounded-full text-sm px-3 py-1 text-center mt-2">
-                                                                        {astro_details_list?.astrolist?.language}</span>
+                                                                        className="whitespace-nowrap inline-block text-gray-500 mt-2 mr-4">
+                                                                        language: <span className='text-gray-900 font-medium'>{astro_details_list?.astrolist?.language}</span></span>
                                                                     <span
-                                                                        className="whitespace-nowrap inline-block text-gray-900 m-2 hover:text-white border border-gray-300 hover:bg-gray-900 rounded-full text-sm px-3 py-1 text-center mt-2">
-                                                                        {astro_details_list?.astrolist?.experience}</span>
+                                                                        className="whitespace-nowrap inline-block text-gray-500 mt-2">
+                                                                       Exp.: <span className='text-gray-900 font-medium'>{astro_details_list?.astrolist?.experience}</span></span>
                                                                 </div>
                                                                 <div className="flex gap-4 mt-6 justify-between w-full">
                                                                     <div className="inline-block">
+                                                                       
                                                                         <button onClick={handle_chat_click} data-modal-id="modal1"
                                                                             className={`${is_Chat_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-[#9F2225] bg-[green] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[green] dark:hover:text-white dark:hover:bg-[green] dark:focus:ring-red-900`}>
                                                                             <i className="fi-rr-comment transition-all duration-[0.3s] ease-in-out mr-2"></i>
-                                                                            {is_Chat_loading ? "Joining..." : "Free Chat"}</button>
-                                                                        <button onClick={handle_voice_call_click} data-modal-id="modal1" className={`${is_voice_call_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-[#9F2225] bg-[#9F2225] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#9F2225] dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900`}>
-                                                                            <i className="fi-rr-phone-call transition-all duration-[0.3s] ease-in-out mr-2"></i>
-                                                                            {is_voice_call_loading ? "Joining..." : "Start Call"}</button>
-
-                                                                        {/* <button onClick={handle_video_call_click} data-modal-id="modal1" className={`${is_video_call_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-green-700 bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#9F2225] dark:hover:text-white dark:hover:bg-green-700 dark:focus:ring-green-900`}>
-                                                                            <i className="fi-rr-video-camera text-white ease-in-out mr-2"></i>
-                                                                            {is_video_call_loading ? "Joining..." : "Video Call"}
-                                                                        </button> */}
-
-                                                                        {/* <Agora_Provider>
-                                                                            <h1>Agora Voice Call</h1>
-                                                                            <Join_Channel onJoinStatusChange={setIsJoined} />
-                                                                            {isJoined && <Controls isMuted={isMuted} onMuteStatusChange={setIsMuted} />}
-                                                                            <Status isJoined={isJoined} isMuted={isMuted} />
-                                                                        </Agora_Provider> */}
+                                                                            Free Chat</button>
+                                                                        <button onClick={handle_chat_click} data-modal-id="modal1"
+                                                                            className={`${is_Chat_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border bg-[#9F2225] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900`}>
+                                                                            <i className="fi-rr-comment transition-all duration-[0.3s] ease-in-out mr-2"></i>
+                                                                            Audio Call</button>
+                                                                        <button onClick={handle_chat_click} data-modal-id="modal1"
+                                                                            className={`${is_Chat_loading ? "opacity-50 cursor-not-allowed" : ""} modal-link m-2 text-[#fff] text-white border border-[#9F2225] bg-[#FFB500] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#FFB500] dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900`}>
+                                                                            <i className="fi-rr-comment transition-all duration-[0.3s] ease-in-out mr-2"></i>
+                                                                            Vido Call</button>
                                                                     </div>
                                                                     <div className="inline-block" onClick={() => Handle_Add_follow_Astro(astro_details_list?.astrolist?.id)}>
                                                                         {
                                                                             astro_details_list?.astrolist?.is_favourite == true ? (
-                                                                                <Link
-                                                                                    className="text-[#fff] text-white border border-[#FFB800] bg-[#FFB800] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#FFB800] dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900">
-                                                                                    UnFollow</Link>
+                                                                                <Link className="text-[#fff] text-white bg-[#FFB800] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900">UnFollow</Link>
                                                                             ) : (
-
-                                                                                <Link
-                                                                                    className="text-[#fff] text-white border border-[#FFB800] bg-green-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-[#FFB800] dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900">
-                                                                                    Follow</Link>
+                                                                                <Link className="text-[#fff] text-white bg-green-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:hover:text-white dark:hover:bg-[#9F2225] dark:focus:ring-red-900">Follow</Link>
                                                                             )
                                                                         }
                                                                     </div>

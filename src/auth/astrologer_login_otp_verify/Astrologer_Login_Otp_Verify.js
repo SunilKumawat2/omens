@@ -56,7 +56,7 @@ const Astrologer_Login_Otp_Verify = () => {
                 toast(response?.data?.message)
                 localStorage.setItem("user_token", response?.data?.data?.token)
                 // localStorage.setItem("astro_is_active", true)
-                navigate("/astrologer_profile")
+                navigate("/astrologer-profile")
             }
             else if (response?.response?.data?.status == "500") {
                 setIsLoading(false)

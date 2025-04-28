@@ -292,7 +292,7 @@ const Cart = () => {
                                                                     toast("Please add a shipping address before proceeding.");
                                                                     return;
                                                                 }
-                                                                navigate("/order_place", {
+                                                                navigate("/order-place", {
                                                                     state: {
                                                                         cart_list: cart_list,
                                                                         coupanResponse: coupanResponse,

@@ -137,49 +137,49 @@ const Footer = () => {
                                             <ul className="align-itegi-center">
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/daily_horoscope"
+                                                    <Link to="/daily-horoscope"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Horoscope
                                                         2024</Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/daily_horoscope"
+                                                    <Link to="/daily-horoscope"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Today's
                                                         Horoscope</Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/daily_horoscope"
+                                                    <Link to="/daily-horoscope"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Today's
                                                         Love Horoscope</Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/daily_horoscope"
+                                                    <Link to="/daily-horoscope"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Yesterday's
                                                         Horoscope</Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/daily_horoscope"
+                                                    <Link to="/daily-horoscope"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Tomorrow's
                                                         Horoscope</Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/daily_horoscope"
+                                                    <Link to="/daily-horoscope"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Weekly
                                                         Horoscope</Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/daily_horoscope"
+                                                    <Link to="/daily-horoscope"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Monthly
                                                         Horoscope</Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center">
-                                                    <Link to="/daily_horoscope"
+                                                    <Link to="/daily-horoscope"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Yearly
                                                         Horoscope</Link>
                                                 </li>
@@ -218,48 +218,48 @@ const Footer = () => {
                                             <ul className="align-itegi-center">
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/daily_panchang"
+                                                    <Link to="/daily-panchang"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">Today
                                                         Panchang</Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/astrologer_list"
+                                                    <Link to="/download_app"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Live Astrologers
                                                     </Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/free_kundli"
+                                                    <Link to="/free-kundli"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">How
                                                         to read kundali
                                                     </Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/free_kundli"
+                                                    <Link to="/free-kundli"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Free Kundli
                                                     </Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/kundli_matching"
+                                                    <Link to="/kundli-matching"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Kundli Matching
                                                     </Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/astrologer_list"
+                                                    <Link to="/astrologer-list"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Chat with Astrologer
                                                     </Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/astrologer_list"
+                                                    <Link to="/astrologer-list"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Talk to Astrologer
                                                     </Link>
@@ -273,14 +273,14 @@ const Footer = () => {
                                                 </li> */}
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/astrology_yoga"
+                                                    <Link to="/astrology-yoga"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Astrology Yoga
                                                     </Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/kaalsarp_doshas"
+                                                    <Link to="/kaalsarp-doshas"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Kaalsarp Doshas
                                                     </Link>
@@ -301,7 +301,7 @@ const Footer = () => {
                                                 </li> */}
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/nakshatras_constellations"
+                                                    <Link to="/nakshatras-constellations"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Nakshatras Constellations
                                                     </Link>
@@ -341,7 +341,7 @@ const Footer = () => {
                                             <ul className="align-itegi-center">
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/all_letest_post"
+                                                    <Link to="/blogs"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Blog
                                                     </Link>
@@ -418,7 +418,7 @@ const Footer = () => {
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/love_calculator"
+                                                    <Link to="/love-calculator"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Love Calculator
                                                     </Link>
@@ -446,14 +446,14 @@ const Footer = () => {
                                                 <ul className="align-itegi-center">
                                                     <li
                                                         className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                        <Link to="/terms_conditions"
+                                                        <Link to="/terms-conditions"
                                                             className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                             Terms & Conditions
                                                         </Link>
                                                     </li>
                                                     <li
                                                         className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                        <Link to="/privacy_policy"
+                                                        <Link to="/privacy-policy"
                                                             className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                             Privacy Policy
                                                         </Link>
@@ -467,7 +467,7 @@ const Footer = () => {
                                                     </li> */}
                                                     <li
                                                         className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                        <Link to="/about_us"
+                                                        <Link to="/about-us"
                                                             className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                             About Us
                                                         </Link>
@@ -518,14 +518,12 @@ const Footer = () => {
                         <div
                             className="flex flex-wrap justify-between items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                             <div className="w-full flex flex-wrap">
-                                <div
-                                    className="gi-bottom-info flex flex-row items-center justify-between w-full px-[12px] max-[991px]:flex-col">
-
+                                <div className="gi-bottom-info flex flex-row items-center justify-between w-full px-[12px] max-[991px]:flex-col">
                                     <div className="footer-copy max-[991px]:mb-[15px]">
                                         <div className="footer-bottom-copy">
                                             <div className="gi-copy text-[#777] text-[13px] tracking-[1px] text-center font-light">
                                                 Copyright ©
-                                                <Link className="site-name text-[#9F2225]" to="/">Omens</Link>
+                                                <Link className="site-name text-[#9F2225]" to="/">Omens </Link>
                                                 all rights reserved. Powered by Omens.
                                             </div>
                                         </div>
@@ -533,9 +531,9 @@ const Footer = () => {
 
                                     <div className="footer-bottom-right">
                                         <div className="footer-bottom-payment flex justify-content-center">
-                                            <div className="payment-link">
+                                            {/* <div className="payment-link">
                                                 <img src={Common_Images_Transport?.payment} alt="payment" />
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
 

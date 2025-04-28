@@ -145,3 +145,67 @@ export const Get_Astrologer_Bank_Details = async (headers) => {
         return error
     }
 }
+
+
+// <---------- Astro Permission Update ------------>
+export const Astro_Permission_Update = async (data, headers) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/astro-permission-update`,data, { headers: headers })
+        return response
+    } catch (error) {
+        return error
+    }
+}
+
+// <---------- Astro Permission Update ------------>
+export const get_astro_dashboard = async (headers) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/astro-dashboard`,{ headers: headers })
+        return response
+    } catch (error) {
+        return error
+    }
+}
+
+// <--------- wallet-detail -------------->
+export const get_astro_wallet_history = async (headers) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/astro-wallet-history`, { headers: headers });
+        return response;
+    } catch (error) {
+        console.error("Error fetching order details:", error);
+        return error;
+    }
+};
+// <--------- wallet-detail -------------->
+export const get_astro_wallet_detail = async (headers) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/astro-wallet-detail`, { headers: headers });
+        return response;
+    } catch (error) {
+        console.error("Error fetching order details:", error);
+        return error;
+    }
+};
+
+// <--------- language-and-skills -------------->
+export const get_language_and_skills = async (headers) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/language-and-skills`, { headers: headers });
+        return response;
+    } catch (error) {
+        console.error("Error fetching order details:", error);
+        return error;
+    }
+};
+
+// <--------- astro-call-history -------------->
+export const get_astro_call_history = async (headers) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/astro-call-history`, { headers: headers });
+        return response;
+    } catch (error) {
+        console.error("Error fetching order details:", error);
+        return error;
+    }
+};

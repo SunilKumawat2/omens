@@ -60,7 +60,15 @@ const User_Login_Otp_Verify = () => {
                 toast(response?.data?.message);
                 localStorage.setItem("user_token", response?.data?.data?.token);
                 localStorage.setItem("user_is_active", true);
-                navigate("/");
+                 // Check if user was trying to access a specific page
+        const redirectPath = localStorage.getItem("redirect_after_login");
+
+        if (redirectPath) {
+          localStorage.removeItem("redirect_after_login"); // Clear after use
+          navigate(redirectPath); // Redirect user to original page
+        } else {
+          navigate("/"); // Default: Home page
+        }
             } else if (response?.response?.data?.status == "500") {
                 setIsLoading(false);
                 toast(response?.response?.data?.message);

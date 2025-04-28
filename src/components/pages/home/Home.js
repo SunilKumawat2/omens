@@ -63,7 +63,8 @@ const Home = () => {
                         <Home_Chat_Slider />
 
                         {/* <-------- Category section's ------> */}
-                        <Home_Category data={home_data} />
+                        {/* <Home_Category data={home_data} /> */}
+                        
                         {/* <!--  Home_By_Gemstone Start --> */}
                         <Home_By_Gemstone data={home_data} />
 
@@ -83,10 +84,10 @@ const Home = () => {
                         <Our_Celebrity data={home_data} />
 
                         {/* <!-- Exclusive Custom Designs Start --> */}
-                        {/* <Home_Exclusive_Design /> */}
+                        <Home_Exclusive_Design />
 
                         {/* <!-- Home_Shop_By_Collection Start --> */}
-                        {/* <Home_Shop_By_Collection /> */}
+                        <Home_Shop_By_Collection />
 
                         {/* <!-- Home_Satisfied_Customer section --> */}
                         {/* <Home_Satisfied_Customer /> */}

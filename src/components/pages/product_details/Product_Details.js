@@ -5,7 +5,7 @@ import Home_Private_Confidential from '../home_page_components/home_private_conf
 import Footer from '../../common/footer/Footer'
 import Slider from "react-slick";
 import Customer_Feedback from './Customer_Feedback'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Add_To_Cart, Get_Cart_List, Get_Product_Details } from '../../../api/category_product/Category_Product'
 import { IMG_BASE_URL } from '../../../config/Config'
 import Product_Description from './Product_Description'
@@ -14,24 +14,29 @@ import { User_Authentication } from '../../../user_authentication/User_Authentic
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Similar_Product from '../similar_product/Similar_Product'
+import Product_Return_Policy from './Product_Return_Policy'
 
 const Product_Details = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const [product_list_result, setProductListResult] = useState(null);
     const [category_id, setCategoryId] = useState(null);
     const [subcategory_id, setSubcategoryId] = useState(null);
     const [active_tab, set_Active_Tab] = useState("0");
     const [is_loading, set_Is_Loading] = useState(false)
-    const [product_details_list, set_Product_Details_List] = useState([]);
-    console.log("product_details_list",product_details_list)
+    const [product_details_list, set_Product_Details_List] = useState({});
+    console.log("product_details_list", product_details_list)
     const [certificate, set_Certificate] = useState(null)
     const [energization, set_Energization] = useState(null)
     const [active_product_type, set_Active_Product_Type] = useState(null);
-    
+    const token = User_Authentication();
+    const [nav1, setNav1] = useState(null);  // for main slider
+    const [nav2, setNav2] = useState(null);  // for thumbnail slider
+    const [activeIndex, setActiveIndex] = useState(0);
     // <--- this is product id ------->
     const id = product_list_result?.id;
-    const [nav1, setNav1] = useState(null);
-    const [nav2, setNav2] = useState(null);
+
 
     // Retrieve data from location or local storage
     useEffect(() => {
@@ -62,6 +67,7 @@ const Product_Details = () => {
                 try {
                     const response = await Get_Product_Details({ id: product_list_result?.id, category_id: category_id, subcategory_id: subcategory_id });
                     set_Product_Details_List(response?.data?.data);
+                    console.log("response_response_response", response?.data?.data)
                 } catch (error) {
                     console.error("Error fetching product details:", error);
                 } finally {
@@ -71,20 +77,40 @@ const Product_Details = () => {
             Handle_Get_Product_Details();
         }
     }, [category_id, subcategory_id, product_list_result]);
-console.log("product_details_list",product_details_list)
+
+
+    console.log("product_details_list", product_details_list)
     const settingsMain = {
         asNavFor: nav2,
         ref: (slider) => setNav1(slider),
         infinite: false,
+        arrows: true,
+        beforeChange: (oldIndex, newIndex) => {
+            setActiveIndex(newIndex); // ✅ Sync thumbnail highlight for < 5 case
+        },
     };
+
 
     const settingsNav = {
         asNavFor: nav1,
         ref: (slider) => setNav2(slider),
-        slidesToShow: 3,
+        slidesToShow: 5, // Adjust based on your design
         swipeToSlide: true,
         focusOnSelect: true,
         infinite: false,
+        arrows: true,
+        centerMode: false,
+        variableWidth: false, // Avoid width jumping
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: { slidesToShow: 2 },
+            },
+            {
+                breakpoint: 480,
+                settings: { slidesToShow: 1 },
+            },
+        ],
     };
 
 
@@ -92,11 +118,11 @@ console.log("product_details_list",product_details_list)
     // <-------- Handle Add To Cart ----------------->
     const Handle_Add_To_cart = async (product_id, total_price) => {
         if (!certificate) {
-            toast("please select the certificate")
+            toast.error("please select the certificate")
             return
         }
         if (!energization) {
-            toast("please select the energization")
+            toast.error("please select the energization")
             return
         }
         const data = {
@@ -108,12 +134,14 @@ console.log("product_details_list",product_details_list)
             product_type_id: active_product_type,
         }
         try {
-            const token = User_Authentication();
+
             if (!token) {
                 set_Is_Loading(false);
-                toast("user not login here")
-                // navigate("/login")
-                throw new Error("User token not found");
+                toast.error("User is not logged in.")
+                setTimeout(() => {
+                    navigate("/user-login")
+                }, 1000);
+                // throw new Error("User token not found");
             }
             const response = await Add_To_Cart(data, { Authorization: `Bearer ${token}` })
             console.log("respsdklsjdfljsdf", response)
@@ -123,7 +151,7 @@ console.log("product_details_list",product_details_list)
                 // window.location.reload()
             }
             else if (response?.response?.data?.status == "500") {
-                toast("Product already added to cart.")
+                toast.warning("Product already added to cart.")
             }
         } catch (error) {
         }
@@ -142,6 +170,16 @@ console.log("product_details_list",product_details_list)
         }
     }, [product_details_list]); // Runs whenever product_details_list changes
 
+
+    const handleBookNow = () => {
+        if (!token) {
+            toast.error("User is not logged in.");
+            localStorage.setItem("redirect_after_login", `/product-details`);
+            setTimeout(() => {
+                navigate("/user-login");
+            }, 2000);
+        }
+    };
 
     return (
         <div>
@@ -166,10 +204,10 @@ console.log("product_details_list",product_details_list)
                                 <div className="flex flex-wrap w-full">
                                     <div className="w-full px-[12px]">
                                         <div className="flex flex-wrap m-0 py-[35px]">
-                                            <div className="min-[768px]:w-[50%] w-full">
-                                                <h2
-                                                    className="gi-breadcrumb-title text-white block text-3xl leading-[22px] font-semibold my-[0] mx-auto capitalize max-[767px]:mb-[5px] max-[767px]:text-center">
-                                                    {product_list_result?.name}</h2>
+                                            <div className="min-[768px]:w-[70%] w-full">
+                                                <h6
+                                                    className="gi-breadcrumb-title text-white block text-sm leading-[22px] font-semibold my-[0] mx-auto capitalize max-[767px]:mb-[5px] max-[767px]:text-center">
+                                                    {product_list_result?.name}</h6>
                                                 <ul className="gi-breadcrumb-list mt-5">
                                                     <li
                                                         className="gi-breadcrumb-item inline-block text-[14px] font-normal tracking-[0.02rem] leading-[1.2] capitalize">
@@ -201,53 +239,205 @@ console.log("product_details_list",product_details_list)
                                                 <div className="flex flex-wrap w-full">
                                                     <div
                                                         className="single-pro-img single-pro-img-no-sidebar w-[40%] max-[991px]:w-full relative pr-[12px] max-[991px]:pl-[12px] max-[991px]:w-full max-[991px]:max-w-[500px] max-[991px]:m-auto max-[420px]:px-[0]">
-                                                        <div
+                                                        {/* <div
                                                             className="single-product-scroll p-[15px] sticky top-[30px] rounded-[5px] border-[1px] border-solid border-[#eee]">
-                                                            <Slider {...settingsMain}>
-                                                                {product_details_list?.product?.product_images?.map((product_images_result, index) => (
-                                                                    <div key={index} className="single-slide zoom-image-hover">
-                                                                        {product_images_result?.file_type === "image" ? (
+                                                            <Slider {...settingsMain} ref={(slider) => setNav1(slider)}>
+                                                                {product_details_list?.product?.product_images?.map((item, index) => (
+                                                                    <div key={index} className="zoom-image-hover">
+                                                                        {item?.file_type === "image" ? (
                                                                             <img
-                                                                                className="img-responsive w-[100%] h-[400px]"
-                                                                                src={`${IMG_BASE_URL}${product_images_result?.image_url}`}
+                                                                                src={`${IMG_BASE_URL}${item?.image_url}`}
+                                                                                className="w-full max-h-[400px] object-contain"
                                                                                 alt="Product"
                                                                             />
                                                                         ) : (
                                                                             <video
                                                                                 controls
-                                                                                className="img-responsive w-[100%] h-[400px]"
-                                                                                poster={`${IMG_BASE_URL}${product_images_result?.thumbnail_url}`}
+                                                                                poster={`${IMG_BASE_URL}${item?.thumbnail_url}`}
+                                                                                className="w-full max-h-[400px] object-contain"
                                                                             >
-                                                                                <source src={`${IMG_BASE_URL}${product_images_result?.video_url}`} type="video/mp4" />
+                                                                                <source src={`${IMG_BASE_URL}${item?.video_url}`} type="video/mp4" />
                                                                             </video>
                                                                         )}
                                                                     </div>
                                                                 ))}
                                                             </Slider>
+
                                                             <div className="single-nav-thumb w-full overflow-hidden mt-4">
-                                                                <Slider {...settingsNav}>
-                                                                    {product_details_list?.product?.product_images?.map((product_images_result, index) => (
-                                                                        <div key={index} className="single-slide zoom-image-hover">
-                                                                            {product_images_result?.file_type === "image" ? (
-                                                                                <img
-                                                                                    className="img-responsive w-[100%] h-[150px]"
-                                                                                    src={`${IMG_BASE_URL}${product_images_result?.image_url}`}
-                                                                                    alt="Thumbnail"
-                                                                                />
-                                                                            ) : (
-                                                                                <video
-                                                                                    controls
-                                                                                    className="img-responsive w-[100%] h-[150px]"
-                                                                                    poster={`${IMG_BASE_URL}${product_images_result?.thumbnail_url}`}
+                                                                <div className="overflow-hidden">
+                                                                    {product_details_list?.product?.product_images?.length >= 5 ? (
+                                                                        <Slider
+                                                                            {...settingsNav}
+                                                                            className="thumbnail-slider"
+                                                                            asNavFor={nav1}
+                                                                            ref={(slider) => setNav2(slider)}
+                                                                        >
+                                                                            {product_details_list?.product?.product_images?.map((item, index) => (
+                                                                                <div key={index} className="px-0 mx-[2px]">
+                                                                                    {item?.file_type === "image" ? (
+                                                                                        <img
+                                                                                            src={`${IMG_BASE_URL}${item?.image_url}`}
+                                                                                            className="h-[90px] w-full object-cover border rounded-sm slick-thumb"
+                                                                                            alt="Thumb"
+                                                                                        />
+                                                                                    ) : (
+                                                                                        <video
+                                                                                            autoPlay
+                                                                                            muted
+                                                                                            loop
+                                                                                            playsInline
+                                                                                            poster={`${IMG_BASE_URL}${item?.thumbnail_url}`}
+                                                                                            className="h-[90px] w-full object-cover border rounded-sm slick-thumb"
+                                                                                        >
+                                                                                            <source src={`${IMG_BASE_URL}${item?.video_url}`} type="video/mp4" />
+                                                                                        </video>
+
+                                                                                    )}
+                                                                                </div>
+                                                                            ))}
+                                                                        </Slider>
+                                                                    ) : (
+                                                                        <div className="flex flex-wrap gap-2">
+                                                                            {product_details_list?.product?.product_images?.map((item, index) => (
+                                                                                <div
+                                                                                    key={index}
+                                                                                    className={`w-[90px] h-[90px] cursor-pointer border rounded-sm ${index === activeIndex ? "ring-2 ring-red-800" : ""
+                                                                                        }`}
+                                                                                    onClick={() => {
+                                                                                        setActiveIndex(index);
+                                                                                        nav1?.slickGoTo(index);  // 🔁 Change main image manually
+                                                                                    }}
                                                                                 >
-                                                                                    <source src={`${IMG_BASE_URL}${product_images_result?.video_url}`} type="video/mp4" />
-                                                                                </video>
-                                                                            )}
+                                                                                    {item?.file_type === "image" ? (
+                                                                                        <img
+                                                                                            src={`${IMG_BASE_URL}${item?.image_url}`}
+                                                                                            className="w-full h-full object-cover rounded-sm"
+                                                                                            alt="Thumb"
+                                                                                        />
+                                                                                    ) : (
+                                                                                        <video
+                                                                                            autoPlay
+                                                                                            muted
+                                                                                            loop
+                                                                                            playsInline
+                                                                                            poster={`${IMG_BASE_URL}${item?.thumbnail_url}`}
+                                                                                            className="w-full h-full object-cover rounded-sm"
+                                                                                        >
+                                                                                            <source src={`${IMG_BASE_URL}${item?.video_url}`} type="video/mp4" />
+                                                                                        </video>
+                                                                                    )}
+                                                                                </div>
+                                                                            ))}
                                                                         </div>
-                                                                    ))}
-                                                                </Slider>
+                                                                    )}
+
+
+
+                                                                </div>
+
+
+
+                                                            </div>
+                                                        </div> */}
+                                                        <div className="single-product-scroll z-0 px-0 py-2 sticky top-[30px] rounded-[5px] border border-[#eee] bg-white">
+                                                            {/* Main Slider */}
+                                                            <Slider {...settingsMain} ref={(slider) => setNav1(slider)} className="!p-0 !m-0">
+                                                                {product_details_list?.product?.product_images?.map((item, index) => (
+                                                                    <div key={index} className="relative w-full aspect-[4/3] overflow-hidden rounded-md bg-white">
+                                                                        {item?.file_type === "image" ? (
+                                                                            <img
+                                                                                src={`${IMG_BASE_URL}${item?.image_url}`}
+                                                                                alt="Product"
+                                                                                className="w-full h-full object-cover"
+                                                                            />
+                                                                        ) : (
+                                                                            <video
+                                                                                controls
+                                                                                poster={`${IMG_BASE_URL}${item?.thumbnail_url}`}
+                                                                                className="w-full h-full object-cover"
+                                                                            >
+                                                                                <source src={`${IMG_BASE_URL}${item?.video_url}`} type="video/mp4" />
+                                                                            </video>
+                                                                        )}
+                                                                    </div>
+                                                                ))}
+                                                            </Slider>
+
+                                                            {/* Thumbnails */}
+                                                            <div className="single-nav-thumb w-full mt-4">
+                                                                {product_details_list?.product?.product_images?.length >= 5 ? (
+                                                                    <Slider
+                                                                        {...settingsNav}
+                                                                        asNavFor={nav1}
+                                                                        ref={(slider) => setNav2(slider)}
+                                                                        className="thumbnail-slider !p-0 !m-0"
+                                                                    >
+                                                                        {product_details_list?.product?.product_images?.map((item, index) => (
+                                                                            <div key={index} className="px-[2px]">
+                                                                                <div
+                                                                                    className={`h-[90px] w-full overflow-hidden border rounded-sm cursor-pointer ${index === activeIndex ? "ring-2 ring-red-700" : ""
+                                                                                        }`}
+                                                                                >
+                                                                                    {item?.file_type === "image" ? (
+                                                                                        <img
+                                                                                            src={`${IMG_BASE_URL}${item?.image_url}`}
+                                                                                            alt="Thumb"
+                                                                                            className="h-full w-full object-cover"
+                                                                                        />
+                                                                                    ) : (
+                                                                                        <video
+                                                                                            autoPlay
+                                                                                            muted
+                                                                                            loop
+                                                                                            playsInline
+                                                                                            poster={`${IMG_BASE_URL}${item?.thumbnail_url}`}
+                                                                                            className="h-full w-full object-cover"
+                                                                                        >
+                                                                                            <source src={`${IMG_BASE_URL}${item?.video_url}`} type="video/mp4" />
+                                                                                        </video>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </Slider>
+                                                                ) : (
+                                                                    <div className="flex flex-wrap gap-2">
+                                                                        {product_details_list?.product?.product_images?.map((item, index) => (
+                                                                            <div
+                                                                                key={index}
+                                                                                className={`w-[90px] h-[90px] cursor-pointer border rounded-sm overflow-hidden ${index === activeIndex ? "ring-2 ring-red-800" : ""
+                                                                                    }`}
+                                                                                onClick={() => {
+                                                                                    setActiveIndex(index);
+                                                                                    nav1?.slickGoTo(index);
+                                                                                }}
+                                                                            >
+                                                                                {item?.file_type === "image" ? (
+                                                                                    <img
+                                                                                        src={`${IMG_BASE_URL}${item?.image_url}`}
+                                                                                        alt="Thumb"
+                                                                                        className="w-full h-full object-cover"
+                                                                                    />
+                                                                                ) : (
+                                                                                    <video
+                                                                                        autoPlay
+                                                                                        muted
+                                                                                        loop
+                                                                                        playsInline
+                                                                                        poster={`${IMG_BASE_URL}${item?.thumbnail_url}`}
+                                                                                        className="w-full h-full object-cover"
+                                                                                    >
+                                                                                        <source src={`${IMG_BASE_URL}${item?.video_url}`} type="video/mp4" />
+                                                                                    </video>
+                                                                                )}
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                         </div>
+
+
                                                     </div>
                                                     <div className="single-pro-desc single-pro-desc-no-sidebar w-[60%] max-[991px]:w-full relative pl-[12px] max-[991px]:pl-[0] max-[991px]:mt-[30px] max-[991px]:w-full">
                                                         <div className="single-pro-content">
@@ -262,6 +452,7 @@ console.log("product_details_list",product_details_list)
                                                                         {product_details_list?.product?.short_description}
                                                                     </div>
                                                                 </div>
+
                                                                 {/* <div className="flex">
                                                                     <div className="gi-single-wishlist m-[5px]">
                                                                         <a className="gi-btn-group bg-[#FFF0F0] wishlist text-[#D46F77] px-3 h-[40px] flex items-center justify-center transition-all duration-[0.3s] ease delay-[0s] rounded-[5px] hover:text-[#fff] hover:bg-[#5caf90] hover:border-[#5caf90]"
@@ -277,39 +468,96 @@ console.log("product_details_list",product_details_list)
                                                                     </div>
                                                                 </div> */}
                                                             </div>
-                                                            <hr />
-                                                            <div
-                                                                className="gi-single-price-stoke pt-[15px] pb-[15px] flex flex-wrap justify-between items-center">
-                                                                <div className="gi-single-price flex flex-col">
-                                                                    <div
-                                                                        className="final-price mb-[8px] text-[#3B4959] font-semibold text-[22px] leading-[32px] font-Poppins tracking-[0] max-[1199px]:text-[20px]">
-                                                                        Rs.{product_details_list?.product?.purchase_price}/-
-                                                                    </div>
-                                                                </div>
+                                                            <div className="flex gap-4 items-center">
                                                                 <div className="gi-single-stoke flex flex-col">
                                                                     <span
-                                                                        className="gi-single-sku mb-[8px] text-[16px] px-4 rounded-full leading-[32px] bg-[#F6EAD9] text-[#443A2E] tracking-[0.02rem]">SKU:{product_details_list?.product?.sku}</span>
+                                                                        className="gi-single-sku mb-[8px] text-[14px] px-4 rounded-full leading-[32px] bg-[#F6EAD9] text-[#443A2E] tracking-[0.02rem]">SKU:{product_details_list?.product?.sku}</span>
                                                                 </div>
                                                                 <div className="gi-single-stoke flex flex-col">
-                                                                    <span
-                                                                        className="gi-single-sku mb-[8px] text-[16px] px-4 rounded-full leading-[32px] bg-[#DADADA] text-[#443A2E] tracking-[0.02rem]">Origin:{product_details_list?.product?.origin?.name}</span>
+                                                                    {product_details_list?.product?.origin?.name && (
+                                                                        <span className="gi-single-sku mb-[8px] text-[14px] px-4 rounded-full leading-[32px] bg-[#DADADA] text-[#443A2E] tracking-[0.02rem]">
+                                                                            Origin: {product_details_list?.product?.origin?.name}
+                                                                        </span>
+                                                                    )}
+
+                                                                </div>
+                                                                <div className="gi-single-stoke flex flex-col">
+                                                                    {product_details_list?.product?.origin?.name && (
+                                                                        <span className="gi-single-sku mb-[8px] text-[14px] px-4 rounded-full leading-[32px] bg-green-300 text-[#443A2E] tracking-[0.02rem]">
+                                                                           Current Stock: {product_details_list?.product?.current_stock}
+                                                                        </span>
+                                                                    )}
+
                                                                 </div>
                                                                 <div className="gi-single-stoke flex flex-col">
                                                                     {
                                                                         product_details_list?.product?.current_stock > 0 ? (
-                                                                            <span className="gi-single-ps-title leading-[1] text-[16px] text-[#5caf90] tracking-[0]">
-                                                                                IN STOCK
+                                                                            <span className="gi-single-ps-title leading-[1] text-[14px] text-[#5caf90] tracking-[0]">
+                                                                                IN STOCK 
                                                                             </span>
                                                                         ) : (
-                                                                            <span className="gi-single-ps-title leading-[1] text-[16px] text-[#ff0000] tracking-[0]">
+                                                                            <span className="gi-single-ps-title leading-[1] text-[14px] text-[#ff0000] tracking-[0]">
                                                                                 OUT OF STOCK
                                                                             </span>
                                                                         )
                                                                     }
                                                                 </div>
                                                             </div>
+
+                                                            <div
+                                                                className="gi-single-price-stoke pt-[15px] pb-[15px] flex flex-wrap justify-between items-center">
+                                                                <div className="gi-single-price flex items-center gap-4">
+                                                                    <div
+                                                                        className="final-price text-[#3B4959] font-semibold text-[18px] leading-[32px] font-Poppins tracking-[0] max-[1199px]:text-[20px]">
+
+                                                                        Rs.{product_details_list?.product?.seller_price}/-
+                                                                    </div>
+                                                                    <span className="line-through font-semibold text-[18px] text-gray-500">
+                                                                        M.R.F : Rs.{product_details_list?.product?.purchase_price}/-
+                                                                    </span>
+                                                                    <span>
+                                                                        {
+                                                                            product_details_list?.product?.discount != null && (
+                                                                                <span className='text-green-600 font-semibold text-[18px]'>{product_details_list?.product?.discount}{product_details_list?.product?.discount_type} {" "} OFF</span>
+                                                                            )
+                                                                        }
+                                                                    </span>
+
+                                                                </div>
+
+                                                            </div>
                                                             <hr />
                                                             <div className="gi-single-list pt-5">
+                                                                <div className="certification flex flex-row flex-wrap">
+                                                                    <div className="form-group w-[50%] pr-3">
+                                                                        <span className="text-sm">Gemstone Weight</span>
+                                                                        <select name='certificate' onChange={(e) => set_Certificate(e.target.value)}
+                                                                            className="w-full mt-2 mb-[15px] px-[15px] bg-transparent border-[1px] border-solid border-[#eee] rounded-[5px] text-[#777] text-[14px] outline-[0] h-[45px]">
+                                                                            <option value="">-- Select ---</option>
+                                                                            {
+                                                                                product_details_list?.certificate?.map((certification_result) => {
+                                                                                    return (
+                                                                                        <option value={certification_result?.id}>{certification_result?.name}</option>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                    <div className="form-group w-[50%]">
+                                                                        <span className="text-sm">Ring Size System</span>
+                                                                        <select name='energization' onChange={(e) => set_Energization(e.target.value)}
+                                                                            className="w-full mt-2 mb-[15px] px-[15px] bg-transparent border-[1px] border-solid border-[#eee] rounded-[5px] text-[#777] text-[14px] outline-[0] h-[45px]">
+                                                                            <option value="">-- Select ---</option>
+                                                                            {
+                                                                                product_details_list?.energization?.map((energization_result) => {
+                                                                                    return (
+                                                                                        <option value={energization_result?.id}>{energization_result?.name}</option>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
                                                                 <div className="certification flex flex-row flex-wrap">
                                                                     <div className="form-group w-[50%] pr-3">
                                                                         <span className="text-sm">Certification</span>
@@ -342,8 +590,8 @@ console.log("product_details_list",product_details_list)
                                                                 </div>
                                                             </div>
                                                             {
-                                                               ( product_details_list?.product_type?.length > 0 && product_details_list?.product
-                                                                ?.cat_id == "1") && (
+                                                                (product_details_list?.product_type?.length > 0 && product_details_list?.product
+                                                                    ?.cat_id == "1") && (
                                                                     <div className="gi-pro-variation mb-[20px] pb-[5px]">
                                                                         <div className="gi-pro-variation-inner flex-col mb-[15px] flex">
                                                                             <span className="text-sm">Select for Ring / Pendant / Bracelet ?</span>
@@ -363,7 +611,7 @@ console.log("product_details_list",product_details_list)
                                                                                                         <div>
                                                                                                             {
                                                                                                                 product_type_result?.image != null ? (
-                                                                                                                    <img src={product_type_result?.image} alt="" />
+                                                                                                                    <img src={`${IMG_BASE_URL}${product_type_result?.image}`} alt="" />
                                                                                                                 ) : (
                                                                                                                     <img src={Common_Images_Transport?.diamond_icon} alt="" />
                                                                                                                 )
@@ -385,10 +633,48 @@ console.log("product_details_list",product_details_list)
                                                                 {/* <p className="text-[#757575] font-normal">Expected Dispatch Date: <span
                                                                     className="text-[#000]">13 JUL, 2024</span></p> */}
                                                                 <div className="gi-single-cart">
-                                                                    <button type="button" onClick={() => Handle_Add_To_cart(product_details_list?.product?.id, product_details_list?.product?.purchase_price)}
-                                                                        className="btn bg-[#9F2225] flex h-[40px] leading-[50px] text-center text-[14px] mt-4 py-[10px] px-[15px] uppercase justify-center bg-[#4b5966] text-[#fff] transition-all duration-[0.3s] ease-in-out relative rounded-[5px] items-center min-w-[160px] font-semibold tracking-[0.02rem] border-[0] hover:bg-[#333] hover:text-[#fff]"><i
-                                                                            className="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
-                                                                        Add To Cart</button>
+                                                                    {
+                                                                        token ? (
+                                                                            <button type="button" onClick={() => Handle_Add_To_cart(product_details_list?.product?.id, product_details_list?.product?.purchase_price)}
+                                                                                className="btn bg-[#9F2225] flex h-[40px] leading-[50px] text-center text-[14px] mt-4 py-[10px] px-[15px] uppercase justify-center bg-[#4b5966] text-[#fff] transition-all duration-[0.3s] ease-in-out relative rounded-[5px] items-center min-w-[160px] font-semibold tracking-[0.02rem] border-[0] hover:bg-[#333] hover:text-[#fff]"><i
+                                                                                    className="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
+                                                                                Add To Cart</button>
+                                                                        ) : (
+                                                                            <button type="button" onClick={handleBookNow}
+                                                                                className="btn bg-[#9F2225] flex h-[40px] leading-[50px] text-center text-[14px] mt-4 py-[10px] px-[15px] uppercase justify-center bg-[#4b5966] text-[#fff] transition-all duration-[0.3s] ease-in-out relative rounded-[5px] items-center min-w-[160px] font-semibold tracking-[0.02rem] border-[0] hover:bg-[#333] hover:text-[#fff]"><i
+                                                                                    className="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
+                                                                                Add To Cart</button>
+                                                                        )
+                                                                    }
+
+                                                                </div>
+
+                                                                <div className="gi-single-pro-tab mt-[40px]">
+                                                                    <div className="md:flex justify-between gap-4">
+                                                                        <div className="w-full">
+                                                                            <div className="gi-single-pro-tab-nav w-full m-auto relative block text-center float-left">
+                                                                                <ul className="nav-tabs inline-block float-left  border-b-2 border-[#eee] w-full"
+                                                                                    id="singleprotab">
+                                                                                    <li className={`mr-[5px] ml-auto inline-block float-left ${active_tab == "0" ? "active" : null}`} onClick={() => set_Active_Tab("0")}>
+                                                                                        <a
+                                                                                            className="leading-[24px] py-[8px] px-[28px] m-[0] text-[15px] font-medium relative transition-all duration-[300ms] linear inline-block cursor-pointer leading-[0] hover:bg-[#9F2225] hover:text-[#fff] hover:border-[#9F2225]">
+                                                                                            Specifications
+                                                                                        </a>
+                                                                                    </li>
+
+                                                                                </ul>
+                                                                            </div>
+                                                                            <div className="tab-content transition-all w-full overflow-hidden bg-[#fff] text-left text-[#202020] text-[18px] tracking-[0] leading-[1.6] rounded-[5px]"
+                                                                                id="singleTabContent">
+                                                                                {
+                                                                                    active_tab == "0" && (
+                                                                                        <Product_Description data={product_details_list} />
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -400,21 +686,23 @@ console.log("product_details_list",product_details_list)
                                         <div className="gi-single-pro-tab mt-[40px]">
                                             <div className="md:flex justify-between gap-4">
                                                 <div className="w-full">
-                                                    <div className="gi-single-pro-tab-nav w-full m-auto relative block text-center float-left">
+                                                    <div id="gi-spt-nav-info" className="tab-single-pane">
+                                                        <div className="gi-single-pro-tab-moreinfo">
+                                                            <p
+                                                                className="font-Poppins text-[#777] text-[14px] font-normal leading-[28px] mb-[16px]" dangerouslySetInnerHTML={{ __html: product_details_list?.product?.description }} />
+
+                                                        </div>
+                                                    </div>
+                                                    {/* <div className="gi-single-pro-tab-nav w-full m-auto relative block text-center float-left">
                                                         <ul className="nav-tabs inline-block float-left  border-b-2 border-[#eee] w-full"
                                                             id="singleprotab">
                                                             <li className={`mr-[5px] ml-auto inline-block float-left ${active_tab == "0" ? "active" : null}`} onClick={() => set_Active_Tab("0")}>
                                                                 <a
                                                                     className="leading-[24px] py-[8px] px-[28px] m-[0] text-[15px] font-medium relative transition-all duration-[300ms] linear inline-block cursor-pointer leading-[0] hover:bg-[#9F2225] hover:text-[#fff] hover:border-[#9F2225]">
-                                                                    Description
+                                                                    Specifications
                                                                 </a>
                                                             </li>
-                                                            {/* <li className={`mr-[5px] ml-auto inline-block float-left ${active_tab == "1" ? "active" : null}`} onClick={() => set_Active_Tab("1")}>
-                                                                <a
-                                                                    className="capitalize leading-[24px] py-[8px] px-[28px] m-[0] text-[15px] font-medium relative transition-all duration-[300ms] linear inline-block cursor-pointer text-[#4b5966] border-[#eee] leading-[0] hover:bg-[#9F2225] hover:text-[#fff] hover:border-[#9F2225]">
-                                                                    More Information
-                                                                </a>
-                                                            </li> */}
+
                                                         </ul>
                                                     </div>
                                                     <div className="tab-content transition-all w-full overflow-hidden bg-[#fff] text-left text-[#202020] text-[18px] tracking-[0] leading-[1.6] rounded-[5px]"
@@ -424,15 +712,11 @@ console.log("product_details_list",product_details_list)
                                                                 <Product_Description data={product_details_list} />
                                                             )
                                                         }
-                                                        {/* {
-                                                            active_tab == "1" && (
-                                                                <Product_More_Information data={product_details_list} />
-                                                            )
-                                                        } */}
-                                                    </div>
+                                                       
+                                                    </div> */}
                                                 </div>
                                                 {/* <--------- Customer Feedback -----------------> */}
-                                                <Customer_Feedback data={product_details_list}/>
+                                                <Customer_Feedback data={product_details_list} />
                                             </div>
                                         </div>
                                     </div>
@@ -440,7 +724,9 @@ console.log("product_details_list",product_details_list)
                             </div>
                         </section>
                         {/* <!-- related product  --> */}
-                        {/* <Similar_Product /> */}
+                        <Similar_Product data={product_details_list?.related_products} />
+                        {/* <- ----- retrun policy ------> */}
+                        <Product_Return_Policy />
                         {/* <----------- Private Confidential ------------>*/}
                         <Home_Private_Confidential />
                         {/* <------------- Footer section's ---------------> */}

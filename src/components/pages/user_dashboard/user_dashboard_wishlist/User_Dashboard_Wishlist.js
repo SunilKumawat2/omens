@@ -138,13 +138,13 @@ const User_Dashboard_Wishlist = () => {
                                     <p className="max-w-[400px] mt-[15px] text-[14px] text-[#777] text-center leading-[23px]">Your product wish is our first priority.</p>
                                 </div>
                                 <div className="container-x mx-auto">
-                                    <div className="w-full my-10">
+                                    <div className="w-full my-10">  
 
                                         <div className="w-full bg-white shadow-xl p-5">
 
-                                            <div className="my_account w-full flex space-x-10">
+                                            <div className="my_account w-full md:flex md:space-x-10">
                                                 <User_Dashbaord_Common_Section />
-                                                <div className="flex-1">
+                                                <div className="flex-1 md:w-[70%]">
                                                     <div className="item-body dashboard-wrapper w-full">
                                                         <div className="relative w-full overflow-x-auto sm:rounded-lg">
                                                             {
@@ -157,17 +157,17 @@ const User_Dashboard_Wishlist = () => {
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Image</th>
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Name</th>
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Date</th>
-                                                                                    <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Price</th>
+                                                                                    <th scope="col"  className="p-[0.5rem] text-left text-[#4b5966]">Price</th>
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Status</th>
                                                                                     <th scope="col" className="p-[0.5rem] text-left text-[#4b5966]">Actions</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody className="wish-empt border-t-[3px] border-solid border-[#eee] border-solid border-[#dee2e6]">
                                                                                 {
-                                                                                    currentProduct?.map((wishlist_result) => {
+                                                                                    currentProduct?.map((wishlist_result,index) => {
                                                                                         return (
                                                                                             <tr className="pro-gl-content">
-                                                                                                <td className="p-[0.5rem] border-b-[1px] border-solid border-[#dee2e6]"><span className="max-[767px]:text-[14px] py-[14px] flex text-[#777] tracking-[0.02rem]">{wishlist_result?.id}</span></td>
+                                                                                                <td className="p-[0.5rem] border-b-[1px] border-solid border-[#dee2e6]"><span className="max-[767px]:text-[14px] py-[14px] flex text-[#777] tracking-[0.02rem]">{index + 1}</span></td>
                                                                                                 <td className="p-[0.5rem] border-b-[1px] border-solid border-[#dee2e6]"><img className="prod-img h-[58px] w-[58px]" src={`${IMG_BASE_URL}${wishlist_result?.product?.single_image?.image_url}`} alt="product image" /></td>
                                                                                                 <td className="p-[0.5rem] border-b-[1px] border-solid border-[#dee2e6]"><span className="max-[767px]:text-[14px] py-[14px] flex text-[#777] tracking-[0.02rem]">{wishlist_result?.product?.name}</span></td>
                                                                                                 <td className="p-[0.5rem] border-b-[1px] border-solid border-[#dee2e6]"><span className="max-[767px]:text-[14px] py-[14px] flex text-[#777] tracking-[0.02rem]">{formattedDate(wishlist_result?.created_at)}</span></td>

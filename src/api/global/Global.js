@@ -51,6 +51,16 @@ export const Get_Privacy_Policy = async () => {
 }
 
 // <------------terms_conditions Api's --------------->
+export const Get_return_policy = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/return-policy`)
+        return response
+    } catch (error) {
+        return error
+    }
+}
+
+// <------------terms_conditions Api's --------------->
 export const Get_Faqs = async () => {
     try {
         const response = await axios.get(`${API_BASE_URL}/faqs`)

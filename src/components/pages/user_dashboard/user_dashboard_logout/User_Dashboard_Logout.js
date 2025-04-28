@@ -71,7 +71,7 @@ const User_Dashboard_Logout = () => {
                       onClick={() => {
                         Handle_Is_Open_logout()
                         setTimeout(() => {
-                          navigate("/user_dashBaord")
+                          navigate("/user-dashBaord")
                         }, 500)
                       }}>Cancel</a>
                   </div>

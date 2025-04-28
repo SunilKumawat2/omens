@@ -6,6 +6,7 @@ import { Get_Pooja_List, Get_Pooja_List_Category_id } from '../../../../api/pooj
 import Loader from '../../../../loader/Loader'
 import { IMG_BASE_URL } from '../../../../config/Config'
 import { Link, useNavigate } from 'react-router-dom'
+import { FaArrowCircleRight,FaArrowCircleLeft  } from "react-icons/fa";
 
 const Book_Pooja_List = () => {
     const navigate = useNavigate()
@@ -17,6 +18,29 @@ const Book_Pooja_List = () => {
         const today = new Date();
         return today.toISOString().split('T')[0];
     });
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const categoriesPerPage = 6;
+
+    const poojaCategories = pooja_list?.pooja_category || [];
+    const totalPages = Math.ceil(poojaCategories.length / categoriesPerPage);
+
+    const handleNext = () => {
+        if (currentPage < totalPages - 1) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrev = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const displayedCategories = poojaCategories.slice(
+        currentPage * categoriesPerPage,
+        (currentPage + 1) * categoriesPerPage
+    );
 
     // Generate the next 30 days
     const generateDates = () => {
@@ -126,28 +150,45 @@ const Book_Pooja_List = () => {
                                         </div>
 
                                     </div>
-                                    <div className="px-[12px] flex flex-wrap gap-3 mb-6">
-                                        {pooja_list?.pooja_category?.map((pooja_catgory_result) => (
-                                            <a
-                                                key={pooja_catgory_result.id}
-                                                href="#"
-                                                className={`border border-gray-200 px-4 py-2 rounded-[10px] hover:text-white hover:bg-[#333] flex items-center justify-start h-full ${selectedCategoryId === pooja_catgory_result.id
-                                                    ? "text-white bg-[#9D2326]" : "text-gray-600"}`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleCategoryClick(pooja_catgory_result.id);
-                                                }}
-                                            >
-                                                <img
-                                                    src={`${IMG_BASE_URL}${pooja_catgory_result.image}`}
-                                                    className="w-[30px] h-[30px] mr-2"
-                                                    alt={pooja_catgory_result.title}
-                                                />
-                                                <span className="text-sm">{pooja_catgory_result.title}</span>
-                                            </a>
+                                    <div className="w-full flex items-center justify-center">
+            {/* Left Arrow (Only show on first category) */}
+            {currentPage > 0 && (
+                <button onClick={handlePrev} className="mr-3 text-gray-500 hover:text-gray-800">
+                    <FaArrowCircleLeft  size={24} />
+                </button>
+            )}
 
-                                        ))}
-                                    </div>
+            {/* Category List */}
+            <div className="px-3 flex flex-wrap gap-3 mb-6">
+                {displayedCategories && displayedCategories?.map((category) => (
+                    <a
+                        key={category.id}
+                        href="#"
+                        className={`border border-gray-200 px-4 py-2 rounded-lg hover:text-white hover:bg-[#333] flex items-center justify-start h-full transition-all ${
+                            selectedCategoryId === category.id ? "text-white bg-[#9D2326]" : "text-gray-600"
+                        }`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleCategoryClick(category.id);
+                        }}
+                    >
+                        <img
+                            src={`${IMG_BASE_URL}${category.image}`}
+                            className="w-[30px] h-[30px] mr-2 rounded-md"
+                            alt={category.title}
+                        />
+                        <span className="text-sm">{category.title}</span>
+                    </a>
+                ))}
+            </div>
+
+            {/* Right Arrow (Only show on last category) */}
+            {currentPage < totalPages - 1 && (
+                <button onClick={handleNext} className="ml-3 text-gray-500 hover:text-gray-800">
+                    <FaArrowCircleRight size={24} />
+                </button>
+            )}
+        </div>
                                     <div className="header-search min-w-[300px] relative max-[1399px]:min-w-[500px] max-[1199px]:min-w-[400px] max-[991px]:p-0 max-[767px]:min-w-[350px] max-[480px]:min-w-[300px] max-[320px]:min-w-full">
                                         {/* <form className="gi-search-group-form relative flex border-[1px] border-solid border-[#eee] items-center rounded-[5px]" action="#">
                                             <input className="form-control gi-search-bar block w-full min-h-[50px] 
@@ -190,7 +231,7 @@ const Book_Pooja_List = () => {
                                                             );
 
                                                             // Navigate to the next page
-                                                            navigate("/book_pooja_details");
+                                                            navigate("/book-pooja-details");
                                                         }}>
                                                             <div
                                                                 className="blog-info transition-all duration-[0.3s] ease-in-out w-full bg-[#fff] shadow-lg rounded-[5px] w-full h-[420px]">
@@ -202,7 +243,7 @@ const Book_Pooja_List = () => {
                                                             </span> */}
                                                                 </figure>
                                                                 <div className="detail w-full p-4 pt-0">
-                                                                    <h3 className="mt-[10px] mb-[8px] p-[0] leading-[26px]"><Link to="/book_pooja_details"
+                                                                    <h3 className="mt-[10px] mb-[8px] p-[0] leading-[26px]"><Link to="/book-pooja-details"
                                                                         className="font-Poppins text-[#0F1726] text-[18px] font-semibold leading-[22px] line-clamp-2 overflow-hidden text-ellipsis">{pooja_list_result?.title}</Link></h3>
                                                                     <p className="line-clamp-2 text-[#4C5159] overflow-hidden text-ellipsis leading-5 my-3">{pooja_list_result?.short_description}</p>
                                                                     <div className="more-info border-t pt-3 mt-3 flex justify-between items-center">

@@ -30,13 +30,13 @@ const Astrologer_Footer = () => {
                                     <div className="gi-footer-widget gi-footer-company flex flex-col">
                                         {
                                             get_settings[0]?.footer_logo != null ? (
-                                                <Link to="/astrologer_home">
+                                                <Link to="/astrologer-home">
                                                     <img src={`${IMG_BASE_URL}${get_settings[0]?.footer_logo}`}
                                                         className="gi-footer-logo max-w-[144px] max-[767px]:max-w-[130px]  mb-[30px]"
                                                         alt="footer logo" />
                                                 </Link>
                                             ) : (
-                                                <Link to="/astrologer_home">
+                                                <Link to="/astrologer-home">
                                                     <img src={Common_Images_Transport?.White_logo}
                                                         className="gi-footer-logo max-w-[144px] max-[767px]:max-w-[130px]  mb-[30px]"
                                                         alt="footer logo" />
@@ -55,13 +55,13 @@ const Astrologer_Footer = () => {
                                         <div className="gi-footer-links gi-footer-dropdown">
                                             <ul className="align-itegi-center">
                                                 <li className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/astrologer_new_Pooja_process_list" className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
+                                                    <Link to="/astrologer-new-Pooja-process-list" className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Book Pooja list
                                                     </Link>
                                                 </li>
                                                 <li
                                                     className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                    <Link to="/astrologer_post_pooja"
+                                                    <Link to="/astrologer-post-pooja"
                                                         className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                         Pooja post
                                                     </Link>
@@ -81,14 +81,14 @@ const Astrologer_Footer = () => {
                                                 <ul className="align-itegi-center">
                                                     <li
                                                         className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                        <Link to="/astrologer_terms_conditions"
+                                                        <Link to="/astrologer-terms-conditions"
                                                             className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                             Terms & Conditions
                                                         </Link>
                                                     </li>
                                                     <li
                                                         className="gi-footer-link m-[0] leading-[1.5] border-[0] p-[0] font-normal flex items-center mb-[12px]">
-                                                        <Link to="/astrologer_privacy_policy"
+                                                        <Link to="/astrologer-privacy-policy"
                                                             className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[20px] p-[0] text-[#999] mb-[0] inline-block relative break-all tracking-[0] font-normal hover:text-[#9F2225] hover:opacity-[1]">
                                                             Privacy Policy
                                                         </Link>
@@ -162,21 +162,21 @@ const Astrologer_Footer = () => {
                                                     <div className="gi-footer-links gi-footer-dropdown">
                                                         <ul className="align-itegi-center flex flex-wrap">
                                                             <li className="gi-footer-link pr-[5px]">
-                                                                <a href="#"
-                                                                    className="h-[30px] w-[30px] bg-[#4b5966] rounded-[5px]  flex items-center justify-center text-[15px]"><i
+                                                                <a href={get_settings && get_settings[0]?.facebook} target='_blank'
+                                                                    className="h-[30px] w-[30px] bg-[#4b5966] rounded-[5px] capitalize flex items-center justify-center text-[15px]"><i
                                                                         className="gicon gi-facebook text-[16px] text-[#fff]"
                                                                         aria-hidden="true"></i></a>
                                                             </li>
 
                                                             <li className="gi-footer-link pr-[5px]">
-                                                                <a href="#"
-                                                                    className="h-[30px] w-[30px] bg-[#4b5966] rounded-[5px]  flex items-center justify-center text-[15px]"><i
+                                                                <a href={get_settings && get_settings[0]?.linkdin} target='_blank'
+                                                                    className="h-[30px] w-[30px] bg-[#4b5966] rounded-[5px] capitalize flex items-center justify-center text-[15px]"><i
                                                                         className="gicon gi-linkedin text-[16px] text-[#fff]"
                                                                         aria-hidden="true"></i></a>
                                                             </li>
                                                             <li className="gi-footer-link pr-[5px]">
-                                                                <a href="#"
-                                                                    className="h-[30px] w-[30px] bg-[#4b5966] rounded-[5px]  flex items-center justify-center text-[15px]"><i
+                                                                <a href={get_settings && get_settings[0]?.instagram} target='_blank'
+                                                                    className="h-[30px] w-[30px] bg-[#4b5966] rounded-[5px] capitalize flex items-center justify-center text-[15px]"><i
                                                                         className="gicon gi-instagram text-[16px] text-[#fff]"
                                                                         aria-hidden="true"></i></a>
                                                             </li>
@@ -226,13 +226,13 @@ const Astrologer_Footer = () => {
                                         </div>
                                     </div>
 
-                                    <div className="footer-bottom-right">
+                                    {/* <div className="footer-bottom-right">
                                         <div className="footer-bottom-payment flex justify-content-center">
                                             <div className="payment-link">
                                                 <img src={Common_Images_Transport?.payment} alt="payment" />
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

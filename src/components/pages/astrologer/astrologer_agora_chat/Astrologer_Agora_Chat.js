@@ -10,7 +10,7 @@ const AgoraChatReceiver = () => {
     const messagesEndRef = useRef(null);
     //   const accessToken = String(localStorage.getItem("chat_token") || "").trim();
     //   const user = String(localStorage.getItem("chat_uiid") || "").trim();
-    const accessToken = "007eJxTYGjzsD3Z3GD1vned1t+UU8nsfa0Wtb1LDl27oRtkILCSfa4CQ6JBimmaRYqZWaqBoYmZkUliimmKmaVpSmqSRVqSmWWyxb9F6Q2BjAxnmzmZGRlYGRiBEMRXYTCxtDSzsEw10E01tjDTNTRMTdO1NEwy1zWxNEgyM0tJMUk2tAAAhmEnRw==";
+    const accessToken = "007eJxTYHgiFOb169EifcHumy5KJfkvWwR/mmyPv6b294auXrvg6/UKDIkGKaZpFilmZqkGhiZmRiaJKaYpZpamKalJFmlJZpbJXwW2pzcEMjJMbBFhYWRgZWAEQhBfhcHE0tLMwjLVQDfV2MJM19AwNU3X0jDJXNfE0iDJzCwlxSTZ0AIAtu0nrQ==";
     const user = "sunil_receiver_26";
     const chatPartner = "sunil_omens_5";
 

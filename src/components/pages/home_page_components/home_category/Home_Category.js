@@ -24,23 +24,22 @@ const Home_Category = (home_data) => {
                             <div className="gi-tab-title w-full inline-flex justify-between max-[991px]:flex-col items-center"
                                 data-aos="fade-up" data-aos-duration="2000" data-aos-delay="200">
                                 <div className="section-detail">
-                                    <h2
-                                        className="gi-title mb-[0] text-[20px] font-semibold text-[#4B5966] relative inline p-[0] capitalize leading-[1] font-Poppins max-[991px]:text-[24px] max-[767px]:text-[22px] max-[575px]:text-[20px]">
-                                        Gemstone and Jewellery Category</h2>
+                                    <h2 className="gi-title mb-[0] text-[20px] font-semibold text-[#4B5966] relative inline p-[0] capitalize leading-[1] font-Poppins max-[991px]:text-[24px] max-[767px]:text-[22px] max-[575px]:text-[20px]">Gemstone and Jewellery Category</h2>
                                 </div>
-                                <div className="flex items-center gap-5">
-                                    {
-                                        category_list?.map((category_list_result) => {
-                                            return (
-                                                <>
-                                                    <p 
-                                                     onClick={() => navigate("/sub_category_list", { state: { category_list_result: category_list_result } })}
-                                                        className="btn bg-white p-2 px-3 flex gap-3 border hover:bg-black rounded-lg hover:text-white items-center cursor-pointer">
-                                                        <img src={`${IMG_BASE_URL}${category_list_result?.image}`} width="40" height="40" alt="" />{category_list_result?.title}</p>
-                                                </>
-                                            )
-                                        })
-                                    }
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                                    {category_list?.map((category_list_result, index) => (
+                                        <p key={index} onClick={() => {
+                                            navigate(`/${category_list_result.slug}`, {
+                                                state: { category_list_result: category_list_result },
+                                            });
+                                            localStorage.setItem("category_list_result_slug", category_list_result.slug);
+                                        }}
+
+                                            className="btn bg-white p-2 px-3 flex gap-3 border hover:bg-black rounded-lg hover:text-white items-center cursor-pointer">
+                                            <img src={`${IMG_BASE_URL}${category_list_result?.image}`} width="40" height="40" alt={category_list_result?.title} />
+                                            {category_list_result?.title}
+                                        </p>
+                                    ))}
                                 </div>
                             </div>
                         </div>

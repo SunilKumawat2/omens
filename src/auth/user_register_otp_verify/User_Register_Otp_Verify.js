@@ -19,6 +19,7 @@ const User_Register_Otp_Verify = () => {
   const location = useLocation();
   const { mobile, country_code, temp_id } = location.state || {};
   console.log("mnfjhdsf", mobile)
+
   // <--------- user Register otp verify section's here -------------->
   const Handle_User_Regsiter_Otp_Verify = async (e) => {
     e.preventDefault();
@@ -46,7 +47,6 @@ const User_Register_Otp_Verify = () => {
       device_type: "web",
       temp_id,
       fcm_token,
-
     };
     console.log("otp_verify_data", otp_verify_data)
     try {
@@ -132,8 +132,7 @@ const User_Register_Otp_Verify = () => {
                                       e.preventDefault();
                                     }
                                   }}
-                                  className="otp__digit otp__field__1 rounded-[50%] border-[1px] border-[#ddd] p-[0] 
-          text-center text-[16px] text-[#333] focus:outline-none"
+                                  className="otp__digit otp__field__1 rounded-[50%] border-[1px] border-[#ddd] p-[0] text-center text-[16px] text-[#333] focus:outline-none"
                                 />
                               )}
                             />
