@@ -97,6 +97,7 @@ import Download_App from '../components/pages/download_app/Download_App'
 import Astrologer_All_Call_History_List from '../components/pages/astrologer/astrologer_all_call_history_list/Astrologer_All_Call_History_List'
 import Similar_Product_Details from '../components/pages/similar_product/Similar_Product_Details'
 import Recommend_Gemstone from '../components/pages/recommend_gemstone/recommend_gemstone/Recommend_Gemstone'
+import Limited_Product from '../components/pages/limited_products/Limited_Product'
 const AllRoutes = () => {
   return (
     <div>
@@ -157,6 +158,7 @@ const AllRoutes = () => {
         <Route path='/related-product/:slug' element={<Similar_Product_Details />} />
         <Route path='/:categorySlug/:subCategorySlug' element={<Product_List />} />
         <Route path='/all-best-selling-product' element={<Home_View_All_Product />} />
+        <Route path='/limited-product' element={<Limited_Product/>} />
 
 
         {/* <---------- Astrolger Auth section's ------------> */}
