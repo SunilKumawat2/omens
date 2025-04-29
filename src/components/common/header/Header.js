@@ -705,7 +705,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Cart_Sidebar from '../cart_sidebar/Cart_Sidebar';
 import { Search } from "lucide-react";
-
+import Limited_Product from '../components/pages/limited_products/Limited_Product'
 const Header = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
