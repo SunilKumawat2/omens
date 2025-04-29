@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/common/header/Header";
-import PhoneInput, {
-  parsePhoneNumber,
-  isValidPhoneNumber,
-} from "react-phone-number-input";
+import PhoneInput, { parsePhoneNumber,isValidPhoneNumber,} from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from "../../components/common/footer/Footer";
@@ -90,7 +87,8 @@ const Astrologer_Login = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
+  }, []);
+
   return (
     <div>
       {/* <-------- ToastContainer ------------> */}
@@ -98,8 +96,6 @@ const Astrologer_Login = () => {
       {/* <------- Header section's ------------> */}
       <Astrologer_Header />
       {/* <------ User Login section's ---------> */}
-
-
       <section className="gi-register bg-[#F0F4F8] py-[40px] max-[767px]:py-[30px] min-h-screen w-full overflow-x-hidden">
         {isLoading ? (
           <Loader />
@@ -122,12 +118,7 @@ const Astrologer_Login = () => {
                 <div className="gi-login-wrapper mx-auto">
                   <div className="gi-login-container">
                     <div className="gi-login-form">
-                      <form
-                        action="#"
-                        method="post"
-                        className="flex flex-col"
-                        onSubmit={HandleUserLogin}
-                      >
+                      <form action="#" method="post" className="flex flex-col" onSubmit={HandleUserLogin}>
                         <div className="gi-login-wrap flex flex-col">
                           <div className="form-group">
                             <label htmlFor="phone">Phone Number</label>

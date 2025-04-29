@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react'
 import Common_Images_Transport from '../../../common/common_imges_transport/Common_Images_Transport'
 
@@ -10,6 +11,46 @@ const Home_Exclusive_Design = () => {
     };
 console.log("isOpen_Custom_video",isOpen_Custom_video)
 
+=======
+import React, { useEffect, useState } from 'react'
+import Common_Images_Transport from '../../../common/common_imges_transport/Common_Images_Transport'
+import {Get_Custom_Designs} from '../../../../api/global/Global'
+import {IMG_BASE_URL} from '../../../../config/Config'
+const Home_Exclusive_Design = () => {
+    const [isOpen_Custom_video, set_Is_Open_Custom_Video] = useState(false);
+    const [customDesigns, setCustomdesigns] = useState(null)
+    const [selectedVideo, setSelectedVideo] = useState(null);
+
+    const Handle_Is_Open_Custom_video = (videoUrl) => {
+        set_Is_Open_Custom_Video(!isOpen_Custom_video);
+        setSelectedVideo(videoUrl)
+    };
+console.log("isOpen_Custom_video",isOpen_Custom_video)
+
+useEffect(()=>{
+const getcustom_designs= async()=>{
+    try {
+        const response=await Get_Custom_Designs()
+        console.log(response);
+        if(response?.data?.status==200){
+            setCustomdesigns(response?.data?.data)
+        }
+        
+        console.log("status fail", response);
+        
+
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
+getcustom_designs()
+},[])
+console.log(customDesigns);
+console.log(selectedVideo);
+
+
+>>>>>>> omens_solving_bug_till_29-04-2025_evening
     return (
         <div>
             <section className="gi-deal-section px-5 py-[40px] max-[767px]:py-[30px] wow fadeInUp" data-wow-duration="2s">
@@ -33,8 +74,38 @@ console.log("isOpen_Custom_video",isOpen_Custom_video)
                                     data-aos-delay="300">
                                     <div
                                         className="custome_jewellery grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+<<<<<<< HEAD
 
                                         <div className="gi-products bg-no-repeat text-center bg-cover h-[350px] rounded overflow-hidden"
+=======
+{
+    customDesigns?.map((designs)=>(
+        
+        <div className="gi-products bg-no-repeat text-center bg-cover h-[350px] rounded overflow-hidden"
+        style={{
+            backgroundImage: `url(${IMG_BASE_URL}/${designs?.thumbnail_img})`, // Add your image URL here
+        }}
+
+    >
+        <div
+            className="bg-gradient-to-t relative from-[#000] opacity-0 hover:opacity-100 p-5 flags h-full">
+            <a onClick={()=>{Handle_Is_Open_Custom_video(`${IMG_BASE_URL}${designs?.video}`)}} href="javascript:void(0)">
+                <div
+                    className="absolute w-12 rounded-full leading-[52px] h-12 bg-white m-auto left-0 right-0 top-0 bottom-0">
+                    <i className="fi-rr-play" ></i>
+                </div>
+            </a>
+            <a href="javascript:void(0)" className="absolute bottom-0 left-0 w-full" >
+                <div
+                    className=" inset-center text-white mx-4 mb-4 border px-3 text-sm rounded py-2 hover:bg-[#9F2225] hover:border-gray-900">
+                    Write to us</div>
+            </a>
+        </div>
+    </div>
+    ))
+}
+                                        {/* <div className="gi-products bg-no-repeat text-center bg-cover h-[350px] rounded overflow-hidden"
+>>>>>>> omens_solving_bug_till_29-04-2025_evening
                                             style={{
                                                 backgroundImage: `url(${Common_Images_Transport?.custom_designs1})`, // Add your image URL here
                                             }}
@@ -134,7 +205,11 @@ console.log("isOpen_Custom_video",isOpen_Custom_video)
                                                         Write to us</div>
                                                 </a>
                                             </div>
+<<<<<<< HEAD
                                         </div>
+=======
+                                        </div> */}
+>>>>>>> omens_solving_bug_till_29-04-2025_evening
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +220,11 @@ console.log("isOpen_Custom_video",isOpen_Custom_video)
 
             {/* <-------- Modal section's Custome Video ----------> */}
             {
+<<<<<<< HEAD
                 isOpen_Custom_video && (
+=======
+                isOpen_Custom_video && selectedVideo && (
+>>>>>>> omens_solving_bug_till_29-04-2025_evening
                     <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
                         {/* <!-- Modal Content --> */}
                         <div className="bg-white rounded-lg shadow-lg max-w-md">
@@ -159,7 +238,11 @@ console.log("isOpen_Custom_video",isOpen_Custom_video)
                             {/* <!-- Modal Body --> */}
                             <div className="text-gray-700">
                                 <video controls>
+<<<<<<< HEAD
                                     <source src={Common_Images_Transport?.custom_video1} type="video/mp4" />
+=======
+                                    <source src={selectedVideo} type="video/mp4" />
+>>>>>>> omens_solving_bug_till_29-04-2025_evening
                                 </video>
                             </div>
 

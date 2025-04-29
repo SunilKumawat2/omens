@@ -77,12 +77,21 @@ const Book_Pooja_Details_Testimonals = (pooja_reviews) => {
                                             {
                                                 pooja_reviews?.data?.map((pooja_review_result) => {
                                                     return (
+<<<<<<< HEAD
                                                         <div className="gi-t-review-item p-5 gap-3 border border-gray-200 rounded my-4 h-[200px] w-full">
+=======
+                                                        <div className='p-3'>
+                                                        <div className="gi-t-review-item p-5 gap-3 border  border-gray-200 rounded-xl my-4 h-[200px] w-full mx-2">
+>>>>>>> omens_solving_bug_till_29-04-2025_evening
                                                             <div className="gi-t-review-content">
                                                                 <div className="gi-t-review-top flex items-center mb-[10px]">
                                                                     <div className="gi-t-review-avtars basis-[70px] grow-[0] shrink-[0] mr-[10px]">
                                                                         <img src={`${IMG_BASE_URL}${pooja_review_result?.users?.profile_image}`}
+<<<<<<< HEAD
                                                                             alt="user" className="max-w-full rounded-full w-16" />
+=======
+                                                                            alt="user" className="max-w-full rounded-full w-16 h-16" />
+>>>>>>> omens_solving_bug_till_29-04-2025_evening
                                                                     </div>
                                                                     <div className="w-full">
                                                                         <h4 className="gi-t-review-name font-medium text-[18px] m-[0] leading-[1.5] block text-[#000]">{pooja_review_result?.users?.name}</h4>
@@ -101,6 +110,10 @@ const Book_Pooja_Details_Testimonals = (pooja_reviews) => {
                                                                 </div>
                                                             </div>
                                                         </div>
+<<<<<<< HEAD
+=======
+                                                        </div>
+>>>>>>> omens_solving_bug_till_29-04-2025_evening
                                                     )
                                                 })
                                             }
