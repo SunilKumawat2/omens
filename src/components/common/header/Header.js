@@ -330,11 +330,8 @@
 //                                                 </ul>
 //                                             )}
 //                                         </div>
-<<<<<<< HEAD
-                                        
-=======
 
->>>>>>> omens_solving_bug_till_29-04-2025_evening
+
 
 //                                     </div>
 //                                 </div>
@@ -690,12 +687,8 @@
 
 // export default Header
 
-
-<<<<<<< HEAD
 import React, { useEffect, useState } from 'react'
-=======
 import React, { useEffect, useRef, useState } from 'react'
->>>>>>> omens_solving_bug_till_29-04-2025_evening
 import { Link, useNavigate } from 'react-router-dom';
 import Common_Images_Transport from '../common_imges_transport/Common_Images_Transport';
 import { CartProvider } from '../../../context/Cart_Context';
@@ -705,20 +698,13 @@ import { fetchCartList } from '../../../redux/actions/cartActions';
 import { Global_Settings } from '../../../api/global/Global';
 import { IMG_BASE_URL } from '../../../config/Config';
 import { get_favourite_product_list } from '../../../api/category_product/Category_Product';
-<<<<<<< HEAD
-=======
 import { Get_Home_Page } from '../../../api/global/Global';
-
->>>>>>> omens_solving_bug_till_29-04-2025_evening
 import { User_Authentication } from '../../../user_authentication/User_Authentication';
 import { toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Cart_Sidebar from '../cart_sidebar/Cart_Sidebar';
-<<<<<<< HEAD
-=======
 import { Search } from "lucide-react";
->>>>>>> omens_solving_bug_till_29-04-2025_evening
 
 const Header = () => {
     const navigate = useNavigate()
@@ -732,8 +718,7 @@ const Header = () => {
     const [get_settings, setGet_Settings] = useState({});
     const [wishlist, set_WishList] = useState([]);
     const [is_loading, set_Is_Loading] = useState(false)
-<<<<<<< HEAD
-=======
+
     const sampleSuggestions = ["stud", "sand", "sided", "sun", "soap", "salad"];
 
     const [showInput, setShowInput] = useState(false);
@@ -785,7 +770,7 @@ const Header = () => {
       }, [query]);
 console.log("filteredSuggestions:", filteredSuggestions);
 
->>>>>>> omens_solving_bug_till_29-04-2025_evening
+
     useEffect(() => {
         const Handle_Get_settings = async () => {
             try {
@@ -842,12 +827,8 @@ console.log("filteredSuggestions:", filteredSuggestions);
     useEffect(() => {
         handle_get_favourite_product_list();
     }, [])
-<<<<<<< HEAD
-=======
+
     console.log("wishlist:", wishlist);
-
-
->>>>>>> omens_solving_bug_till_29-04-2025_evening
     return (
         <div>
             <CartProvider>
@@ -887,7 +868,6 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                 {/* <!-- Header Top social End --> */}
                                 <div className="grow-[1] shrink-[0] basis-[0%] hidden min-[992px]:block">
                                     <div className="header-top-right-inner flex justify-end items-center">
-<<<<<<< HEAD
                                         {/* <!-- Header User Start --> */}
                                         <div className="gi-header-bottons">
                                             <div className={`relative ${is_user_active ? null : "gi-acc-drop"}`}>
@@ -948,7 +928,6 @@ console.log("filteredSuggestions:", filteredSuggestions);
 
                                         {/* <!-- Header wishlist Start --> */}
                                         <div className="relative wishlist_btn mr-[30px]">
-=======
                                         <div className="relative  mr-[30px]">
                                             {!showInput && (
                                                 <button
@@ -1078,7 +1057,6 @@ console.log("filteredSuggestions:", filteredSuggestions);
 
                                             {/* <!-- Header wishlist Start --> */}
                                             {/* <div className="relative wishlist_btn mr-[30px]">
->>>>>>> omens_solving_bug_till_29-04-2025_evening
                                             <Link to="/user-wishlist"
                                                 className="transition-all duration-[0.3s] ease-in-out relative flex text-[#4b5966] w-[auto] items-center whitespace-nowrap"
                                                 title="Wishlist">
@@ -1139,7 +1117,7 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                                     </div>
                                                 </div>
                                             </div>
-<<<<<<< HEAD
+
                                         </div>
 
 
@@ -1326,7 +1304,6 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                             {/* <!-- Header menu Start --> */}
 
                                             {/* <a href="javascript:void(0)"
-=======
                                         </div> */}
 
                                             <div className="relative wishlist_btn mr-[30px] group">
@@ -1589,22 +1566,19 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                                 {/* <!-- Header menu Start --> */}
 
                                                 {/* <a href="javascript:void(0)"
->>>>>>> omens_solving_bug_till_29-04-2025_evening
 
                                                 className="gi-header-btn gi-site-menu-icon absolute relative transition-all duration-[0.3s] ease-in-out relative flex text-[#fff] w-[auto] items-center">
                                                 <i className="fi-rr-menu-burger text-[24px] leading-[17px]"></i>
                                             </a> */}
 
-<<<<<<< HEAD
                                             {/* {
-=======
+
                                                 {/* {
->>>>>>> omens_solving_bug_till_29-04-2025_evening
                                                 is_user_active ? <Mobile_Toggle /> : <Link className='gi-header-btn gi-site-menu-icon absolute relative transition-all
                                                  duration-[0.3s] ease-in-out relative flex text-[#fff] w-[auto] items-center' to="/user_login" >
                                                     <i className="fi-rr-menu-burger text-[24px] leading-[17px]"></i></Link>
                                             } */}
-<<<<<<< HEAD
+
                                             <Mobile_Toggle />
                                             {/* <!-- Header menu End --> */}
                                         </div>
@@ -1712,8 +1686,8 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                                                     Matching</Link>
 
                                                             </li>
+                                                            </ul>
                                                             {/* <li
-=======
                                                 <Mobile_Toggle />
                                                 {/* <!-- Header menu End --> */}
                                             </div>
@@ -1822,14 +1796,12 @@ console.log("filteredSuggestions:", filteredSuggestions);
 
                                                                 </li>
                                                                 {/* <li
->>>>>>> omens_solving_bug_till_29-04-2025_evening
                                                                 className="non-drop mx-[20px] transition-all duration-[0.3s] ease-in-out max-[1199px]:mx-[15px]">
                                                                 <Link to="/book-pooja-list"
                                                                     className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[60px] capitalize text-[#4b5966] flex items-center font-medium">
                                                                     Shop by Jewellery
                                                                 </Link>
                                                             </li> */}
-<<<<<<< HEAD
                                                             <li
                                                                 className="non-drop mx-[20px] transition-all duration-[0.3s] ease-in-out max-[1199px]:mx-[15px]">
                                                                 <Link to="/book-pooja-list"
@@ -1838,29 +1810,12 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                                                 </Link>
                                                             </li>
                                                         </ul>
-=======
-                                                                <li
-                                                                    className="non-drop mx-[20px] transition-all duration-[0.3s] ease-in-out max-[1199px]:mx-[15px]">
-                                                                    <Link to="/book-pooja-list"
-                                                                        className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[60px] capitalize text-[#4b5966] flex items-center font-medium">
-                                                                        Book Pooja
-                                                                    </Link>
-                                                                </li>
-                                                                <li
-                                                                    className="non-drop mx-[20px] transition-all duration-[0.3s] ease-in-out max-[1199px]:mx-[15px]">
-                                                                    <Link to="/limited-product"
-                                                                        className="transition-all duration-[0.3s] ease-in-out md:text-[12px] xl:text-[14px] leading-[60px] capitalize text-[#4b5966] flex items-center font-medium">
-                                                                        Limited Product
-                                                                    </Link>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
->>>>>>> omens_solving_bug_till_29-04-2025_evening
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-<<<<<<< HEAD
+
+
                                     </div>
                                     {/* <!-- Main Menu End --> */}
                                 </div>
@@ -1982,7 +1937,7 @@ console.log("filteredSuggestions:", filteredSuggestions);
                         </div>
                     </div>
                     {/* <!-- Mobile Menu sidebar End --> */}
-=======
+
                                         {/* <!-- Main Menu End --> */}
                                     </div>
                                 </div>
@@ -2102,8 +2057,8 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                 </div>
                             </div>
                         </div>
+                        </div>
                         {/* <!-- Mobile Menu sidebar End --> */}
->>>>>>> omens_solving_bug_till_29-04-2025_evening
                 </header>
 
             </CartProvider>
