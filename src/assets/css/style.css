@@ -956,3 +956,146 @@ table.table-autow-full.custome_tab td {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+
+
+.btn-share {
+  position: relative;
+  padding: 10px 32px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+  color: rgb(0, 0, 0);
+  background: none;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.btn-share::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: var(--btn-color);
+  border-radius: 6px;
+  transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.btn-share .btn-text, .btn-share .btn-icon {
+  display: inline-flex;
+  vertical-align: middle;
+  transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.btn-share .btn-text {
+  transition-delay: 0.05s;
+}
+.btn-share .btn-icon {
+  margin-left: 8px;
+  transition-delay: 0.1s;
+}
+.btn-share .social-icons {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  transform: translateY(-50%);
+}
+.btn-share .social-icons li {
+  flex: 1;
+}
+.btn-share .social-icons li a {
+  display: inline-flex;
+  vertical-align: middle;
+  transform: translateY(55px);
+  transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.btn-share .social-icons li a:hover {
+  opacity: 0.5;
+}
+.btn-share:hover::before {
+  transform: scale(1.2);
+}
+.btn-share:hover .btn-text, .btn-share:hover .btn-icon {
+  transform: translateY(-55px);
+}
+.btn-share:hover .social-icons li a {
+  transform: translateY(0);
+}
+.btn-share:hover .social-icons li:nth-child(1) a {
+  transition-delay: 0.15s;
+}
+.btn-share:hover .social-icons li:nth-child(2) a {
+  transition-delay: 0.2s;
+}
+.btn-share:hover .social-icons li:nth-child(3) a {
+  transition-delay: 0.25s;
+}
+.menu_all_gemstone {
+ position: fixed;
+ width: 100%;
+ left: 0;
+ right: 0;
+ background: #00000070;
+ display: inline-block;
+ top: 105px;
+ bottom: 0;
+}
+.menu_all_gemstone .sub-menu {
+  width: 90%;
+  margin: 0 auto;
+  background: #fff;
+}
+.menu_all_gemstone .all_menus {
+ padding: 25px; width: 100%; margin: 0 auto;
+}
+.menu_all_gemstone .title_heading {
+ font-size: 15px;
+ color: #626262;
+ font-weight: 500; padding-bottom: 10px;
+}
+.menu_all_gemstone ul li a {
+ font-size: 13px;
+ display: flex;
+ gap: 10px;
+ color: #525252;
+ align-items: center; padding-bottom: 6px;
+}
+.menu_all_gemstone ul li a span img {
+ width: 30px;
+}
+.dropdown.drop-list:hover .menu_all_gemstone {
+ display: block;
+}
+.header_fixed {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 111;
+}
+.view_all_menu_btn a {
+  font-weight: bold;
+}
+.gi-product-content:hover .productimg7 .first_pro_hover {
+  /* display: block !important;  */
+  width: 100% !important;
+}
+.gi-product-content .productimg7 .first_pro_hover {
+  
+  width: 100% !important;
+}
+.gi-product-content:hover .productimg7 .first_pro {
+  
+  width: 100% !important;
+}
+.gi-product-content .productimg7 .first_pro {
+  
+  width: 100% !important;
+}

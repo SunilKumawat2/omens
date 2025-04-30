@@ -723,6 +723,8 @@ const Header = () => {
     const [showInput, setShowInput] = useState(false);
     const [query, setQuery] = useState("");
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+        const [isCartOpen, setIsCartOpen] = useState(false);
+    
     const inputRef = useRef(null);
 
     const handleToggle = () => {
@@ -827,7 +829,9 @@ console.log("filteredSuggestions:", filteredSuggestions);
     }, [])
     console.log("wishlist:", wishlist);
 
-
+    const toggleOffcanvas = () => {
+        setIsCartOpen(!isCartOpen);
+    };
     return (
         <div>
             <CartProvider>
@@ -1059,8 +1063,8 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                         </div> */}
 
                                             <div className="relative wishlist_btn mr-[30px] group">
-                                                <Link to="/user-wishlist"
-                                                    className="transition-all duration-[0.3s] ease-in-out relative flex text-[#4B5966] w-[auto] items-center whitespace-nowrap"
+                                                {is_user_active ? <span 
+                                                    className="transition-all duration-[0.3s] ease-in-out relative flex text-[#4B5966] w-[auto] items-center whitespace-nowrap cursor-pointer"
                                                     title="Wishlist">
                                                     <div className="header-icon relative flex">
                                                         <i className="fi-rr-heart text-[18px] text-[#fff] leading-[17px]"></i>
@@ -1076,7 +1080,26 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                                         <span className="gi-btn-title transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1]
                                                          text-[#fff] tracking-[0.6px] capitalize font-medium">Wishlist</span>
                                                     </div>
-                                                </Link>
+                                                </span>
+                                                : <Link to="/user-login" 
+                                                className="transition-all duration-[0.3s] ease-in-out relative flex text-[#4B5966] w-[auto] items-center whitespace-nowrap cursor-pointer"
+                                                title="Wishlist">
+                                                <div className="header-icon relative flex">
+                                                    <i className="fi-rr-heart text-[18px] text-[#fff] leading-[17px]"></i>
+                                                </div>
+                                                <div className="gi-btn-desc flex flex-col uppercase ml-[10px]">
+                                                    {
+                                                        wishlist?.length > 0 && (
+                                                            <span
+                                                                className="gi-header-count gi-wishlist-count w-[15px] h-[15px] text-blue-400 flex items-center justify-center
+                                                     rounded-[50%] text-[11px] rounded-lg bg-white absolute top-[-2px] right-[-6px] opacity-[0.8]">{wishlist?.length}</span>
+                                                        )
+                                                    }
+                                                    <span className="gi-btn-title transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1]
+                                                     text-[#fff] tracking-[0.6px] capitalize font-medium">Wishlist</span>
+                                                </div>
+                                            </Link>}
+                                                
                                                 {is_user_active &&
 
                                                     <div className="wish_list w-[350px] opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-[0.4s] ease-in-out bg-white shadow-xl z-30 absolute top-8 right-0">
@@ -1137,8 +1160,8 @@ console.log("filteredSuggestions:", filteredSuggestions);
 
 
                                             {/* <!-- Header Cart Start --> */}
-                                            <a href="javascript:void(0)"
-                                                className="gi-header-btn gi-cart-toggle transition-all duration-[0.3s] ease-in-out relative flex text-[#4b5966] w-[auto] items-center whitespace-nowrap"
+                                            <span 
+                                                className="gi-header-btn gi-cart-toggle transition-all duration-[0.3s] ease-in-out relative flex text-[#4b5966] w-[auto] items-center whitespace-nowrap "
                                             >
                                                 <div className="header-icon relative flex">
                                                     <span
@@ -1151,9 +1174,9 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                                         className="gi-btn-title transition-all duration-[0.3s] ease-in-out text-[12px] 
                                                 leading-[1] text-[#fff] tracking-[0.6px] capitalize font-medium">
                                                         {
-                                                            is_user_active ? <Link className='flex items-center gap-2' to="/cart" >
-                                                                <i className="fi-rs-shopping-cart text-[#fff] text-[18px] leading-[17px]">
-                                                                </i></Link> : <Link className='flex items-center gap-2' to="/user-login" >
+                                                            is_user_active ? <span className='flex items-center gap-2'  >
+                                                                <i className="fi-rs-shopping-cart text-[#fff] text-[18px] leading-[17px]" onClick={toggleOffcanvas}>
+                                                                </i></span> : <Link className='flex items-center gap-2' to="/user-login" >
                                                                 <i className="fi-rs-shopping-cart text-[#fff] text-[18px] leading-[17px]"></i> Cart</Link>
                                                         }
                                                         {
@@ -1167,7 +1190,9 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                                     </span>
 
                                                 </div>
-                                            </a>
+                                                {isCartOpen && <Cart_Sidebar toggleOffcanvas={toggleOffcanvas} />}
+                                                
+                                            </span>
                                             {/* <!-- Header Cart End --> */}
 
                                             {/* <!-- Language Start --> */}
@@ -1496,7 +1521,7 @@ console.log("filteredSuggestions:", filteredSuggestions);
                                                 className="dropdown-arrow mb-[12px] p-[12px] block capitalize text-[#777] border-[1px] border-solid border-[#eee] rounded-[5px] text-[15px] font-medium">Daily
                                                 Horoscope</a>
                                             <ul
-                                                className="sub-menu w-full min-w-[auto] p-0 mb-[10px] static hidden visible transition-none opacity-[1]">
+                                                className="sub-menu w-full min-w-[auto] p-0 mb-[10px] static  visible transition-none opacity-[1]">
                                                 <li><a href="#"
                                                     className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Horoscope
                                                     2024</a></li>

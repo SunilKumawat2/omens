@@ -25,7 +25,6 @@ const Limited_Product = () => {
     const [active_tab, set_Active_Tab] = useState("0");
     const [is_loading, set_Is_Loading] = useState(false)
     const [product_details_list, set_Product_Details_List] = useState({});
-    console.log("product_details_list", product_details_list)
     const [certificate, set_Certificate] = useState(null)
     const [energization, set_Energization] = useState(null)
     const [active_product_type, set_Active_Product_Type] = useState(null);

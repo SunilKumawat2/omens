@@ -1,14 +1,19 @@
 import React, {useState } from 'react'
 import Loader from '../../../loader/Loader';
 import Common_Images_Transport from '../common_imges_transport/Common_Images_Transport';
+import { Link } from 'react-router-dom';
 
 const Mobile_Toggle = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [is_loading, set_Is_Loading] = useState(false)
-    
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     const toggleOffcanvas = () => {
         setIsOpen(!isOpen);
     };
+    const handleDropdown=()=>{
+        setIsDropdownOpen(!isDropdownOpen)
+    }
     return (
         <div>
             {
@@ -17,11 +22,11 @@ const Mobile_Toggle = () => {
                 ) : (
                     <>
 
-                        <a href="javascript:void(0)"
+                        <Link to="javascript:void(0)"
                             onClick={toggleOffcanvas}
                             className="gi-header-btn gi-site-menu-icon absolute relative transition-all duration-[0.3s] ease-in-out relative flex text-[#fff] w-[auto] items-center">
                             <i className="fi-rr-menu-burger text-[24px] leading-[17px]"></i>
-                        </a>
+                        </Link>
                         <div
                             className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity
                                  ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
@@ -59,70 +64,70 @@ const Mobile_Toggle = () => {
                                     <div className="gi-menu-content">
                                         <ul>
                                             <li className="dropdown relative drop-list">
-                                                <a href="javascript:void(0)"
+                                                <Link to="/free-kundli"
                                                     className="dropdown-arrow mb-[12px] p-[12px] block capitalize text-[#777] border-[1px] border-solid border-[#eee] rounded-[5px] text-[15px] font-medium">Free
-                                                    Kundli</a>
+                                                    Kundli</Link>
 
                                             </li>
 
                                             <li className="dropdown relative">
-                                                <a href="javascript:void(0)"
-                                                    className="dropdown-arrow mb-[12px] p-[12px] block capitalize text-[#777] border-[1px] border-solid border-[#eee] rounded-[5px] text-[15px] font-medium">Daily
-                                                    Horoscope</a>
+                                                <Link to="/daily-horoscope" 
+                                                    className="dropdown-arrow mb-[12px] p-[12px]  capitalize text-[#777] border-[1px] border-solid border-[#eee] rounded-[5px] text-[15px] font-medium flex justify-between"><span>Daily
+                                                    Horoscope</span> <span onClick={handleDropdown}>+</span></Link>
                                                 <ul
-                                                    className="sub-menu w-full min-w-[auto] p-0 mb-[10px] static hidden visible transition-none opacity-[1]">
-                                                    <li><a href="#"
+                                                    className={`sub-menu w-full min-w-[auto] p-0 mb-[10px] static  visible transition-none opacity-[1] ${!isDropdownOpen && "hidden"}`}>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Horoscope
-                                                        2024</a></li>
-                                                    <li><a href="#"
+                                                        2024</Link></li>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Today's
-                                                        Horoscope</a></li>
-                                                    <li><a href="#"
+                                                        Horoscope</Link></li>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Weekly
-                                                        Horoscope</a></li>
-                                                    <li><a href="#"
+                                                        Horoscope</Link></li>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Monthly
-                                                        Horoscope</a></li>
-                                                    <li><a href="#"
+                                                        Horoscope</Link></li>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Yearly
-                                                        Horoscope</a></li>
-                                                    <li><a href="#"
+                                                        Horoscope</Link></li>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Daily
-                                                        Horoscope</a></li>
-                                                    <li><a href="#"
+                                                        Horoscope</Link></li>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Tomorrow's
-                                                        Horoscope</a></li>
-                                                    <li><a href="#"
+                                                        Horoscope</Link></li>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Yesterday's
-                                                        Horoscope</a></li>
-                                                    <li><a href="#"
+                                                        Horoscope</Link></li>
+                                                    <li><Link to="#"
                                                         className="mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#777]">Chinese
-                                                        Horoscope</a></li>
+                                                        Horoscope</Link></li>
                                                 </ul>
                                             </li>
                                             <li className="relative">
-                                                <a href="javascript:void(0)"
+                                                <Link to="/daily-panchang"
                                                     className="dropdown-arrow mb-[12px] p-[12px] block capitalize text-[#777] border-[1px] border-solid border-[#eee] rounded-[5px] text-[15px] font-medium">Daily
-                                                    Panchang</a>
+                                                    Panchang</Link>
 
                                             </li>
 
                                             <li className="relative">
-                                                <a href="javascript:void(0)"
+                                                <Link to="/love-calculator"
                                                     className="dropdown-arrow p-[12px] block capitalize text-[#777] border-[1px] border-solid border-[#eee] rounded-[5px] text-[15px] font-medium">Love
-                                                    calculator</a>
+                                                    calculator</Link>
 
                                             </li>
                                             <li className="relative mt-3">
-                                                <a href="javascript:void(0)"
+                                                <Link to="/kundli-matching"
                                                     className="dropdown-arrow p-[12px] block capitalize text-[#777] border-[1px] border-solid border-[#eee] rounded-[5px] text-[15px] font-medium">Kundli
-                                                    Matching</a>
+                                                    Matching</Link>
 
                                             </li>
                                             <li className="relative mt-3">
-                                                <a href="javascript:void(0)"
+                                                <Link to="/nakshatras-constellations"
                                                     className="dropdown-arrow p-[12px] block capitalize text-[#777] border-[1px] border-solid border-[#eee] rounded-[5px] text-[15px] font-medium">Nakshtra
-                                                    Mall</a>
+                                                    Mall</Link>
 
                                             </li>
                                         </ul>
@@ -134,19 +139,19 @@ const Mobile_Toggle = () => {
                                                 <ul className="flex flex-row justify-center">
                                                     <li
                                                         className="list-inline-item h-[30px] w-[30px] flex items-center justify-center bg-[#4b5966] rounded-[5px] mr-[15px]">
-                                                        <a href="#"><i className="gicon gi-facebook text-[#fff]"></i></a>
+                                                        <Link to="#"><i className="gicon gi-facebook text-[#fff]"></i></Link>
                                                     </li>
                                                     <li
                                                         className="list-inline-item h-[30px] w-[30px] flex items-center justify-center bg-[#4b5966] rounded-[5px] mr-[15px]">
-                                                        <a href="#"><i className="gicon gi-twitter text-[#fff]"></i></a>
+                                                        <Link to="#"><i className="gicon gi-twitter text-[#fff]"></i></Link>
                                                     </li>
                                                     <li
                                                         className="list-inline-item h-[30px] w-[30px] flex items-center justify-center bg-[#4b5966] rounded-[5px] mr-[15px]">
-                                                        <a href="#"><i className="gicon gi-instagram text-[#fff]"></i></a>
+                                                        <Link to="#"><i className="gicon gi-instagram text-[#fff]"></i></Link>
                                                     </li>
                                                     <li
                                                         className="list-inline-item h-[30px] w-[30px] flex items-center justify-center bg-[#4b5966] rounded-[5px]">
-                                                        <a href="#"><i className="gicon gi-linkedin text-[#fff]"></i></a>
+                                                        <Link to="#"><i className="gicon gi-linkedin text-[#fff]"></i></Link>
                                                     </li>
                                                 </ul>
                                             </div>
