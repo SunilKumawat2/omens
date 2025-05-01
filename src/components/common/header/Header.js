@@ -833,13 +833,10 @@ console.log("filteredSuggestions:", filteredSuggestions);
     }, [])
 
     console.log("wishlist:", wishlist);
-<<<<<<< HEAD
-=======
 
     const toggleOffcanvas = () => {
         setIsCartOpen(!isCartOpen);
     };
->>>>>>> origin/omens_solving_bugs_30-04-2025_till_evening
     return (
         <div>
             <CartProvider>
