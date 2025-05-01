@@ -6,7 +6,7 @@ import { Get_Pooja_List, Get_Pooja_List_Category_id } from '../../../../api/pooj
 import Loader from '../../../../loader/Loader'
 import { IMG_BASE_URL } from '../../../../config/Config'
 import { Link, useNavigate } from 'react-router-dom'
-import { FaArrowCircleRight,FaArrowCircleLeft  } from "react-icons/fa";
+import { FaArrowCircleRight, FaArrowCircleLeft } from "react-icons/fa";
 
 const Book_Pooja_List = () => {
     const navigate = useNavigate()
@@ -20,6 +20,7 @@ const Book_Pooja_List = () => {
     });
 
     const [currentPage, setCurrentPage] = useState(0);
+
     const categoriesPerPage = 6;
 
     const poojaCategories = pooja_list?.pooja_category || [];
@@ -68,7 +69,7 @@ const Book_Pooja_List = () => {
                 } else if (response?.response?.data?.status == "500") {
                     setIsLoading(false);
                 }
-                else{
+                else {
                     setIsLoading(false);
                 }
             } catch (error) {
@@ -125,6 +126,8 @@ const Book_Pooja_List = () => {
     const handleCategoryClick = (categoryId) => {
         setSelectedCategoryId(categoryId);
     };
+    console.log(pooja_list);
+
     return (
         <div>
             {/*  */}
@@ -151,44 +154,45 @@ const Book_Pooja_List = () => {
 
                                     </div>
                                     <div className="w-full flex items-center justify-center">
-            {/* Left Arrow (Only show on first category) */}
-            {currentPage > 0 && (
-                <button onClick={handlePrev} className="mr-3 text-gray-500 hover:text-gray-800">
-                    <FaArrowCircleLeft  size={24} />
-                </button>
-            )}
+                                        {/* Left Arrow (Only show on first category) */}
+                                        {currentPage > 0 && (
+                                            <button onClick={handlePrev} className="mr-3 text-gray-500 hover:text-gray-800">
+                                                <FaArrowCircleLeft size={24} />
+                                            </button>
+                                        )}
 
-            {/* Category List */}
-            <div className="px-3 flex flex-wrap gap-3 mb-6">
-                {displayedCategories && displayedCategories?.map((category) => (
-                    <a
-                        key={category.id}
-                        href="#"
-                        className={`border border-gray-200 px-4 py-2 rounded-lg hover:text-white hover:bg-[#333] flex items-center justify-start h-full transition-all ${
-                            selectedCategoryId === category.id ? "text-white bg-[#9D2326]" : "text-gray-600"
-                        }`}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            handleCategoryClick(category.id);
-                        }}
-                    >
-                        <img
-                            src={`${IMG_BASE_URL}${category.image}`}
-                            className="w-[30px] h-[30px] mr-2 rounded-md"
-                            alt={category.title}
-                        />
-                        <span className="text-sm">{category.title}</span>
-                    </a>
-                ))}
-            </div>
+                                        {/* Category List */}
+                                        <div className="px-3 flex flex-wrap gap-3 mb-6">
+                                            {displayedCategories && displayedCategories?.map((category) => (
+                                                <a
+                                                    key={category.id}
+                                                    href="#"
+                                                    className={`border border-gray-200 px-4 py-2 rounded-lg hover:text-white hover:bg-[#333] flex items-center justify-start h-full transition-all ${selectedCategoryId === category.id ? "text-white bg-[#9D2326]" : "text-gray-600"
+                                                        }`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleCategoryClick(category.id);
+                                                    }}
+                                                >
+                                                    <img
+                                                        src={`${IMG_BASE_URL}${category.image}`}
+                                                        className="w-[30px] h-[30px] mr-2 rounded-md"
+                                                        alt={category.title}
+                                                    />
+                                                    <span className="text-sm">{category.title}</span>
 
-            {/* Right Arrow (Only show on last category) */}
-            {currentPage < totalPages - 1 && (
-                <button onClick={handleNext} className="ml-3 text-gray-500 hover:text-gray-800">
-                    <FaArrowCircleRight size={24} />
-                </button>
-            )}
-        </div>
+
+                                                </a>
+                                            ))}
+                                        </div>
+
+                                        {/* Right Arrow (Only show on last category) */}
+                                        {currentPage < totalPages - 1 && (
+                                            <button onClick={handleNext} className="ml-3 text-gray-500 hover:text-gray-800">
+                                                <FaArrowCircleRight size={24} />
+                                            </button>
+                                        )}
+                                    </div>
                                     <div className="header-search min-w-[300px] relative max-[1399px]:min-w-[500px] max-[1199px]:min-w-[400px] max-[991px]:p-0 max-[767px]:min-w-[350px] max-[480px]:min-w-[300px] max-[320px]:min-w-full">
                                         {/* <form className="gi-search-group-form relative flex border-[1px] border-solid border-[#eee] items-center rounded-[5px]" action="#">
                                             <input className="form-control gi-search-bar block w-full min-h-[50px] 
@@ -234,7 +238,7 @@ const Book_Pooja_List = () => {
                                                             navigate("/book-pooja-details");
                                                         }}>
                                                             <div
-                                                                className="blog-info transition-all duration-[0.3s] ease-in-out w-full bg-[#fff] shadow-lg rounded-[5px] w-full h-[420px]">
+                                                                className="blog-info transition-all duration-[0.3s] ease-in-out w-full bg-[#fff] shadow-lg rounded-[5px] w-full ">
                                                                 <figure className="blog-img w-full h-56 m-[0] relative overflow-hidden rounded-[5px]">
                                                                     <Link><img src={`${IMG_BASE_URL}${pooja_list_result?.image}`} alt="imag"
                                                                         className="transition-all duration-[0.3s] ease-in-out rounded-[5px] h-full w-full" /></Link>
@@ -244,15 +248,33 @@ const Book_Pooja_List = () => {
                                                                 </figure>
                                                                 <div className="detail w-full p-4 pt-0">
                                                                     <h3 className="mt-[10px] mb-[8px] p-[0] leading-[26px]"><Link to="/book-pooja-details"
-                                                                        className="font-Poppins text-[#0F1726] text-[18px] font-semibold leading-[22px] line-clamp-2 overflow-hidden text-ellipsis">{pooja_list_result?.title}</Link></h3>
-                                                                    <p className="line-clamp-2 text-[#4C5159] overflow-hidden text-ellipsis leading-5 my-3">{pooja_list_result?.short_description}</p>
+                                                                        className="font-Poppins text-[#0F1726] text-[18px] font-semibold leading-[22px] line-clamp-1 overflow-hidden text-ellipsis">{pooja_list_result?.title}</Link></h3>
+                                                                    <p className="line-clamp-1 text-[#4C5159] overflow-hidden text-ellipsis leading-5 my-3">{pooja_list_result?.short_description}</p>
+                                                                    <div className='flex justify-between'>
+                                                                    <p className="text-sm text-[#4C5159]">{pooja_list_result.pooja_date
+                                                                    }</p>
+                                                                    <p className="text-sm text-[#4C5159]">{pooja_list_result.from_time
+
+                                                                    } to {pooja_list_result.
+                                                                        to_time
+                                                                        
+
+                                                                    }</p>
+                                                                    </div>
+                                                                    
                                                                     <div className="more-info border-t pt-3 mt-3 flex justify-between items-center">
                                                                         <div className="flex gap-3 items-center">
                                                                             <img src={`${IMG_BASE_URL}${pooja_list_result?.astro?.profile_image}`} className="rounded-full w-12 h-12" alt="" />
                                                                             <span className="font-medium text-sm">{pooja_list_result?.astro?.name}</span>
                                                                         </div>
+                                                                        
                                                                         {/* <Link className="transition-all p-2 px-5 rounded-full w-32 justify-center border border-gray-200 duration-[0.3s] ease-in-out text-[#DE9553] text-[13px] flex items-center hover:bg-[#fff] hover:text-[#9D2326]">Book Now</Link> */}
                                                                     </div>
+                                                                    <Link
+                                                                            className={`h-[40px] block leading-[40px] text-center text-[14px]  px-[25px] transition-all duration-[0.3s] ease-in-out relative rounded-full items-center font-semibold tracking-[0.02rem] border-[0] bg-[#9F2225] text-[#fff] hover:bg-[#333] hover:text-[#fff] mt-3`}>
+                                                                            <i className="fi-rr-shopping-bag mr-3 transition-all duration-[0.3s] ease-in-out leading-[0]"></i>
+                                                                            Book Now
+                                                                        </Link>
                                                                 </div>
                                                             </div>
                                                         </div>

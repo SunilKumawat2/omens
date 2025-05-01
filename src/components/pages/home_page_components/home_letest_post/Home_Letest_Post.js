@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 
 const Home_Letest_Post = (home_data) => {
     const letest_blog = home_data?.data?.blog
+    console.log();
+    
     return (
         <div>
             <section className="gi-blog-section py-[40px] max-[767px]:py-[30px] wow fadeInUp">

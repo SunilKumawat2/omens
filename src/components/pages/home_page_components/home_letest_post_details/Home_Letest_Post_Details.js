@@ -33,6 +33,7 @@ const Home_Letest_Post_Details = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+console.log("detail:", letest_post_details);
 
     return (
         <div>
@@ -81,10 +82,16 @@ const Home_Letest_Post_Details = () => {
                                             <div className="gi-blogs-inner">
                                                 <div className="gi-single-blog-item">
                                                     <div className="single-blog-info">
-                                                        <figure className="blog-img mb-[16px] h-[500px] overflow-hidden">
-                                                            <img src={`${IMG_BASE_URL}${letest_post_details?.image}`} alt="blog imag" className="w-full h-full object-contain rounded-[5px]" />
+                                                        {letest_post_details?.blog_images
+?.map((images)=>(
+                                                            <figure className="blog-img mb-[16px] h-[500px] overflow-hidden">
+                                                            <img src={`${IMG_BASE_URL}${images?.image
+}`} alt="blog imag" className="w-full h-full object-contain rounded-[5px]" />
 
                                                         </figure>
+                                                        ))
+}
+                                                        
                                                         <div className="single-blog-detail">
                                                             <label className="mb-[15px] text-[#999] inline-block">Author - <a href="#" className="text-[#999] hover:text-[#5caf90]">{letest_post_details?.author_name}</a></label>
                                                             {/* <h3 className="text-[22px] font-semibold text-[#4b5966] leading-[1.2] mb-[6px] max-[767px]:text-[20px] max-[575px]:text-[19px]">Marketing Guide: 5 Steps to Success.</h3> */}

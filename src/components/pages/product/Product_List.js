@@ -664,7 +664,7 @@
 //     const [show_video, set_show_video] = useState(false)
 //     console.log("show_video", show_video)
 
-    
+
 //     // Calculate total pages safely
 //     const totalPages = Math.ceil(products?.product?.length / productsPerPage) || 1;
 
@@ -792,12 +792,12 @@
 //         set_set_Is_Loading(true);
 //         try {
 //             if (Get_user_is_active) {
-                
+
 //                 const token = User_Authentication();
 //                 if (!token) {
 //                     set_set_Is_Loading(false);
 //                     console.log("token:", token);
-                    
+
 //                     throw new Error("User token not found");
 //                 }
 //                 const response = await Get_Product_List_Category_wise(
@@ -1019,9 +1019,9 @@
 //                                                                 </div>
 //                                                             </div>
 //                                                         </div>
-                                                       
+
 //                                                     </div>
-                                                    
+
 //                                                 </div>
 
 //                                                 {/* <div className="gi-sidebar-block mb-[15px] color-block gi-sidebar-block-clr">
@@ -1287,10 +1287,14 @@ const Product_List = () => {
     const productsPerPage = 12;
     const [is_Open_Origin, set_Is_Open_Origin] = useState(false);
     const [is_Open_Shape, set_Is_Open_Shape] = useState(false);
+    const [is_Open_Cut, set_Is_Open_Cut] = useState(false);
+
     const [is_Open_Color, set_Is_Open_Color] = useState(false);
     const [is_Open_treatment, set_Is_Open_treatment] = useState(false);
     const [selectedOrigins, setSelectedOrigins] = useState([]);
     const [selectedShape, setSelectedShape] = useState([]);
+    const [selectedCut, setSelectedCut] = useState([]);
+
     const [selectedColor, setSelectedColor] = useState([]);
     const [selectedTreatment, setSelectedTreatment] = useState([]);
     const [minPrice, setMinPrice] = useState("0");
@@ -1331,7 +1335,9 @@ const Product_List = () => {
     const toggle_Shape_accordion = () => {
         set_Is_Open_Shape(!is_Open_Shape);
     };
-
+    const toggle_Cut_accordion = () => {
+        set_Is_Open_Cut(!is_Open_Cut);
+    };
     const toggle_color_accordion = () => {
         set_Is_Open_Color(!is_Open_Color);
     };
@@ -1361,6 +1367,15 @@ const Product_List = () => {
     };
     const selectedShapeString = selectedShape.join(',');
 
+    const handle_cut_Checkbox_Change = (CutName) => {
+        setSelectedShape((prevSelected) =>
+            prevSelected?.includes(CutName)
+                ? prevSelected?.filter((name) => name !== CutName)
+                : [...prevSelected, CutName]
+        );
+    };
+    const selectedCutString = selectedCut.join(',');
+
     // <------------ handle Shape Checkbox Change ----------->
     const handle_color_Checkbox_Change = (ColorName) => {
         setSelectedColor((prevSelected) =>
@@ -1371,7 +1386,7 @@ const Product_List = () => {
     };
     const selectedColorString = selectedColor.join(',');
 
-    // <------------ handle Shape Checkbox Change ----------->
+    // <------------ handle Cut Checkbox Change ----------->
     const handle_treatment_Checkbox_Change = (treatmentName) => {
         setSelectedTreatment((prevSelected) =>
             prevSelected?.includes(treatmentName)
@@ -1424,7 +1439,7 @@ const Product_List = () => {
     }
 
     const Handle_Get_Product_List = async () => {
-        set_set_Is_Loading(true);
+        // set_set_Is_Loading(true);
         try {
             if (Get_user_is_active) {
                 const token = User_Authentication();
@@ -1435,7 +1450,7 @@ const Product_List = () => {
                 const response = await Get_Product_List_Category_wise(
                     {
                         category_id, subcategory_id, origin_id: selectedOriginsString,
-                        shape_id: selectedShapeString, color_id: selectedColorString,
+                        shape_id: selectedShapeString, cut_id: selectedCutString, color_id: selectedColorString,
                         treatment_id: selectedTreatmentString, min_amount: minPrice, max_amount: maxPrice
                     },
                     { Authorization: `Bearer ${token}` }
@@ -1445,7 +1460,7 @@ const Product_List = () => {
             } else {
                 const response = await Product_List_Data_Category_wise({
                     category_id, subcategory_id,
-                    origin_id: selectedOriginsString, shape_id: selectedShapeString, color_id: selectedColorString,
+                    origin_id: selectedOriginsString, shape_id: selectedShapeString, cut_id: selectedCutString, color_id: selectedColorString,
                     treatment_id: selectedTreatmentString, min_amount: minPrice, max_amount: maxPrice
                 });
                 console.log("products_products_222222", response);
@@ -1453,14 +1468,16 @@ const Product_List = () => {
             }
         } catch (error) {
             console.error(error);
-        } finally {
-            set_set_Is_Loading(false);
         }
+        // finally {
+        //     set_set_Is_Loading(false);
+        // }
     }
+    console.log("produuuuuuuuuuuuuuuuuut:", products);
 
     useEffect(() => {
         Handle_Get_Product_List();
-    }, [Get_user_is_active, category_id, subcategory_id, selectedOriginsString, selectedShapeString, selectedColorString, selectedTreatmentString, minPrice, maxPrice]);
+    }, [Get_user_is_active, category_id, subcategory_id, selectedOriginsString, selectedShapeString, selectedCutString, selectedColorString, selectedTreatmentString, minPrice, maxPrice]);
 
 
     return (
@@ -1524,10 +1541,10 @@ const Product_List = () => {
                                                     <a href="#"><img className="rounded-lg" src="https://rasatva.apponedemo.top/omens/public/uploads/product/71105.jpg" alt="" /></a>
                                                 </div>
                                                 <div>
-                                                <a href="#"><img className="rounded-lg" src="https://rasatva.apponedemo.top/omens/public/uploads/product/71105.jpg" alt="" /></a>
+                                                    <a href="#"><img className="rounded-lg" src="https://rasatva.apponedemo.top/omens/public/uploads/product/71105.jpg" alt="" /></a>
                                                 </div>
                                                 <div>
-                                                <a href="#"><img className="rounded-lg" src="https://rasatva.apponedemo.top/omens/public/uploads/product/71105.jpg" alt="" /></a>
+                                                    <a href="#"><img className="rounded-lg" src="https://rasatva.apponedemo.top/omens/public/uploads/product/71105.jpg" alt="" /></a>
                                                 </div>
                                             </div>
                                             <div className="pt-4">
@@ -1629,7 +1646,41 @@ const Product_List = () => {
                                                         </div>
                                                     )}
                                                 </div>
+                                                {/* <!-- Sidebar Cut Block --> */}
+                                                <div className="gi-sidebar-block mb-[15px] cursor-pointer">
+                                                    <div className="gi-sb-title border-b-[1px] border-solid border-[#eee] pb-[15px]">
+                                                        <span className={`transform transition-transform ${is_Open_Cut ? "rotate-180" : ""}`}></span>
+                                                        <h3 className="gi-sidebar-title font-semibold tracking-[0] relative text-[#4b5966] w-full
+                                                                 flex justify-between font-Poppins text-[14px] leading-[1.2]" onClick={toggle_Cut_accordion}>Cut <i class="gicon gi-angle-down"></i></h3>
+                                                    </div>
+                                                    {is_Open_Cut && (
+                                                        <div className="gi-sb-block-content mt-[15px]">
+                                                            <ul>
+                                                                {
+                                                                    products?.filter_by?.cut?.map((cut_result) => {
+                                                                        return (
+                                                                            <li>
+                                                                                <div className="gi-sidebar-block-item py-[10px] relative flex flex-row">
+                                                                                    <input
+                                                                                        type="checkbox"
+                                                                                        className="w-full h-full absolute opacity-0 cursor-pointer z-10"
+                                                                                        checked={selectedCut.includes(cut_result?.id)}
+                                                                                        onChange={() => handle_cut_Checkbox_Change(cut_result?.id)}
+                                                                                    />
+                                                                                    <p className="w-full text-[#777] text-[14px] mt-[0] leading-[20px] font-normal capitalize cursor-pointer flex justify-between pl-[30px]">
+                                                                                        <span className="flex">{cut_result?.name}</span>
+                                                                                    </p>
+                                                                                    <span className={`checked absolute top-1/2 left-0 h-4 w-4 bg-white border border-gray-200 transition-transform transform -translate-y-1/2 rounded ${selectedOrigins.includes(cut_result?.id) ? "bg-red-500 border-red-500" : ""}`}></span>
+                                                                                </div>
+                                                                            </li>
+                                                                        )
+                                                                    })
+                                                                }
 
+                                                            </ul>
+                                                        </div>
+                                                    )}
+                                                </div>
                                                 {/* <!-- Sidebar Color item --> */}
                                                 <div className="gi-sidebar-block mb-[15px] cursor-pointer">
                                                     <div className="gi-sb-title border-b-[1px] border-solid border-[#eee] pb-[15px]">
@@ -1796,20 +1847,20 @@ const Product_List = () => {
                                                                                                 <i
                                                                                                     className="fi-rr-play transition-all text-[15px] duration-[0.3s] ease-in-out text-[#777] leading-[10px]"></i>
                                                                                             </span>
-                                                                                           
+
 
                                                                                             <a href="#" className="image productimg7 relative block overflow-hidden pointer-events-none">
-                                                                                                <img className={`first_pro main-image object-cover h-[250px] transition-all duration-[0.3s] ease delay-[0s]  ${product_list_result?.product_images?.length >1 && "group-hover:hidden" } `}
+                                                                                                <img className={`first_pro main-image object-cover h-[250px] transition-all duration-[0.3s] ease delay-[0s]  ${product_list_result?.product_images?.length > 1 && "group-hover:hidden"} `}
                                                                                                     src={`${IMG_BASE_URL}${product_list_result?.product_images[0]
                                                                                                         ?.image_url}`} alt="Product" />
 
-                                                                                                        
-                                                                                                        {product_list_result?.product_images?.length >1 && <img className="first_pro_hover main-image object-cover h-[250px] transition-all duration-[0.3s] ease delay-[0s]  " src={`${IMG_BASE_URL}${product_list_result?.product_images[1]
-                                                                                                        ?.image_url}`} alt="" />
-                                                                                                        }
-                                                                                                
+
+                                                                                                {product_list_result?.product_images?.length > 1 && <img className="first_pro_hover main-image object-cover h-[250px] transition-all duration-[0.3s] ease delay-[0s]  " src={`${IMG_BASE_URL}${product_list_result?.product_images[1]
+                                                                                                    ?.image_url}`} alt="" />
+                                                                                                }
+
                                                                                             </a>
-                                                                                            
+
                                                                                             {isOutOfStock && (
                                                                                                 <div className="absolute top-2 left-2 bg-red-600 text-white text-sm px-2 py-1 rounded">
                                                                                                     Out of Stock

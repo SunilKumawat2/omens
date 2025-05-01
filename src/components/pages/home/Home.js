@@ -34,6 +34,7 @@ const Home = () => {
             try {
                 const response = await Get_Home_Page()
                 set_Home_Data(response?.data?.data)
+                
                 set_Is_Loading(false)
             } catch (error) {
                 set_Is_Loading(false)
