@@ -5,11 +5,11 @@ import { IMG_BASE_URL } from '../../../config/Config';
 import Loader from '../../../loader/Loader';
 import { Link } from 'react-router-dom';
 
-const Cart_Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
+const Cart_Sidebar = (props) => {
+    const [isOpen, setIsOpen] = useState(true);
     const [is_loading, set_Is_Loading] = useState(false)
     const [cart_list, set_Cart_List] = useState([]);
-
+const{toggleOffcanvas}=props
     useEffect(() => {
         const Handle_Get_Cart_List = async () => {
             try {
@@ -51,9 +51,9 @@ const Cart_Sidebar = () => {
         return total + (cart_list_result?.product?.purchase_price || 0);
     }, 0);
     console.log("sfddsgfdfg", cart_list)
-    const toggleOffcanvas = () => {
-        setIsOpen(!isOpen);
-    };
+    // const toggleOffcanvas = () => {
+    //     setIsOpen(!isOpen);
+    // };
     return (
         <div>
             {
@@ -62,18 +62,18 @@ const Cart_Sidebar = () => {
                 ) : (
                     <>
                         {/* Button to open offcanvas */}
-                        <div className='flex gap-2' onClick={toggleOffcanvas}>
+                        {/* <div className='flex gap-2' onClick={toggleOffcanvas}>
                             <i className="fi-rr-shopping-bag text-[#fff] text-[18px] leading-[17px]"></i>
                             <button className="gi-header-btn gi-cart-toggle transition-all duration-[0.3s] ease-in-out relative flex text-[#4b5966]
                                  w-[auto] items-center whitespace-nowrap text-[#fff]" ></button>
-                        </div>
+                        </div> */}
                         {/* Overlay */}
                         <div
                             className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
                             onClick={toggleOffcanvas}></div>
                         {/* Offcanvas Sidebar */}
                         <div
-                            className={`fixed top-0 right-0 w-96 h-full bg-white shadow-lg z-50 p-0 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}>
+                            className={`fixed top-0 right-0 w-96 h-full bg-white shadow-lg z-50 p-0 transform transition-transform duration-300 ease-in-out  ${isOpen ? "translate-x-0" : "translate-x-full"}`}>
                             <div className="flex flex-col h-full">
                                 <div className='flex justify-between p-4 items-center'>
                                     <h2 className="text-xl font-semibold  text-black">My Cart</h2>
