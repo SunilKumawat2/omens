@@ -99,8 +99,6 @@ export const Get_Subhmuharats_Details = async (orderId) => {
     } catch (error) {
         return error
     }
-<<<<<<< HEAD
-=======
 }
 
 
@@ -111,5 +109,4 @@ export const Get_Custom_Designs = async () => {
     } catch (error) {
         return error
     }
->>>>>>> omens_solving_bug_till_29-04-2025_evening
 }

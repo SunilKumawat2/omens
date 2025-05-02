@@ -723,23 +723,64 @@ const Header = () => {
     const [showInput, setShowInput] = useState(false);
     const [query, setQuery] = useState("");
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+    console.log("filteredSuggestions", filteredSuggestions)
     const [isCartOpen, setIsCartOpen] = useState(false);
-
+    const [home_data, set_Home_Data] = useState([]);
+    console.log("home_data", home_data)
     const inputRef = useRef(null);
+    const [fullData, setFullData] = useState({});
+    // const handleToggle = () => {
+    //     setShowInput(true);
+    //     setTimeout(() => inputRef.current?.focus(), 100);
+    // };
+
+    useEffect(() => {
+        const Handle_Get_Home_Data = async () => {
+            set_Is_Loading(true);
+            try {
+                const response = await Get_Home_Page();
+                const data = response?.data?.data;
+                setFullData(data);
+                setFilteredSuggestions(data); // Initial = all data
+                set_Is_Loading(false);
+            } catch (error) {
+                set_Is_Loading(false);
+                console.log("error", error);
+            }
+        };
+        Handle_Get_Home_Data();
+    }, []);
 
     const handleToggle = () => {
-        setShowInput(true);
-        setTimeout(() => inputRef.current?.focus(), 100);
+        setShowInput(!showInput);
+        setTimeout(() => inputRef.current?.focus(), 0);
     };
 
     const handleChange = (e) => {
         const value = e.target.value;
         setQuery(value);
-        const filtered = sampleSuggestions.filter((item) =>
-            item.toLowerCase().startsWith(value.toLowerCase())
-        );
+
+        if (!value) {
+            setFilteredSuggestions(fullData);
+            return;
+        }
+
+        const filtered = {};
+        Object.keys(fullData).forEach((key) => {
+            const items = fullData[key];
+            if (Array.isArray(items)) {
+                filtered[key] = items.filter((item) =>
+                    Object.values(item).some(
+                        (val) =>
+                            typeof val === 'string' &&
+                            val.toLowerCase().includes(value.toLowerCase())
+                    )
+                );
+            }
+        });
         setFilteredSuggestions(filtered);
     };
+
     useEffect(() => {
         if (!query.trim()) {
             setFilteredSuggestions([]);
@@ -871,12 +912,9 @@ const Header = () => {
                                 {/* <!-- Header Top social End --> */}
                                 <div className="grow-[1] shrink-[0] basis-[0%] hidden min-[992px]:block">
                                     <div className="header-top-right-inner flex justify-end items-center">
-                                        <div className="relative  mr-[30px]">
+                                        <div className="relative mr-[30px]">
                                             {!showInput && (
-                                                <button
-                                                    onClick={handleToggle}
-                                                    className="flex items-center gap-2 "
-                                                >
+                                                <button onClick={handleToggle} className="flex items-center gap-2">
                                                     <Search size={20} />
                                                     <span className="text-sm font-medium">SEARCH</span>
                                                 </button>
@@ -896,25 +934,56 @@ const Header = () => {
                                                             {is_loading && (
                                                                 <div className="px-4 py-3 text-gray-400">Loading...</div>
                                                             )}
-                                                            {!is_loading && filteredSuggestions.length === 0 && (
-                                                                <div className="px-4 py-3 text-gray-400">No results found</div>
-                                                            )}
-                                                            {filteredSuggestions.map((item, index) => (
-                                                                <div
-                                                                    key={index}
-                                                                    className="flex items-start gap-4 p-3 border-b last:border-none hover:bg-gray-100 cursor-pointer"
-                                                                    onClick={() => {
-                                                                        setQuery(item.name);
-                                                                        setFilteredSuggestions([]);
-                                                                    }}
-                                                                >
-                                                                    <img src={item.image_url} alt={item.name} className="w-12 h-12 object-cover" />
-                                                                    <div>
-                                                                        <p className="text-sm font-medium text-gray-700">{item.name}</p>
-                                                                        <p className="text-sm text-[#9F2225] font-semibold">{item.price}</p>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
+
+                                                            {!is_loading &&
+                                                                Object?.values(filteredSuggestions)?.every(arr => arr?.length == 0) && (
+                                                                    <div className="px-4 py-3 text-gray-400">No results found</div>
+                                                                )}
+
+                                                            {!is_loading &&
+                                                                Object?.entries(filteredSuggestions).map(([category, items]) =>
+                                                                    items?.map((product_list_result, index) => (
+                                                                        <div
+                                                                            key={`${category}-${index}`}
+                                                                            className="flex items-start gap-4 p-3 border-b last:border-none hover:bg-gray-100 cursor-pointer"
+                                                                            onClick={() =>
+                                                                                navigate(`/product/${product_list_result?.slug}`, {
+                                                                                    state: {
+                                                                                        product_list_result,
+                                                                                        category_id: product_list_result?.cat_id,
+                                                                                        subcategory_id: product_list_result?.sub_id,
+                                                                                    },
+                                                                                })
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                product_list_result?.single_image?.image_url != null && (
+                                                                                    <img
+                                                                                        src={`${IMG_BASE_URL}${product_list_result?.single_image?.image_url}`}
+                                                                                        alt={product_list_result.name}
+                                                                                        className="w-12 h-12 object-cover"
+                                                                                    />
+                                                                                )
+                                                                            }
+                                                                            {/* {
+                                                                                item?.profile_images[0]
+                                                                                ?.image_file != null && (
+                                                                                    <img
+                                                                                    src={`${IMG_BASE_URL}${item?.profile_images?.[0]?.image_file}`}
+                                                                                    alt={item.name}
+                                                                                    className="w-12 h-12 object-cover"
+                                                                                />
+                                                                                
+                                                                                )
+                                                                            } */}
+
+                                                                            <div>
+                                                                                <p className="text-sm font-medium text-gray-700">{product_list_result?.name}</p>
+                                                                                <p className="text-sm text-[#9F2225] font-semibold">{product_list_result?.price}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))
+                                                                )}
                                                         </div>
                                                     )}
                                                 </>

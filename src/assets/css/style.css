@@ -1084,18 +1084,17 @@ table.table-autow-full.custome_tab td {
   font-weight: bold;
 }
 .gi-product-content:hover .productimg7 .first_pro_hover {
-  /* display: block !important;  */
-  width: 100% !important;
+  display: block !important; width: 100% !important;
 }
 .gi-product-content .productimg7 .first_pro_hover {
-  
+  display: none !important;
   width: 100% !important;
 }
 .gi-product-content:hover .productimg7 .first_pro {
-  
+  display: none !important;
   width: 100% !important;
 }
 .gi-product-content .productimg7 .first_pro {
-  
+  display: block !important;
   width: 100% !important;
 }

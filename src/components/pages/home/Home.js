@@ -88,7 +88,7 @@ const Home = () => {
                         <Home_Exclusive_Design />
 
                         {/* <!-- Home_Shop_By_Collection Start --> */}
-                        <Home_Shop_By_Collection />
+                        <Home_Shop_By_Collection data={home_data}/>
 
                         {/* <!-- Home_Satisfied_Customer section --> */}
                         {/* <Home_Satisfied_Customer /> */}

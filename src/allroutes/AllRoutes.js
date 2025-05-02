@@ -159,6 +159,8 @@ const AllRoutes = () => {
         <Route path='/:categorySlug/:subCategorySlug' element={<Product_List />} />
         <Route path='/all-best-selling-product' element={<Home_View_All_Product />} />
         <Route path='/limited-product' element={<Limited_Product/>} />
+
+
         {/* <---------- Astrolger Auth section's ------------> */}
         <Route path='/astrologer-register' element={<Astrologer_Register />} />
         <Route path='/astrologer-register-otp-verify' element={<Astro_Protected_LoggedIn Component={Astrologer_Register_Otp_Verify} />} />

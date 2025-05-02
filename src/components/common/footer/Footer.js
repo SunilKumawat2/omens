@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 // import React, { useEffect, useState } from 'react'
 // import Common_Images_Transport from '../common_imges_transport/Common_Images_Transport'
 // import { Get_Subhmuharats, Global_Settings } from '../../../api/global/Global';
@@ -554,7 +552,6 @@
 
 
 
->>>>>>> omens_solving_bug_till_29-04-2025_evening
 import React, { useEffect, useState } from 'react'
 import Common_Images_Transport from '../common_imges_transport/Common_Images_Transport'
 import { Get_Subhmuharats, Global_Settings } from '../../../api/global/Global';
@@ -602,11 +599,7 @@ const Footer = () => {
                                 <div className="min-[992px]:w-[25%] px-[12px] w-full gi-footer-cat wow fadeInUp">
                                     <div className="gi-footer-widget gi-footer-company flex flex-col">
                                         {
-<<<<<<< HEAD
-                                           get_settings && get_settings[0]?.footer_logo != null ? (
-=======
                                             get_settings && get_settings[0]?.footer_logo != null ? (
->>>>>>> omens_solving_bug_till_29-04-2025_evening
                                                 <Link to="/">
                                                     <img src={`${IMG_BASE_URL}${get_settings[0]?.footer_logo}`}
                                                         className="gi-footer-logo max-w-[144px] max-[767px]:max-w-[130px]  mb-[30px]"
@@ -622,15 +615,9 @@ const Footer = () => {
                                         }
                                         {
                                             get_settings && (
-<<<<<<< HEAD
-                                        <p
-                                            className="gi-footer-detail max-w-[400px] mb-[30px] p-[0] text-[14px] leading-[27px] font-normal text-[#999] inline-block relative max-[1199px]:text-[14px]">
-                                            {get_settings[0]?.short_description}</p>
-=======
                                                 <p
                                                     className="gi-footer-detail max-w-[400px] mb-[30px] p-[0] text-[14px] leading-[27px] font-normal text-[#999] inline-block relative max-[1199px]:text-[14px]">
                                                     {get_settings[0]?.short_description}</p>
->>>>>>> omens_solving_bug_till_29-04-2025_evening
                                             )
                                         }
                                         <div className="social_media">
@@ -1110,12 +1097,9 @@ const Footer = () => {
                     </div>
                 </div>
             </footer>
-<<<<<<< HEAD
-=======
             <a target="_blank" href="https://wa.me/8565707894?text=Hello,%20Welcome%20to%20Omens"
                 className="fixed bottom-10 right-10 btn shadow-lg w-16 h-16 flex bg-green-600 text-center text-[14px] uppercase justify-center bg-[#4b5966] text-[#fff] transition-all duration-[0.3s] ease-in-out rounded-[100%] items-center font-semibold tracking-[0.02rem] border-[0] hover:bg-[#333] hover:text-[#fff]"><i
                     className="gicon gi-whatsapp transition-all duration-[0.3s] ease-in-out leading-[0] !text-xl"></i></a>
->>>>>>> omens_solving_bug_till_29-04-2025_evening
         </div>
     )
 }

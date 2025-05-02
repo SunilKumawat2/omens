@@ -12,7 +12,8 @@ export const Sub_Category_List = async (User_register_data) => {
 }
 
 // <-------- Product List ------------------->
-export const Product_List_Data = async ({ origin_id, shape_id, color_id, treatment_id, min_amount, max_amount }) => {
+export const Product_List_Data = async ({ origin_id, shape_id, color_id, treatment_id, min_amount, max_amount,  cut_id,
+certificate_id, composition_id }) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/web-product-list`, {
             params: {
@@ -24,7 +25,10 @@ export const Product_List_Data = async ({ origin_id, shape_id, color_id, treatme
                 color_id,
                 treatment_id,
                 min_amount,
-                max_amount
+                max_amount,
+                cut_id,
+                certificate_id,
+                composition_id
             }
         });
         return response;
@@ -97,7 +101,7 @@ export const Get_Product_List_Category_wise = async ({ category_id, subcategory_
 };
 
 // <-------- Get_Product_list ------------->
-export const Product_List_Data_Category_wise = async ({ category_id, subcategory_id, origin_id, shape_id, color_id, treatment_id, min_amount, max_amount }, headers) => {
+export const Product_List_Data_Category_wise = async ({ category_id, subcategory_id, origin_id, shape_id, color_id, treatment_id, min_amount, max_amount,  cut_id,certificate_id,composition_id }, headers) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/web-product-list`, {
             params: {
@@ -108,7 +112,10 @@ export const Product_List_Data_Category_wise = async ({ category_id, subcategory
                 color_id,
                 treatment_id,
                 min_amount,
-                max_amount
+                max_amount,
+                cut_id,
+                certificate_id,
+                composition_id
             }
             , headers: headers
         }
